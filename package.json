@@ -8,20 +8,17 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \\\\\\\"src/**/*.ts\\\\\\\" \\\\\\\"src/spec/**/*.ts\\\\\\\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "typeorm": "typeorm-ts-node-commonjs --config dist/database/migration.config.js",
-
-    "migration:create": "ts-node node_modules/.bin/typeorm migration:create --config dist/database/migration.config.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config src/spec/jest-e2e.json"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -37,8 +34,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.7",
-    "typeorm-snake-naming-strategy": "^1.0.2"
+    "typeorm": "^0.3.7"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

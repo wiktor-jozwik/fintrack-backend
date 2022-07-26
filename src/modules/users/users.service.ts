@@ -29,24 +29,6 @@ export class UsersService {
   }
 
   private async validateRegisterData(userData: UserRegisterDto) {
-    const registerUserSchema = Joi.object().keys({
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      passwordConfirmation: Joi.string().required(),
-      firstName: Joi.string(),
-      lastName: Joi.string(),
-      phoneNumber: Joi.string(),
-    });
-
-    const validation = registerUserSchema.validate(userData);
-
-    if (validation.error) {
-      throw new HttpException(
-        validation.error.message,
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
     const { email, password, passwordConfirmation } = userData;
     const user = await this.getByEmail(email);
     if (user) {

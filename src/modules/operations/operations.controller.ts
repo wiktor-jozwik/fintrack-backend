@@ -1,45 +1,41 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { OperationsService } from './operations.service';
 import { CreateOperationDto } from './dto/create-operation.dto';
-import { UpdateOperationDto } from './dto/update-operation.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { OperationsCategoriesService } from '../operations-categories/operations-categories.service';
 
 @Controller('operations')
 export class OperationsController {
-  constructor(private readonly operationsService: OperationsService) {}
+  constructor(
+    private readonly operationsCategoriesService: OperationsCategoriesService,
+  ) {}
 
   @Post()
   create(@Body() createOperationDto: CreateOperationDto) {
-    return this.operationsService.create(createOperationDto);
+    return this.operationsCategoriesService.createOperation(createOperationDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
-    return this.operationsService.findAll();
+    return this.operationsCategoriesService.findAllOperations();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.operationsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateOperationDto: UpdateOperationDto,
-  ) {
-    return this.operationsService.update(+id, updateOperationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.operationsService.remove(+id);
-  }
+  //
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.operationsService.findOne(+id);
+  // }
+  //
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updateOperationDto: UpdateOperationDto,
+  // ) {
+  //   return this.operationsService.update(+id, updateOperationDto);
+  // }
+  //
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.operationsService.remove(+id);
+  // }
 }

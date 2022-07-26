@@ -1,38 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOperationDto } from './dto/create-operation.dto';
-import { UpdateOperationDto } from './dto/update-operation.dto';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Category from '../../database/entities/category.entity';
 import { Repository } from 'typeorm';
-import Operation from '../../database/entities/operation.entity';
+import Operation, {
+  OperationCreate,
+} from '../../database/entities/operation.entity';
+import { REQUEST } from '@nestjs/core';
+import { AuthRequest } from '../auth/auth-request';
+import { OperationsCategoriesService } from '../operations-categories/operations-categories.service';
 
 @Injectable()
 export class OperationsService {
-  constructor(
-    @InjectRepository(Operation)
-    private readonly operationRepository: Repository<Operation>,
-  ) {}
-  create(createOperationDto: CreateOperationDto) {
-    return 'This action adds a new operation';
+  async create(operation: OperationCreate) {
+    // return await this.operationRepository.save(operation);
   }
 
-  findAll() {
-    return `This action returns all operations`;
-  }
+  // async findAll(): Promise<Operation[]> {
+  //
+  // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} operation`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} operation`;
+  // }
+  //
+  // update(id: number, updateOperationDto: UpdateOperationDto) {
+  //   return `This action updates a #${id} operation`;
+  // }
+  //
+  // remove(id: number) {
+  //   return `This action removes a #${id} operation`;
+  // }
 
-  update(id: number, updateOperationDto: UpdateOperationDto) {
-    return `This action updates a #${id} operation`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} operation`;
-  }
-
-  async findOperationsByCategoryId(categoryId: number): Promise<Operation[]> {
-    return await this.operationRepository.find({ where: { categoryId } });
+  async findOperationsByCategoryId(categoryId: number) {
+    // return await this.operationRepository.find({ where: { categoryId } });
   }
 }

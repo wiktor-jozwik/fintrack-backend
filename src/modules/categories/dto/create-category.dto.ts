@@ -5,6 +5,7 @@ export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
   @IsEnum(CategoryTypeEnum)
   type: CategoryTypeEnum;
 }

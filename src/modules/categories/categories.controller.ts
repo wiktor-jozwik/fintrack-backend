@@ -17,11 +17,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  // @UseGuards(JwtAuthGuard)
-  // @Post()
-  // create(@Body() createCategoryDto: CreateCategoryDto) {
-  //   return this.categoriesService.create(createCategoryDto);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Body() createCategoryDto: CreateCategoryDto) {
+    return this.categoriesService.create(createCategoryDto);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -44,9 +44,9 @@ export class CategoriesController {
   //   return this.categoriesService.update(+id, updateCategoryDto);
   // }
   //
-  // @UseGuards(JwtAuthGuard)
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.categoriesService.remove(+id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.categoriesService.remove(+id);
+  }
 }

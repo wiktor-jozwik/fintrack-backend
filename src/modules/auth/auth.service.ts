@@ -15,10 +15,7 @@ export class AuthService {
     const user = await this.usersService.getByEmail(email);
 
     if (!user) {
-      throw new HttpException(
-        `User ${email} does not exist`,
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
     const isPasswordMatching = await bcrypt.compare(

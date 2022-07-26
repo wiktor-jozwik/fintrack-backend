@@ -14,6 +14,9 @@ class Operation extends Base {
 
   @ManyToOne(() => Category, (category) => category.operations)
   public category: Category;
+
+  @Column()
+  categoryId: number;
 }
 
 export default Operation;

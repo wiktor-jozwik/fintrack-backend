@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import Base from './base';
+import Category from './category.entity';
 
 @Entity({
   name: 'users',
@@ -19,6 +20,9 @@ class User extends Base {
 
   @Column()
   public password: string;
+
+  @OneToMany(() => Category, (category) => category.user)
+  public categories: Category[];
 }
 
 export default User;

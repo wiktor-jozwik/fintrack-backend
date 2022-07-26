@@ -78,8 +78,8 @@ Nest is [MIT licensed](LICENSE).
 Before run: `npm run build`
 
 Then:
-- show: `typeorm migration:show --config dist/database/config/migration.config.js`
-- create: `typeorm migration:create --config dist/database/config/migration.config.js -n "NameOfMigration"`
-- generate: `typeorm migration:generate --config dist/config/database/migration.config.js -n "NameOfMigration"`
-- run: `typeorm migration:run --config dist/database/config/migration.config.js`
-- revert: `typeorm migration:revert --config dist/database/config/migration.config.js`
+- show: `typeorm migration:show --config dist/config/migration.config.js`
+- create: `typeorm migration:create --config dist/config/migration.config.js -n "NameOfMigration"`
+- generate: `typeorm migration:generate --config dist/config/migration.config.js -n "NameOfMigration"`
+- run: `typeorm migration:run --config dist/config/migration.config.js`
+- revert: `typeorm migration:revert --config dist/config/migration.config.js`

@@ -14,7 +14,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
       logging: true,
       synchronize: false,
       entities: ['dist/**/*.entity.{ts,js}'],
-      migrations: ['dist/database/migrations/*.{ts,js}'],
+      migrations: ['dist/src/database/migrations/*.{ts,js}'],
       cli: {
         migrationsDir: 'src/database/migrations',
         entitiesDir: 'src/database/entities',

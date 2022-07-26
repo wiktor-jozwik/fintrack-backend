@@ -6,13 +6,13 @@ import Category from './category.entity';
   name: 'users',
 })
 class User extends Base {
-  @Column({ nullable: true, name: 'first_name' })
+  @Column({ nullable: true })
   public firstName: string;
 
-  @Column({ nullable: true, name: 'last_name' })
+  @Column({ nullable: true })
   public lastName: string;
 
-  @Column({ nullable: true, name: 'phone_number' })
+  @Column({ nullable: true })
   public phoneNumber: string;
 
   @Column({ unique: true })

@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 export class DatabaseConfig implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): Promise<TypeOrmModuleOptions> | TypeOrmModuleOptions {
@@ -19,6 +20,7 @@ export class DatabaseConfig implements TypeOrmOptionsFactory {
         migrationsDir: 'src/database/migrations',
         entitiesDir: 'src/database/entities',
       },
+      namingStrategy: new SnakeNamingStrategy(),
     };
   }
 }

@@ -1,4 +1,4 @@
 enum CategoryTypeEnum {
-  INCOME,
-  OUTCOME,
+  INCOME = 'INCOME',
+  OUTCOME = 'OUTCOME',
 }

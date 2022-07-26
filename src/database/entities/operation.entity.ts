@@ -9,7 +9,7 @@ class Operation extends Base {
   @Column()
   public name: string;
 
-  @Column({ name: 'money_amount', type: 'decimal' })
+  @Column({ type: 'decimal' })
   public moneyAmount: number;
 
   @ManyToOne(() => Category, (category) => category.operations)

@@ -10,7 +10,7 @@ class Category extends Base {
   @Column()
   public name: string;
 
-  @Column({ name: 'type' })
+  @Column()
   public type: CategoryTypeEnum;
 
   @OneToMany(() => Operation, (operation) => operation.category)

@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import * as Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseConfig } from './database/config/database.config';
+import { DatabaseConfig } from '../config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthController } from './modules/auth/auth.controller';
-import { UsersController } from './modules/users/users.controller';
 
 @Module({
   imports: [
@@ -19,8 +17,9 @@ import { UsersController } from './modules/users/users.controller';
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
-        JWT_SECRET: Joi.string().required(),
         APP_PORT: Joi.number(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
@@ -31,6 +30,5 @@ import { UsersController } from './modules/users/users.controller';
   ],
 
   controllers: [AppController, AuthController],
-  providers: [AppService],
 })
 export class AppModule {}

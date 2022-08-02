@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { OperationsController } from '../../../src/modules/operations/operations.controller';
-import { OperationsService } from '../../../src/modules/operations/operations.service';
+import { OperationsController } from '../../../../src/modules/operations-categories/operations/operations.controller';
+import { OperationsService } from '../../../../src/modules/operations-categories/operations/operations.service';
 
 describe('OperationsController', () => {
   let controller: OperationsController;

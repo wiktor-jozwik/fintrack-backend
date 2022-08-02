@@ -1,8 +1,7 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { OperationsService } from './operations.service';
 import { CreateOperationDto } from './dto/create-operation.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { OperationsCategoriesService } from '../operations-categories/operations-categories.service';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { OperationsCategoriesService } from '../operations-categories.service';
 
 @Controller('operations')
 export class OperationsController {
@@ -10,6 +9,7 @@ export class OperationsController {
     private readonly operationsCategoriesService: OperationsCategoriesService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createOperationDto: CreateOperationDto) {
     return this.operationsCategoriesService.createOperation(createOperationDto);

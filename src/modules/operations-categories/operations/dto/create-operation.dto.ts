@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateOperationDto {
   @IsString()
@@ -8,7 +8,7 @@ export class CreateOperationDto {
   @IsNumber()
   moneyAmount: number;
 
-  @IsDate()
+  @IsDateString()
   date: Date;
 
   @IsString()

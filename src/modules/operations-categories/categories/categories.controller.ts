@@ -4,15 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { OperationsCategoriesService } from '../operations-categories/operations-categories.service';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { OperationsCategoriesService } from '../operations-categories.service';
 
 @Controller('categories')
 export class CategoriesController {

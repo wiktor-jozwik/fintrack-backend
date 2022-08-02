@@ -1,16 +1,14 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { AuthRequest } from '../auth/auth-request';
-import Category from '../../database/entities/category.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { AuthRequest } from '../../auth/auth-request';
+import Category from '../../../database/entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { OperationsService } from '../operations/operations.service';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CategoriesService {
   constructor(
-    private operationsService: OperationsService,
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
     @Inject(REQUEST) private request: AuthRequest,
@@ -40,9 +38,7 @@ export class CategoriesService {
   // }
   //
   async remove(id: number): Promise<boolean> {
-    await this.validateZeroOperations(id);
-
-    const category = await this.findUserCategoryById(id);
+    const category = await this.findById(id);
 
     if (!category) {
       throw new HttpException(
@@ -51,12 +47,31 @@ export class CategoriesService {
       );
     }
 
-    await this.categoryRepository.delete({ id });
+    try {
+      await this.categoryRepository.delete({ id });
+    } catch (e) {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return true;
   }
 
-  private async validateNameUniqueness(name: string): Promise<void> {
+  //   if (!category) {
+  //     throw new HttpException(
+  //       'Category not found',
+  //       HttpStatus.UNPROCESSABLE_ENTITY,
+  //     );
+  //   }
+  //
+  //   await this.categoryRepository.delete({ id });
+  //
+  //   return true;
+  // }
+
+  async validateNameUniqueness(name: string): Promise<void> {
     const category = await this.categoryRepository.findOne({
       where: { userId: this.request.user.id, name },
     });
@@ -69,24 +84,16 @@ export class CategoriesService {
     }
   }
 
-  private async findUserCategoryById(
-    categoryId: number,
-  ): Promise<Category | null> {
+  async findByName(name: string) {
+    console.log(this.request.user);
     return await this.categoryRepository.findOne({
-      where: { id: categoryId, userId: this.request.user.id },
+      where: { name, userId: this.request.user.id },
     });
   }
 
-  private async validateZeroOperations(id: number): Promise<void> {
-    const operations = await this.operationsService.findOperationsByCategoryId(
-      id,
-    );
-
-    if (operations.length > 0) {
-      throw new HttpException(
-        'Category has operations assigned and cannot be deleted!',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
+  async findById(categoryId: number): Promise<Category | null> {
+    return await this.categoryRepository.findOne({
+      where: { id: categoryId, userId: this.request.user.id },
+    });
   }
 }

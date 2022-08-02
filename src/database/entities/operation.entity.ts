@@ -2,6 +2,11 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import Base from './base';
 import Category from './category.entity';
 
+export type OperationCreate = Omit<
+  Operation,
+  'id' | 'createdAt' | 'updatedAt' | 'categoryId'
+>;
+
 @Entity({
   name: 'operations',
 })
@@ -16,7 +21,7 @@ class Operation extends Base {
   public category: Category;
 
   @Column()
-  categoryId: number;
+  public categoryId: number;
 }
 
 export default Operation;

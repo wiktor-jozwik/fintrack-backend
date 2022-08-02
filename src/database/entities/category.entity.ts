@@ -21,7 +21,7 @@ class Category extends Base {
   public user: User;
 
   @Column()
-  userId: number;
+  public userId: number;
 }
 
 export default Category;

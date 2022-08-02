@@ -28,15 +28,20 @@ export class OperationsCategoriesService {
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
-    const { name, moneyAmount } = createOperationDto;
+    const { name, moneyAmount, date } = createOperationDto;
 
     const operation: OperationCreate = {
       name,
       moneyAmount,
+      date,
       category,
     };
 
     return await this.operationsService.create(operation);
+  }
+
+  async removeOperation(id: number): Promise<boolean> {
+    return await this.operationsService.remove(id);
   }
 
   async findAllCategories(): Promise<Category[]> {

@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../../auth/auth-request';
 import Category from '../../../database/entities/category.entity';
@@ -41,10 +47,7 @@ export class CategoriesService {
     const category = await this.findById(id);
 
     if (!category) {
-      throw new HttpException(
-        'Category not found',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new NotFoundException('Category not found');
     }
 
     try {
@@ -58,18 +61,6 @@ export class CategoriesService {
 
     return true;
   }
-
-  //   if (!category) {
-  //     throw new HttpException(
-  //       'Category not found',
-  //       HttpStatus.UNPROCESSABLE_ENTITY,
-  //     );
-  //   }
-  //
-  //   await this.categoryRepository.delete({ id });
-  //
-  //   return true;
-  // }
 
   async validateNameUniqueness(name: string): Promise<void> {
     const category = await this.categoryRepository.findOne({
@@ -85,7 +76,6 @@ export class CategoriesService {
   }
 
   async findByName(name: string) {
-    console.log(this.request.user);
     return await this.categoryRepository.findOne({
       where: { name, userId: this.request.user.id },
     });

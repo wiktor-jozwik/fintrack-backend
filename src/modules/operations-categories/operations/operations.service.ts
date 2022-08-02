@@ -1,4 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import Operation, {
@@ -6,6 +12,7 @@ import Operation, {
 } from '../../../database/entities/operation.entity';
 import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../../auth/auth-request';
+import { isValidIsoDate } from '../../../utils/is-valid-iso-date';
 
 @Injectable()
 export class OperationsService {
@@ -15,6 +22,13 @@ export class OperationsService {
     @Inject(REQUEST) private request: AuthRequest,
   ) {}
   async create(operation: OperationCreate) {
+    const validDate = isValidIsoDate(operation.date);
+    if (!validDate) {
+      throw new HttpException(
+        'Provided date was invalid. Provide date in YYYY-MM-DD format',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
     return await this.operationRepository.save(operation);
   }
 
@@ -37,11 +51,38 @@ export class OperationsService {
   //   return `This action updates a #${id} operation`;
   // }
   //
-  // remove(id: number) {
-  //   return `This action removes a #${id} operation`;
-  // }
+  async remove(id: number): Promise<boolean> {
+    const operation = await this.findById(id);
 
-  async findByCategoryId(categoryId: number) {
+    if (!operation) {
+      throw new NotFoundException('Operation not found');
+    }
+
+    try {
+      await this.operationRepository.delete({ id });
+    } catch (e) {
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    return true;
+  }
+
+  async findByCategoryId(categoryId: number): Promise<Operation[]> {
     return await this.operationRepository.find({ where: { categoryId } });
+  }
+
+  private async findById(operationId: number): Promise<Operation | null> {
+    return await this.operationRepository.findOne({
+      relations: ['category'],
+      where: {
+        id: operationId,
+        category: {
+          userId: this.request.user.id,
+        },
+      },
+    });
   }
 }

@@ -1,11 +1,20 @@
-import { Column, Entity, OneToMany } from 'typeorm';
-import Base from './base';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import Category from './category.entity';
 
 @Entity({
   name: 'users',
 })
-class User extends Base {
+class User {
+  @PrimaryGeneratedColumn()
+  public id: number;
+
   @Column({ nullable: true })
   public firstName: string;
 
@@ -20,6 +29,12 @@ class User extends Base {
 
   @Column()
   public password: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 
   @OneToMany(() => Category, (category) => category.user)
   public categories: Category[];

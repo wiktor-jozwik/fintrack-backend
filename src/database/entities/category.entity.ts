@@ -1,5 +1,10 @@
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import Base from './base';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import Operation from './operation.entity';
 import User from './user.entity';
 import { CategoryTypeEnum } from '../../enums/category-type.enum';
@@ -7,7 +12,10 @@ import { CategoryTypeEnum } from '../../enums/category-type.enum';
 @Entity({
   name: 'categories',
 })
-class Category extends Base {
+class Category {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   public name: string;
 

@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { OperationsCategoriesService } from '../operations-categories.service';
@@ -34,8 +42,9 @@ export class OperationsController {
   //   return this.operationsService.update(+id, updateOperationDto);
   // }
   //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.operationsService.remove(+id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.operationsCategoriesService.removeOperation(+id);
+  }
 }

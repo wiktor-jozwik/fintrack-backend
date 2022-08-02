@@ -1,5 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
-import Base from './base';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Category from './category.entity';
 
 export type OperationCreate = Omit<
@@ -10,12 +9,18 @@ export type OperationCreate = Omit<
 @Entity({
   name: 'operations',
 })
-class Operation extends Base {
+class Operation {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   public name: string;
 
   @Column({ type: 'decimal' })
   public moneyAmount: number;
+
+  @Column({ type: 'date' })
+  public date: Date;
 
   @ManyToOne(() => Category, (category) => category.operations)
   public category: Category;

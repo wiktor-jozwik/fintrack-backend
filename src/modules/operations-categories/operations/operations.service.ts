@@ -21,7 +21,7 @@ export class OperationsService {
     private readonly operationRepository: Repository<Operation>,
     @Inject(REQUEST) private request: AuthRequest,
   ) {}
-  async create(operation: OperationCreate) {
+  async create(operation: OperationCreate): Promise<Operation> {
     const validDate = isValidIsoDate(operation.date);
     if (!validDate) {
       throw new HttpException(

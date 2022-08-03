@@ -14,7 +14,7 @@ import { CategoryTypeEnum } from '../../enums/category-type.enum';
 })
 class Category {
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
   @Column()
   public name: string;

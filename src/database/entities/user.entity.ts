@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import Category from './category.entity';
+import UserCurrency from './user-currency.entity';
 
 @Entity({
   name: 'users',
@@ -31,13 +32,16 @@ class User {
   public password: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  public createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  public updatedAt: Date;
 
   @OneToMany(() => Category, (category) => category.user)
   public categories: Category[];
+
+  @OneToMany(() => UserCurrency, (userCurrency) => userCurrency.user)
+  public userCurrencies: UserCurrency[];
 }
 
 export default User;

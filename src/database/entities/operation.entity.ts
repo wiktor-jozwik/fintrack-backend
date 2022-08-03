@@ -1,17 +1,14 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Category from './category.entity';
 
-export type OperationCreate = Omit<
-  Operation,
-  'id' | 'createdAt' | 'updatedAt' | 'categoryId'
->;
+export type OperationCreate = Omit<Operation, 'id' | 'categoryId'>;
 
 @Entity({
   name: 'operations',
 })
 class Operation {
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
   @Column()
   public name: string;

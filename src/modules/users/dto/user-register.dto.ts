@@ -33,4 +33,8 @@ export class UserRegisterDto {
   @IsNotEmpty()
   @MinLength(8)
   passwordConfirmation: string;
+
+  @IsString()
+  @IsNotEmpty()
+  defaultCurrencyName: string;
 }

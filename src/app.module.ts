@@ -10,6 +10,7 @@ import { AuthController } from './modules/auth/auth.controller';
 import { OperationsModule } from './modules/operations-categories/operations/operations.module';
 import { CategoriesModule } from './modules/operations-categories/categories/categories.module';
 import { OperationsCategoriesModule } from './modules/operations-categories/operations-categories.module';
+import { CurrenciesModule } from './modules/currencies/currencies.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { OperationsCategoriesModule } from './modules/operations-categories/oper
     OperationsModule,
     CategoriesModule,
     OperationsCategoriesModule,
+    CurrenciesModule,
   ],
 
   controllers: [AppController, AuthController],

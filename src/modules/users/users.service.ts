@@ -1,15 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import User from '../../database/entities/user.entity';
 import { UserRegisterDto } from './dto/user-register.dto';
 import * as bcrypt from 'bcrypt';
+import { CurrenciesService } from '../currencies/currencies.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly currenciesService: CurrenciesService,
   ) {}
 
   async register(registerData: UserRegisterDto): Promise<User> {
@@ -17,10 +19,28 @@ export class UsersService {
 
     const hashedPassword = await bcrypt.hash(registerData.password, 10);
 
-    return await this.userRepository.save({
-      ...registerData,
-      password: hashedPassword,
-    });
+    const queryRunner = getConnection().createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const user = await this.userRepository.save({
+        ...registerData,
+        password: hashedPassword,
+      });
+
+      await this.currenciesService.createUserCurrency(
+        registerData.defaultCurrencyName,
+        user.id,
+      );
+      await queryRunner.commitTransaction();
+      return user;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async getByEmail(email: string): Promise<User | null> {

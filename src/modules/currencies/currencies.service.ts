@@ -18,10 +18,9 @@ export class CurrenciesService {
   ) {}
 
   async create(createCurrencyDto: CreateCurrencyDto): Promise<UserCurrency> {
-    return this.createUserCurrency(
-      createCurrencyDto.name,
-      this.request.user.id,
-    );
+    const currency = await this.getSupportedCurrency(createCurrencyDto.name);
+
+    return this.createUserCurrency(currency, this.request.user.id);
   }
 
   async findAll(): Promise<Currency[]> {
@@ -57,22 +56,26 @@ export class CurrenciesService {
     return userCurrency.currency;
   }
 
-  async createUserCurrency(currencyName: string, userId: number) {
-    const currency = await this.findByName(currencyName);
-
-    if (!currency) {
-      throw new HttpException(
-        `Currency ${currencyName} not supported`,
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
+  async createUserCurrency(currency: Currency, userId: number) {
     const createUserCurrency = {
       userId: userId,
       currencyId: currency.id,
     };
 
     return await this.userCurrencyRepository.save(createUserCurrency);
+  }
+
+  async getSupportedCurrency(name: string): Promise<Currency> {
+    const currency = await this.findByName(name);
+
+    if (!currency) {
+      throw new HttpException(
+        `Currency ${name} not supported`,
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    return currency;
   }
 
   private async findByName(name: string): Promise<Currency | null> {

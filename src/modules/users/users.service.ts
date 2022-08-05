@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import User from '../../database/entities/user.entity';
 import { UserRegisterDto } from './dto/user-register.dto';
 import * as bcrypt from 'bcrypt';
@@ -12,14 +12,18 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly currenciesService: CurrenciesService,
+    private readonly dataSource: DataSource,
   ) {}
 
   async register(registerData: UserRegisterDto): Promise<User> {
     await this.validateRegisterData(registerData);
 
     const hashedPassword = await bcrypt.hash(registerData.password, 10);
+    const currency = await this.currenciesService.getSupportedCurrency(
+      registerData.defaultCurrencyName,
+    );
 
-    const queryRunner = getConnection().createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
@@ -29,10 +33,7 @@ export class UsersService {
         password: hashedPassword,
       });
 
-      await this.currenciesService.createUserCurrency(
-        registerData.defaultCurrencyName,
-        user.id,
-      );
+      await this.currenciesService.createUserCurrency(currency, user.id);
       await queryRunner.commitTransaction();
       return user;
     } catch (err) {

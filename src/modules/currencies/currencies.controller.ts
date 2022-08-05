@@ -7,7 +7,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class CurrenciesController {
   constructor(private readonly currenciesService: CurrenciesService) {}
 
-  @Get('all')
+  @Get('public')
   findAll() {
     return this.currenciesService.findAll();
   }

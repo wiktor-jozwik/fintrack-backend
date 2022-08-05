@@ -1,22 +1,27 @@
-import { CURRENCIES } from '../../constants/currencies';
-import { DataSource } from 'typeorm';
+import { SUPPORTED_CURRENCIES } from '../../constants/supported-currencies';
 import { ConfigModule } from '@nestjs/config';
 import dataSource from '../../../config/data-source';
 import Currency from '../entities/currency.entity';
-import User from '../entities/user.entity';
 
 ConfigModule.forRoot();
 
 const populateCurrencies = async () => {
-  for (const currency of CURRENCIES) {
-    // const currencyRepository = dataSource.getRepository(User);
-    // console.log(currency);
-    // const currency1 = currencyRepository.find({
-    //   where: { name: currency.name },
-    // });
-    // const currency1 = currencyRepository.find();
-    // const currencyRepository = await dataSource.getRepository(Currency);
+  await dataSource.initialize();
+  const currencyRepository = await dataSource.getRepository(Currency);
+
+  for (const currency of SUPPORTED_CURRENCIES) {
+    const existingCurrency = await currencyRepository.findOne({
+      where: { name: currency.name },
+    });
+
+    if (existingCurrency) {
+      continue;
+    }
+
+    await currencyRepository.save(currency);
+    console.log(`Saved ${currency.name}`);
   }
+  await dataSource.destroy();
 };
 
 populateCurrencies();

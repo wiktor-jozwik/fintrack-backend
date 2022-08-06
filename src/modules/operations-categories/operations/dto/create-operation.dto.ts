@@ -1,11 +1,4 @@
-import {
-  IsDate,
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateOperationDto {
   @IsString()
@@ -19,5 +12,10 @@ export class CreateOperationDto {
   date: Date;
 
   @IsString()
+  @IsNotEmpty()
   categoryName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  currencyName: string;
 }

@@ -9,7 +9,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import User from '../../database/entities/user.entity';
-import { AuthController } from './auth.controller';
 
 @Module({
   imports: [

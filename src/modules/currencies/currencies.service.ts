@@ -78,7 +78,7 @@ export class CurrenciesService {
     return currency;
   }
 
-  private async findByName(name: string): Promise<Currency | null> {
+  async findByName(name: string): Promise<Currency | null> {
     return await this.currencyRepository.findOne({
       where: { name },
     });

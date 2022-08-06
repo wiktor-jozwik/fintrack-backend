@@ -5,12 +5,14 @@ import { OperationCreate } from '../../database/entities/operation.entity';
 import { CreateOperationDto } from './operations/dto/create-operation.dto';
 import Category from '../../database/entities/category.entity';
 import { CreateCategoryDto } from './categories/dto/create-category.dto';
+import { CurrenciesService } from '../currencies/currencies.service';
 
 @Injectable()
 export class OperationsCategoriesService {
   constructor(
     private readonly operationsService: OperationsService,
     private readonly categoriesService: CategoriesService,
+    private readonly currenciesService: CurrenciesService,
   ) {}
 
   async findAllOperations() {
@@ -18,16 +20,13 @@ export class OperationsCategoriesService {
   }
 
   async createOperation(createOperationDto: CreateOperationDto) {
-    const category = await this.categoriesService.findByName(
+    const category = await this.findCategoryByName(
       createOperationDto.categoryName,
     );
+    const currency = await this.findCurrencyByName(
+      createOperationDto.currencyName,
+    );
 
-    if (!category) {
-      throw new HttpException(
-        'Category not found',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
     const { name, moneyAmount, date } = createOperationDto;
 
     const operation: OperationCreate = {
@@ -35,6 +34,7 @@ export class OperationsCategoriesService {
       moneyAmount,
       date,
       category,
+      currency,
     };
 
     return await this.operationsService.create(operation);
@@ -58,6 +58,30 @@ export class OperationsCategoriesService {
     await this.validateZeroOperations(id);
 
     return await this.categoriesService.remove(id);
+  }
+
+  private async findCurrencyByName(name: string) {
+    const currency = await this.currenciesService.findByName(name);
+
+    if (!currency) {
+      throw new HttpException(
+        'Currency not found',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    return currency;
+  }
+
+  private async findCategoryByName(name: string) {
+    const category = await this.categoriesService.findByName(name);
+
+    if (!category) {
+      throw new HttpException(
+        'Category not found',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    return category;
   }
 
   private async validateZeroOperations(id: number): Promise<void> {

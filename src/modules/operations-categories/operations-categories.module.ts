@@ -4,9 +4,10 @@ import { CategoriesModule } from './categories/categories.module';
 import { OperationsCategoriesService } from './operations-categories.service';
 import { OperationsController } from './operations/operations.controller';
 import { CategoriesController } from './categories/categories.controller';
+import { CurrenciesModule } from '../currencies/currencies.module';
 
 @Module({
-  imports: [OperationsModule, CategoriesModule],
+  imports: [OperationsModule, CategoriesModule, CurrenciesModule],
   controllers: [OperationsController, CategoriesController],
   providers: [OperationsCategoriesService],
 })

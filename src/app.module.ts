@@ -36,7 +36,6 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
     OperationsCategoriesModule,
     CurrenciesModule,
   ],
-
   controllers: [AppController, AuthController],
 })
 export class AppModule {}

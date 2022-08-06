@@ -1,10 +1,10 @@
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import UserCurrency from '../src/database/entities/user-currency.entity';
-import Currency from '../src/database/entities/currency.entity';
-import Operation from '../src/database/entities/operation.entity';
-import Category from '../src/database/entities/category.entity';
-import User from '../src/database/entities/user.entity';
+import UserCurrency from '../database/entities/user-currency.entity';
+import Currency from '../database/entities/currency.entity';
+import Operation from '../database/entities/operation.entity';
+import Category from '../database/entities/category.entity';
+import User from '../database/entities/user.entity';
 
 export class DatabaseConfig implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): Promise<TypeOrmModuleOptions> | TypeOrmModuleOptions {

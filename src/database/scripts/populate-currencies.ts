@@ -1,6 +1,6 @@
 import { SUPPORTED_CURRENCIES } from '../../constants/supported-currencies';
 import { ConfigModule } from '@nestjs/config';
-import dataSource from '../../../config/data-source';
+import dataSource from '../../config/data-source';
 import Currency from '../entities/currency.entity';
 
 ConfigModule.forRoot();

@@ -17,14 +17,13 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req: AuthRequest) {
-    console.log('dipa');
-    console.log(req.user);
     if (req.user) {
       return this.authService.login(req.user);
     }
     return null;
   }
 
+  @Public()
   @Post('register')
   async register(@Body() userRegisterData: UserRegisterDto) {
     return await this.usersService.register(userRegisterData);

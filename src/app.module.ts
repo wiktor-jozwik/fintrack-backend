@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import * as Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfig } from './config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
-import { AuthController } from './modules/auth/auth.controller';
 import { OperationsModule } from './modules/operations-categories/operations/operations.module';
 import { CategoriesModule } from './modules/operations-categories/categories/categories.module';
 import { OperationsCategoriesModule } from './modules/operations-categories/operations-categories.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
+import { AuthController } from './modules/auth/auth.controller';
 
 @Module({
   imports: [
@@ -36,6 +35,6 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
     OperationsCategoriesModule,
     CurrenciesModule,
   ],
-  controllers: [AppController, AuthController],
+  controllers: [AuthController],
 })
 export class AppModule {}

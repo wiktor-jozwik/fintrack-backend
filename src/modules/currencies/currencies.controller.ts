@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { Public } from '../../decorators/public';
 
 @Controller('currencies')

@@ -5,23 +5,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import Operation, {
-  OperationCreate,
-} from '../../../database/entities/operation.entity';
 import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../../auth/auth-request';
 import { isValidIsoDate } from '../../../utils/is-valid-iso-date';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Operation, Prisma } from '@prisma/client';
 
 @Injectable()
 export class OperationsService {
   constructor(
-    @InjectRepository(Operation)
-    private readonly operationRepository: Repository<Operation>,
+    private readonly prisma: PrismaService,
     @Inject(REQUEST) private request: AuthRequest,
   ) {}
-  async create(operation: OperationCreate): Promise<Operation> {
+  async create(operation: Prisma.OperationCreateInput): Promise<Operation> {
     const validDate = isValidIsoDate(operation.date);
     if (!validDate) {
       throw new HttpException(
@@ -29,12 +25,17 @@ export class OperationsService {
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
-    return await this.operationRepository.save(operation);
+
+    const data: Prisma.OperationCreateInput = operation;
+
+    return await this.prisma.operation.create({ data });
   }
 
   async findAll(): Promise<Operation[]> {
-    return await this.operationRepository.find({
-      relations: ['category'],
+    return await this.prisma.operation.findMany({
+      include: {
+        category: true,
+      },
       where: {
         category: {
           userId: this.request.user.id,
@@ -43,14 +44,6 @@ export class OperationsService {
     });
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} operation`;
-  // }
-  //
-  // update(id: number, updateOperationDto: UpdateOperationDto) {
-  //   return `This action updates a #${id} operation`;
-  // }
-  //
   async remove(id: number): Promise<boolean> {
     const operation = await this.findById(id);
 
@@ -59,7 +52,7 @@ export class OperationsService {
     }
 
     try {
-      await this.operationRepository.delete({ id });
+      await this.prisma.operation.delete({ where: { id } });
     } catch (e) {
       throw new HttpException(
         'Internal server error',
@@ -70,13 +63,11 @@ export class OperationsService {
     return true;
   }
 
-  async findByCategoryId(categoryId: number): Promise<Operation[]> {
-    return await this.operationRepository.find({ where: { categoryId } });
-  }
-
   private async findById(operationId: number): Promise<Operation | null> {
-    return await this.operationRepository.findOne({
-      relations: ['category'],
+    return await this.prisma.operation.findFirst({
+      include: {
+        category: true,
+      },
       where: {
         id: operationId,
         category: {

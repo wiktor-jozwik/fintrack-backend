@@ -7,12 +7,11 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import User from '../../database/entities/user.entity';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    PrismaModule,
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({

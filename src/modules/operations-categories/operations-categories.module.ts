@@ -4,10 +4,10 @@ import { CategoriesModule } from './categories/categories.module';
 import { OperationsCategoriesService } from './operations-categories.service';
 import { OperationsController } from './operations/operations.controller';
 import { CategoriesController } from './categories/categories.controller';
-import { CurrenciesModule } from '../currencies/currencies.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [OperationsModule, CategoriesModule, CurrenciesModule],
+  imports: [PrismaModule, OperationsModule, CategoriesModule],
   controllers: [OperationsController, CategoriesController],
   providers: [OperationsCategoriesService],
 })

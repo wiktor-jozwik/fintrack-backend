@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
 import { CurrenciesController } from './currencies.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import UserCurrency from '../../database/entities/user-currency.entity';
-import Currency from '../../database/entities/currency.entity';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserCurrency, Currency])],
+  imports: [PrismaModule],
   controllers: [CurrenciesController],
   providers: [CurrenciesService],
   exports: [CurrenciesService],

@@ -1,25 +1,29 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { OperationsService } from './operations/operations.service';
 import { CategoriesService } from './categories/categories.service';
-import { OperationCreate } from '../../database/entities/operation.entity';
 import { CreateOperationDto } from './operations/dto/create-operation.dto';
-import Category from '../../database/entities/category.entity';
 import { CreateCategoryDto } from './categories/dto/create-category.dto';
-import { CurrenciesService } from '../currencies/currencies.service';
+import { Category, Currency, Operation, Prisma } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
+import { REQUEST } from '@nestjs/core';
+import { AuthRequest } from '../auth/auth-request';
 
 @Injectable()
 export class OperationsCategoriesService {
   constructor(
+    private readonly prisma: PrismaService,
     private readonly operationsService: OperationsService,
     private readonly categoriesService: CategoriesService,
-    private readonly currenciesService: CurrenciesService,
+    @Inject(REQUEST) private request: AuthRequest,
   ) {}
 
   async findAllOperations() {
     return await this.operationsService.findAll();
   }
 
-  async createOperation(createOperationDto: CreateOperationDto) {
+  async createOperation(
+    createOperationDto: CreateOperationDto,
+  ): Promise<Operation> {
     const category = await this.findCategoryByName(
       createOperationDto.categoryName,
     );
@@ -29,15 +33,22 @@ export class OperationsCategoriesService {
 
     const { name, moneyAmount, date } = createOperationDto;
 
-    const operation: OperationCreate = {
+    const data: Prisma.OperationCreateInput = {
       name,
       moneyAmount,
-      date,
-      category,
-      currency,
+      date: new Date(date),
+      currency: {
+        connect: {
+          id: currency.id,
+        },
+      },
+      category: {
+        connect: {
+          id: category.id,
+        },
+      },
     };
-
-    return await this.operationsService.create(operation);
+    return await this.operationsService.create(data);
   }
 
   async removeOperation(id: number): Promise<boolean> {
@@ -60,24 +71,34 @@ export class OperationsCategoriesService {
     return await this.categoriesService.remove(id);
   }
 
-  private async findCurrencyByName(name: string) {
-    const currency = await this.currenciesService.findByName(name);
+  private async findCurrencyByName(name: string): Promise<Currency> {
+    const userToCurrency = await this.prisma.userToCurrencies.findFirst({
+      include: {
+        currency: true,
+      },
+      where: {
+        userId: this.request.user.id,
+        currency: {
+          name,
+        },
+      },
+    });
 
-    if (!currency) {
+    if (!userToCurrency) {
       throw new HttpException(
-        'Currency not found',
+        `Currency '${name}' not found`,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
-    return currency;
+    return userToCurrency.currency;
   }
 
-  private async findCategoryByName(name: string) {
-    const category = await this.categoriesService.findByName(name);
+  private async findCategoryByName(name: string): Promise<Category> {
+    const category = await this.prisma.category.findFirst({ where: { name } });
 
     if (!category) {
       throw new HttpException(
-        'Category not found',
+        `Category '${name}' not found`,
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
@@ -85,9 +106,13 @@ export class OperationsCategoriesService {
   }
 
   private async validateZeroOperations(id: number): Promise<void> {
-    const operations = await this.operationsService.findByCategoryId(id);
+    const operationsNumber = await this.prisma.operation.count({
+      where: {
+        categoryId: id,
+      },
+    });
 
-    if (operations.length > 0) {
+    if (operationsNumber > 0) {
       throw new HttpException(
         'Category has operations assigned and cannot be deleted!',
         HttpStatus.UNPROCESSABLE_ENTITY,

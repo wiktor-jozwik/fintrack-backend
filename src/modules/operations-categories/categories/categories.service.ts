@@ -7,51 +7,49 @@ import {
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../../auth/auth-request';
-import Category from '../../../database/entities/category.entity';
-import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { InjectRepository } from '@nestjs/typeorm';
+import { PrismaService } from '../../prisma/prisma.service';
+import { Category, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>,
+    private readonly prisma: PrismaService,
     @Inject(REQUEST) private request: AuthRequest,
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     await this.validateNameUniqueness(createCategoryDto.name);
 
-    return await this.categoryRepository.save({
+    const data: Prisma.CategoryCreateInput = {
       ...createCategoryDto,
-      userId: this.request.user.id,
-    });
+      user: {
+        connect: {
+          id: this.request.user.id,
+        },
+      },
+    };
+
+    return await this.prisma.category.create({ data });
   }
 
   async findAll(): Promise<Category[]> {
-    return await this.categoryRepository.find({
+    return await this.prisma.category.findMany({
       where: { userId: this.request.user.id },
     });
   }
-  //
-  // findOne(id: number): Promise<Category> {
-  //   return `This action returns a #${id} category`;
-  // }
-  //
-  // update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
-  //   return `This action updates a #${id} category`;
-  // }
-  //
+
   async remove(id: number): Promise<boolean> {
-    const category = await this.findById(id);
+    const category = await this.prisma.category.findFirst({
+      where: { id, userId: this.request.user.id },
+    });
 
     if (!category) {
       throw new NotFoundException('Category not found');
     }
 
     try {
-      await this.categoryRepository.delete({ id });
+      await this.prisma.category.delete({ where: { id } });
     } catch (e) {
       throw new HttpException(
         'Internal server error',
@@ -63,8 +61,11 @@ export class CategoriesService {
   }
 
   async validateNameUniqueness(name: string): Promise<void> {
-    const category = await this.categoryRepository.findOne({
-      where: { userId: this.request.user.id, name },
+    const category = await this.prisma.category.findFirst({
+      where: {
+        userId: this.request.user.id,
+        name,
+      },
     });
 
     if (category) {
@@ -73,17 +74,5 @@ export class CategoriesService {
         HttpStatus.CONFLICT,
       );
     }
-  }
-
-  async findByName(name: string) {
-    return await this.categoryRepository.findOne({
-      where: { name, userId: this.request.user.id },
-    });
-  }
-
-  async findById(categoryId: number): Promise<Category | null> {
-    return await this.categoryRepository.findOne({
-      where: { id: categoryId, userId: this.request.user.id },
-    });
   }
 }

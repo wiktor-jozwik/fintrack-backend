@@ -6,9 +6,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { AuthRequest } from '../../auth/auth-request';
+import { AuthRequest } from '../auth/auth-request';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Category, Prisma } from '@prisma/client';
 
 @Injectable()
@@ -40,6 +40,8 @@ export class CategoriesService {
   }
 
   async remove(id: number): Promise<boolean> {
+    await this.validateZeroOperations(id);
+
     const category = await this.prisma.category.findFirst({
       where: { id, userId: this.request.user.id },
     });
@@ -72,6 +74,21 @@ export class CategoriesService {
       throw new HttpException(
         `Category with name: '${name}' already exists`,
         HttpStatus.CONFLICT,
+      );
+    }
+  }
+
+  private async validateZeroOperations(categoryId: number): Promise<void> {
+    const operationsNumber = await this.prisma.operation.count({
+      where: {
+        categoryId,
+      },
+    });
+
+    if (operationsNumber > 0) {
+      throw new HttpException(
+        'Category has operations assigned and cannot be deleted!',
+        HttpStatus.UNPROCESSABLE_ENTITY,
       );
     }
   }

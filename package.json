@@ -14,19 +14,17 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js -d dist/config/data-source.js",
-    "migration:generate": "npm run build && npm run typeorm migration:generate",
-    "migration:run": "npm run build && npm run typeorm migration:run",
-    "migration:revert": "npm run build && npm run typeorm migration:revert",
-    "migration:show": "npm run build && npm run typeorm migration:show",
     "db:start": "docker-compose up db",
-    "db:migrate:currencies": "ts-node src/database/scripts/populate-currencies.ts",
+    "db:migrate:currencies": "ts-node prisma/seeds/populate-currencies.seed.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config spec/jest-e2e.json"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seeds/seed.ts"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -37,7 +35,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
-    "@nestjs/typeorm": "^9.0.0",
+    "@prisma/client": "^4.1.1",
     "@types/bcrypt": "^5.0.0",
     "@types/hapi__joi": "^17.1.8",
     "bcrypt": "^5.0.1",
@@ -52,8 +50,7 @@
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0",
-    "typeorm-naming-strategies": "^4.1.0"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

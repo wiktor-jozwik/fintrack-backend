@@ -1,56 +1,44 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
-import User from '../../database/entities/user.entity';
 import { UserRegisterDto } from './dto/user-register.dto';
-import * as bcrypt from 'bcrypt';
 import { CurrenciesService } from '../currencies/currencies.service';
+import { hashString } from '../../utils/hash-password';
+import { Prisma, User } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    private readonly prisma: PrismaService,
     private readonly currenciesService: CurrenciesService,
-    private readonly dataSource: DataSource,
   ) {}
 
   async register(registerData: UserRegisterDto): Promise<User> {
     await this.validateRegisterData(registerData);
 
-    const hashedPassword = await bcrypt.hash(registerData.password, 10);
+    const hashedPassword = await hashString(registerData.password);
     const currency = await this.currenciesService.getSupportedCurrency(
       registerData.defaultCurrencyName,
     );
 
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    const { firstName, lastName, phoneNumber, email } = registerData;
 
-    try {
-      const user = await this.userRepository.save({
-        ...registerData,
-        password: hashedPassword,
-      });
+    const data: Prisma.UserCreateInput = {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      password: hashedPassword,
+    };
 
-      await this.currenciesService.createUserCurrency(currency, user.id);
-      await queryRunner.commitTransaction();
-      return user;
-    } catch (err) {
-      await queryRunner.rollbackTransaction();
-      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await queryRunner.release();
-    }
-  }
+    const user = await this.prisma.user.create({ data });
+    await this.currenciesService.createUserCurrency(currency, user.id);
 
-  async getByEmail(email: string): Promise<User | null> {
-    return await this.userRepository.findOne({ where: { email } });
+    return user;
   }
 
   private async validateRegisterData(userData: UserRegisterDto) {
     const { email, password, passwordConfirmation } = userData;
-    const user = await this.getByEmail(email);
+    const user = await this.prisma.user.findFirst({ where: { email } });
     if (user) {
       throw new HttpException(
         `User with ${email} email already exists`,

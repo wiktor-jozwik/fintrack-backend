@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../auth/auth-request';
-import { Currency, Prisma, UserToCurrencies } from '@prisma/client';
+import { Currency, UserToCurrencies } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -65,19 +65,20 @@ export class CurrenciesService {
   async createUserCurrency(currency: Currency, userId: number) {
     await this.checkIfCurrencyCanBeAdded(currency, userId);
 
-    const data: Prisma.UserToCurrenciesCreateInput = {
-      user: {
-        connect: {
-          id: userId,
+    return await this.prisma.userToCurrencies.create({
+      data: {
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        currency: {
+          connect: {
+            id: currency.id,
+          },
         },
       },
-      currency: {
-        connect: {
-          id: currency.id,
-        },
-      },
-    };
-    return await this.prisma.userToCurrencies.create({ data });
+    });
   }
 
   async checkIfCurrencyCanBeAdded(currency: Currency, userId: number) {

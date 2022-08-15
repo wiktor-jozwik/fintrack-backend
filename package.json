@@ -14,8 +14,13 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "db:start": "docker-compose up db",
-    "db:migrate:currencies": "ts-node prisma/seeds/populate-currencies.seed.ts",
+    "start:docker": "docker-compose up",
+    "migrate:currencies": "ts-node src/scripts/populate-currencies.script.ts",
+    "prisma:generate": "npx prisma generate",
+    "prisma:seed": "npx prisma db seed",
+    "prisma:studio": "npx prisma studio",
+    "prisma:format": "npx prisma format",
+    "prisma:reset": "npx prisma migrate reset",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -24,10 +29,10 @@
     "test:e2e": "jest --config spec/jest-e2e.json"
   },
   "prisma": {
-    "seed": "ts-node prisma/seeds/seed.ts"
+    "schema": "src/database/schema.prisma",
+    "seed": "ts-node src/database/seed.ts"
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -37,7 +42,6 @@
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.1.1",
     "@types/bcrypt": "^5.0.0",
-    "@types/hapi__joi": "^17.1.8",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",

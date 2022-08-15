@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { CurrenciesService } from '../currencies/currencies.service';
 import { hashString } from '../../utils/hash-password';
-import { Prisma, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -22,15 +22,15 @@ export class UsersService {
 
     const { firstName, lastName, phoneNumber, email } = registerData;
 
-    const data: Prisma.UserCreateInput = {
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      password: hashedPassword,
-    };
-
-    const user = await this.prisma.user.create({ data });
+    const user = await this.prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        password: hashedPassword,
+      },
+    });
     await this.currenciesService.createUserCurrency(currency, user.id);
 
     return user;

@@ -9,7 +9,7 @@ import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../auth/auth-request';
 import { isValidIsoDate } from '../../utils/is-valid-iso-date';
 import { PrismaService } from '../prisma/prisma.service';
-import { Category, Currency, Operation, Prisma } from '@prisma/client';
+import { Category, Currency, Operation } from '@prisma/client';
 import { CreateOperationDto } from './dto/create-operation.dto';
 
 @Injectable()
@@ -29,23 +29,23 @@ export class OperationsService {
     const date = this.validateDate(createOperationDto.date);
     const { name, moneyAmount } = createOperationDto;
 
-    const data: Prisma.OperationCreateInput = {
-      name,
-      moneyAmount,
-      date,
-      currency: {
-        connect: {
-          id: currency.id,
+    return await this.prisma.operation.create({
+      data: {
+        name,
+        moneyAmount,
+        date,
+        currency: {
+          connect: {
+            id: currency.id,
+          },
+        },
+        category: {
+          connect: {
+            id: category.id,
+          },
         },
       },
-      category: {
-        connect: {
-          id: category.id,
-        },
-      },
-    };
-
-    return await this.prisma.operation.create({ data });
+    });
   }
 
   async findAll(): Promise<Operation[]> {
@@ -61,19 +61,10 @@ export class OperationsService {
     });
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: number): Promise<Operation> {
     const operation = await this.findOperationAndValidate(id);
 
-    try {
-      await this.prisma.operation.delete({ where: { id: operation.id } });
-    } catch (e) {
-      throw new HttpException(
-        'Internal server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
-    return true;
+    return await this.prisma.operation.delete({ where: { id: operation.id } });
   }
 
   private async findOperationAndValidate(id: number): Promise<Operation> {
@@ -88,6 +79,7 @@ export class OperationsService {
         },
       },
     });
+
     if (!operation) {
       throw new NotFoundException('Operation not found');
     }

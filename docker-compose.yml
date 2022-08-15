@@ -1,10 +1,25 @@
-version: "3"
 services:
-  db:
-    image: postgres:latest
-    ports:
-      - "5435:5432"
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
     volumes:
-      - ./tmp/mt_db:/var/lib/postgresql/data
+      - .:/usr/src/app
     env_file:
-      - docker.env
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      - db
+    command: npm run start:dev
+    ports:
+      - 3000:${PORT}
+
+  db:
+    image: postgres
+    env_file:
+      - .env
+    ports:
+      - 5432:5432
+    volumes:
+      - ./tmp/mt_nestjs:/var/lib/postgresql/data

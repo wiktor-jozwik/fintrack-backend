@@ -9,7 +9,7 @@ import { REQUEST } from '@nestjs/core';
 import { AuthRequest } from '../auth/auth-request';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { Category, Prisma } from '@prisma/client';
+import { Category } from '@prisma/client';
 
 @Injectable()
 export class CategoriesService {
@@ -21,16 +21,16 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     await this.validateNameUniqueness(createCategoryDto.name);
 
-    const data: Prisma.CategoryCreateInput = {
-      ...createCategoryDto,
-      user: {
-        connect: {
-          id: this.request.user.id,
+    return await this.prisma.category.create({
+      data: {
+        ...createCategoryDto,
+        user: {
+          connect: {
+            id: this.request.user.id,
+          },
         },
       },
-    };
-
-    return await this.prisma.category.create({ data });
+    });
   }
 
   async findAll(): Promise<Category[]> {
@@ -39,7 +39,7 @@ export class CategoriesService {
     });
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: number): Promise<Category> {
     await this.validateZeroOperations(id);
 
     const category = await this.prisma.category.findFirst({
@@ -50,16 +50,7 @@ export class CategoriesService {
       throw new NotFoundException('Category not found');
     }
 
-    try {
-      await this.prisma.category.delete({ where: { id } });
-    } catch (e) {
-      throw new HttpException(
-        'Internal server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-
-    return true;
+    return await this.prisma.category.delete({ where: { id } });
   }
 
   async validateNameUniqueness(name: string): Promise<void> {

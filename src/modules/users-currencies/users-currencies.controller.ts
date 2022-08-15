@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
+import { UserId } from '../../decorators/user-id';
 
 @Controller('users_currencies')
 export class UsersCurrenciesController {
@@ -9,17 +10,20 @@ export class UsersCurrenciesController {
   ) {}
 
   @Get()
-  findAll() {
-    return this.usersCurrenciesService.findAll();
+  findAll(@UserId() userId: number) {
+    return this.usersCurrenciesService.findAll(userId);
   }
 
   @Get('default')
-  findDefault() {
-    return this.usersCurrenciesService.findDefault();
+  findDefault(@UserId() userId: number) {
+    return this.usersCurrenciesService.findDefault(userId);
   }
 
   @Post()
-  create(@Body() createCurrencyDto: CreateCurrencyDto) {
-    return this.usersCurrenciesService.create(createCurrencyDto);
+  create(
+    @UserId() userId: number,
+    @Body() createCurrencyDto: CreateCurrencyDto,
+  ) {
+    return this.usersCurrenciesService.create(userId, createCurrencyDto);
   }
 }

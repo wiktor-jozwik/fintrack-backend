@@ -1,12 +1,9 @@
 import {
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { AuthRequest } from '../auth/auth-request';
 import { isValidIsoDate } from '../../utils/is-valid-iso-date';
 import { PrismaService } from '../prisma/prisma.service';
 import { Category, Currency, Operation } from '@prisma/client';
@@ -14,15 +11,18 @@ import { CreateOperationDto } from './dto/create-operation.dto';
 
 @Injectable()
 export class OperationsService {
-  constructor(
-    private readonly prisma: PrismaService,
-    @Inject(REQUEST) private request: AuthRequest,
-  ) {}
-  async create(createOperationDto: CreateOperationDto): Promise<Operation> {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(
+    userId: number,
+    createOperationDto: CreateOperationDto,
+  ): Promise<Operation> {
     const category = await this.findCategoryAndValidate(
+      userId,
       createOperationDto.categoryName,
     );
     const currency = await this.findCurrencyAndValidate(
+      userId,
       createOperationDto.currencyName,
     );
 
@@ -48,34 +48,37 @@ export class OperationsService {
     });
   }
 
-  async findAll(): Promise<Operation[]> {
+  async findAll(userId: number): Promise<Operation[]> {
     return await this.prisma.operation.findMany({
       include: {
         category: true,
       },
       where: {
         category: {
-          userId: this.request.user.id,
+          userId,
         },
       },
     });
   }
 
-  async remove(id: number): Promise<Operation> {
-    const operation = await this.findOperationAndValidate(id);
+  async remove(userId: number, operationId: number): Promise<Operation> {
+    const operation = await this.findOperationAndValidate(userId, operationId);
 
     return await this.prisma.operation.delete({ where: { id: operation.id } });
   }
 
-  private async findOperationAndValidate(id: number): Promise<Operation> {
+  private async findOperationAndValidate(
+    userId: number,
+    operationId: number,
+  ): Promise<Operation> {
     const operation = await this.prisma.operation.findFirst({
       include: {
         category: true,
       },
       where: {
-        id,
+        id: operationId,
         category: {
-          userId: this.request.user.id,
+          userId,
         },
       },
     });
@@ -86,13 +89,16 @@ export class OperationsService {
     return operation;
   }
 
-  private async findCurrencyAndValidate(name: string): Promise<Currency> {
+  private async findCurrencyAndValidate(
+    userId: number,
+    name: string,
+  ): Promise<Currency> {
     const userToCurrency = await this.prisma.userToCurrencies.findFirst({
       include: {
         currency: true,
       },
       where: {
-        userId: this.request.user.id,
+        userId,
         currency: {
           name,
         },
@@ -108,10 +114,13 @@ export class OperationsService {
     return userToCurrency.currency;
   }
 
-  private async findCategoryAndValidate(name: string): Promise<Category> {
+  private async findCategoryAndValidate(
+    userId: number,
+    name: string,
+  ): Promise<Category> {
     const category = await this.prisma.category.findFirst({
       where: {
-        userId: this.request.user.id,
+        userId,
         name,
       },
     });

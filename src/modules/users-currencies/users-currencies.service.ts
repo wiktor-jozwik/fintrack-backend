@@ -1,28 +1,24 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { Currency, UserToCurrencies } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
-import { REQUEST } from '@nestjs/core';
-import { AuthRequest } from '../auth/auth-request';
 
 @Injectable()
 export class UsersCurrenciesService {
-  constructor(
-    private readonly prisma: PrismaService,
-    @Inject(REQUEST) private request: AuthRequest,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
   async create(
+    userId: number,
     createCurrencyDto: CreateCurrencyDto,
   ): Promise<UserToCurrencies> {
     const currency = await this.getSupportedCurrency(createCurrencyDto.name);
 
-    return this.createUserCurrency(currency, this.request.user.id);
+    return this.createUserCurrency(currency, userId);
   }
 
-  async findAll(): Promise<Currency[]> {
+  async findAll(userId: number): Promise<Currency[]> {
     const userToCurrencies = await this.prisma.userToCurrencies.findMany({
       where: {
-        userId: this.request.user.id,
+        userId,
       },
       include: {
         currency: true,
@@ -32,7 +28,7 @@ export class UsersCurrenciesService {
     return userToCurrencies.map((userToCurrency) => userToCurrency.currency);
   }
 
-  async findDefault(): Promise<Currency> {
+  async findDefault(userId: number): Promise<Currency> {
     const userToCurrencies = await this.prisma.userToCurrencies.findFirst({
       orderBy: [
         {
@@ -40,7 +36,7 @@ export class UsersCurrenciesService {
         },
       ],
       where: {
-        userId: this.request.user.id,
+        userId,
       },
       include: {
         currency: true,

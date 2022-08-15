@@ -23,8 +23,6 @@ export class AuthService {
       user.password,
     );
 
-    console.log(doesPasswordMatch);
-
     if (!doesPasswordMatch) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }

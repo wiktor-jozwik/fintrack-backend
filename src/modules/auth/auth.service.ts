@@ -18,9 +18,14 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    const isPasswordMatching = compareHash(plainTextPassword, user.password);
+    const doesPasswordMatch = await compareHash(
+      plainTextPassword,
+      user.password,
+    );
 
-    if (!isPasswordMatching) {
+    console.log(doesPasswordMatch);
+
+    if (!doesPasswordMatch) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
@@ -29,7 +34,7 @@ export class AuthService {
 
   async login(user: UserPayloadInterface) {
     return {
-      jwt_token: this.jwtService.sign({ email: user.email, sub: user.id }),
+      auth_token: this.jwtService.sign({ email: user.email, sub: user.id }),
     };
   }
 }

@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { OperationsModule } from './modules/operations/operations.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
+import { UsersCurrenciesModule } from './modules/users-currencies/users-currencies.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
     OperationsModule,
     CategoriesModule,
     CurrenciesModule,
+    UsersCurrenciesModule,
   ],
 })
 export class AppModule {}

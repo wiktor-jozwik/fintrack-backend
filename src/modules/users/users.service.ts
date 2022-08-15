@@ -1,22 +1,22 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { CurrenciesService } from '../currencies/currencies.service';
 import { hashString } from '../../utils/hash-password';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly currenciesService: CurrenciesService,
+    private readonly usersCurrenciesService: UsersCurrenciesService,
   ) {}
 
   async register(registerData: UserRegisterDto): Promise<User> {
     await this.validateRegisterData(registerData);
 
     const hashedPassword = await hashString(registerData.password);
-    const currency = await this.currenciesService.getSupportedCurrency(
+    const currency = await this.usersCurrenciesService.getSupportedCurrency(
       registerData.defaultCurrencyName,
     );
 
@@ -31,7 +31,7 @@ export class UsersService {
         password: hashedPassword,
       },
     });
-    await this.currenciesService.createUserCurrency(currency, user.id);
+    await this.usersCurrenciesService.createUserCurrency(currency, user.id);
 
     return user;
   }

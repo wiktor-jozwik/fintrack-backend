@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserPayloadInterface } from './user-payload.interface';
 import { compareHash } from '../../utils/compare-hash';
 import { PrismaService } from '../prisma/prisma.service';
+import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({ where: { email } });
 
     if (!user) {
-      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      throw new InvalidCredentialsException();
     }
 
     const doesPasswordMatch = await compareHash(
@@ -24,7 +25,7 @@ export class AuthService {
     );
 
     if (!doesPasswordMatch) {
-      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+      throw new InvalidCredentialsException();
     }
 
     return user;

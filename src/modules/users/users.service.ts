@@ -1,9 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { hashString } from '../../utils/hash-password';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
+import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception';
+import { PasswordsDoNotMatchException } from './exceptions/passwords-do-not-match.exception';
 
 @Injectable()
 export class UsersService {
@@ -40,16 +42,10 @@ export class UsersService {
     const { email, password, passwordConfirmation } = userData;
     const user = await this.prisma.user.findFirst({ where: { email } });
     if (user) {
-      throw new HttpException(
-        `User with ${email} email already exists`,
-        HttpStatus.CONFLICT,
-      );
+      throw new UserAlreadyExistsException(email);
     }
     if (password !== passwordConfirmation) {
-      throw new HttpException(
-        'Passwords do not match',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new PasswordsDoNotMatchException();
     }
   }
 }

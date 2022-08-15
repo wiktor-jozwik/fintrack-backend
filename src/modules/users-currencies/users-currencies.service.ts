@@ -1,7 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { Currency, UserToCurrencies } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { CurrencyNotSupportedException } from './exceptions/currency-not-supported.exception';
+import { CurrencyAlreadyAddedException } from './exceptions/currency-already-added.exception';
+import { DefaultCurrencyNotFoundException } from './exceptions/default-currency-not-found.exception';
 
 @Injectable()
 export class UsersCurrenciesService {
@@ -44,10 +47,7 @@ export class UsersCurrenciesService {
     });
 
     if (!userToCurrencies) {
-      throw new HttpException(
-        'Default currency not found',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new DefaultCurrencyNotFoundException();
     }
 
     return userToCurrencies.currency;
@@ -80,10 +80,7 @@ export class UsersCurrenciesService {
       },
     });
     if (existingCurrency) {
-      throw new HttpException(
-        `Currency '${currency.name}' already added`,
-        HttpStatus.CONFLICT,
-      );
+      throw new CurrencyAlreadyAddedException(currency.name);
     }
   }
 
@@ -91,10 +88,7 @@ export class UsersCurrenciesService {
     const currency = await this.findByName(name);
 
     if (!currency) {
-      throw new HttpException(
-        `Currency '${name}' not supported`,
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new CurrencyNotSupportedException(name);
     }
 
     return currency;

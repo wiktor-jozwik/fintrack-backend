@@ -1,13 +1,12 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { isValidIsoDate } from '../../utils/is-valid-iso-date';
 import { PrismaService } from '../prisma/prisma.service';
 import { Category, Currency, Operation } from '@prisma/client';
 import { CreateOperationDto } from './dto/create-operation.dto';
+import { OperationNotFoundException } from './exceptions/operation-not-found.exception';
+import { CategoryNotFoundException } from '../categories/exceptions/category-not-found.exception';
+import { InvalidDateFormatException } from './exceptions/invalid-date-format.exception';
+import { CurrencyNotAddedException } from '../users-currencies/exceptions/currency-not-added.exception';
 
 @Injectable()
 export class OperationsService {
@@ -84,7 +83,7 @@ export class OperationsService {
     });
 
     if (!operation) {
-      throw new NotFoundException('Operation not found');
+      throw new OperationNotFoundException(operationId);
     }
     return operation;
   }
@@ -106,10 +105,7 @@ export class OperationsService {
     });
 
     if (!userToCurrency) {
-      throw new HttpException(
-        `Currency '${name}' not added to account`,
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new CurrencyNotAddedException(name);
     }
     return userToCurrency.currency;
   }
@@ -126,21 +122,16 @@ export class OperationsService {
     });
 
     if (!category) {
-      throw new HttpException(
-        `Category '${name}' not found`,
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new CategoryNotFoundException(undefined, name);
     }
+
     return category;
   }
 
   private validateDate(date: Date): Date {
     const validDate = isValidIsoDate(date);
     if (!validDate) {
-      throw new HttpException(
-        'Provided date was invalid. Provide date in YYYY-MM-DD format',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new InvalidDateFormatException();
     }
 
     return new Date(date);

@@ -1,12 +1,10 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { Category } from '@prisma/client';
+import { CategoryNotFoundException } from './exceptions/category-not-found.exception';
+import { CategoryExistsException } from './exceptions/category-exists.exception';
+import { OperationAssignedException } from './exceptions/operation-assigned.exception';
 
 @Injectable()
 export class CategoriesService {
@@ -45,7 +43,7 @@ export class CategoriesService {
     });
 
     if (!category) {
-      throw new NotFoundException('Category not found');
+      throw new CategoryNotFoundException(categoryId);
     }
 
     await this.validateZeroOperations(categoryId);
@@ -62,10 +60,7 @@ export class CategoriesService {
     });
 
     if (category) {
-      throw new HttpException(
-        `Category with name: '${name}' already exists`,
-        HttpStatus.CONFLICT,
-      );
+      throw new CategoryExistsException(name);
     }
   }
 
@@ -77,10 +72,7 @@ export class CategoriesService {
     });
 
     if (operationsNumber > 0) {
-      throw new HttpException(
-        'Category has operations assigned and cannot be deleted!',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
+      throw new OperationAssignedException(categoryId);
     }
   }
 }

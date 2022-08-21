@@ -1,50 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
-import { Currency, UserToCurrencies } from '@prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
+import { Currency, UsersCurrencies } from '@prisma/client';
 import { CurrencyNotSupportedException } from './exceptions/currency-not-supported.exception';
 import { CurrencyAlreadyAddedException } from './exceptions/currency-already-added.exception';
 import { DefaultCurrencyNotFoundException } from './exceptions/default-currency-not-found.exception';
+import { UsersCurrenciesRepository } from './users-currencies.repository';
+import { CurrenciesRepository } from '../currencies/currencies.repository';
 
 @Injectable()
 export class UsersCurrenciesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly usersCurrenciesRepository: UsersCurrenciesRepository,
+    private readonly currenciesRepository: CurrenciesRepository,
+  ) {}
   async create(
-    userId: number,
     createCurrencyDto: CreateCurrencyDto,
-  ): Promise<UserToCurrencies> {
-    const currency = await this.getSupportedCurrency(createCurrencyDto.name);
+    userId: number,
+  ): Promise<UsersCurrencies> {
+    const currency = await this.findSupportedCurrency(createCurrencyDto.name);
 
-    return this.createUserCurrency(currency, userId);
+    return await this.createUsersCurrency(currency, userId);
   }
 
   async findAll(userId: number): Promise<Currency[]> {
-    const userToCurrencies = await this.prisma.userToCurrencies.findMany({
-      where: {
-        userId,
-      },
-      include: {
-        currency: true,
-      },
-    });
+    const usersCurrencies = await this.usersCurrenciesRepository.findAll(
+      userId,
+    );
 
-    return userToCurrencies.map((userToCurrency) => userToCurrency.currency);
+    return usersCurrencies.map((usersCurrency) => usersCurrency.currency);
   }
 
   async findDefault(userId: number): Promise<Currency> {
-    const userToCurrencies = await this.prisma.userToCurrencies.findFirst({
-      orderBy: [
-        {
-          createdAt: 'asc',
-        },
-      ],
-      where: {
-        userId,
-      },
-      include: {
-        currency: true,
-      },
-    });
+    const userToCurrencies =
+      await this.usersCurrenciesRepository.findUsersDefault(userId);
 
     if (!userToCurrencies) {
       throw new DefaultCurrencyNotFoundException();
@@ -53,50 +41,41 @@ export class UsersCurrenciesService {
     return userToCurrencies.currency;
   }
 
-  async createUserCurrency(currency: Currency, userId: number) {
+  async createUsersCurrency(currency: Currency, userId: number) {
     await this.checkIfCurrencyCanBeAdded(currency, userId);
 
-    return await this.prisma.userToCurrencies.create({
-      data: {
-        user: {
-          connect: {
-            id: userId,
-          },
+    return await this.usersCurrenciesRepository.create({
+      user: {
+        connect: {
+          id: userId,
         },
-        currency: {
-          connect: {
-            id: currency.id,
-          },
+      },
+      currency: {
+        connect: {
+          id: currency.id,
         },
       },
     });
   }
 
   async checkIfCurrencyCanBeAdded(currency: Currency, userId: number) {
-    const existingCurrency = await this.prisma.userToCurrencies.findFirst({
-      where: {
-        currencyId: currency.id,
-        userId,
-      },
-    });
+    const existingCurrency = await this.usersCurrenciesRepository.findById(
+      currency.id,
+      userId,
+    );
+
     if (existingCurrency) {
       throw new CurrencyAlreadyAddedException(currency.name);
     }
   }
 
-  async getSupportedCurrency(name: string): Promise<Currency> {
-    const currency = await this.findByName(name);
+  async findSupportedCurrency(name: string): Promise<Currency> {
+    const currency = await this.currenciesRepository.findByName(name);
 
     if (!currency) {
       throw new CurrencyNotSupportedException(name);
     }
 
     return currency;
-  }
-
-  async findByName(name: string): Promise<Currency | null> {
-    return await this.prisma.currency.findFirst({
-      where: { name },
-    });
   }
 }

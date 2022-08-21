@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
 import { UsersCurrenciesController } from './users-currencies.controller';
-import { PrismaModule } from '../prisma/prisma.module';
+import { UsersCurrenciesRepository } from './users-currencies.repository';
+import { CurrenciesRepository } from '../currencies/currencies.repository';
 
 @Module({
-  imports: [PrismaModule],
   controllers: [UsersCurrenciesController],
-  providers: [UsersCurrenciesService],
-  exports: [UsersCurrenciesService],
+  providers: [
+    UsersCurrenciesService,
+    UsersCurrenciesRepository,
+    CurrenciesRepository,
+  ],
+  exports: [UsersCurrenciesService, UsersCurrenciesRepository],
 })
 export class UsersCurrenciesModule {}

@@ -17,10 +17,10 @@ export class CategoriesController {
 
   @Post()
   create(
-    @UserId() userId: number,
     @Body() createCategoryDto: CreateCategoryDto,
+    @UserId() userId: number,
   ) {
-    return this.categoriesService.create(userId, createCategoryDto);
+    return this.categoriesService.create(createCategoryDto, userId);
   }
 
   @Get()
@@ -30,9 +30,9 @@ export class CategoriesController {
 
   @Delete(':id')
   remove(
-    @UserId() userId: number,
     @Param('id', ParseIntPipe) categoryId: number,
+    @UserId() userId: number,
   ) {
-    return this.categoriesService.remove(userId, categoryId);
+    return this.categoriesService.remove(categoryId, userId);
   }
 }

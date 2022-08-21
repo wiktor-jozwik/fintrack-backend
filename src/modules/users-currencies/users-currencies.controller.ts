@@ -21,9 +21,9 @@ export class UsersCurrenciesController {
 
   @Post()
   create(
-    @UserId() userId: number,
     @Body() createCurrencyDto: CreateCurrencyDto,
+    @UserId() userId: number,
   ) {
-    return this.usersCurrenciesService.create(userId, createCurrencyDto);
+    return this.usersCurrenciesService.create(createCurrencyDto, userId);
   }
 }

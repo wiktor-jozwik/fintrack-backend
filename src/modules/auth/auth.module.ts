@@ -6,15 +6,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { PrismaModule } from '../prisma/prisma.module';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     UsersModule,
-    PrismaModule,
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({

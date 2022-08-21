@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl"]
 }
 
@@ -9,16 +9,16 @@ datasource db {
 }
 
 model User {
-  id                Int                @id @default(autoincrement())
-  createdAt         DateTime           @default(now()) @map("created_at")
-  updatedAt         DateTime           @updatedAt @map("updated_at")
-  firstName         String?            @map("first_name")
-  lastName          String?            @map("last_name")
-  phoneNumber       String?            @map("phone_number")
-  email             String             @unique
+  id                Int               @id @default(autoincrement())
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+  firstName         String?           @map("first_name")
+  lastName          String?           @map("last_name")
+  phoneNumber       String?           @map("phone_number")
+  email             String            @unique
   password          String
   categories        Category[]
-  usersToCurrencies UserToCurrencies[]
+  usersToCurrencies UsersCurrencies[]
 
   @@map("users")
 }
@@ -49,16 +49,16 @@ model Operation {
 }
 
 model Currency {
-  id                Int                @id @default(autoincrement())
-  name              String @unique
-  symbol            String @unique
+  id                Int               @id @default(autoincrement())
+  name              String            @unique
+  symbol            String            @unique
   operations        Operation[]
-  usersToCurrencies UserToCurrencies[]
+  usersToCurrencies UsersCurrencies[]
 
   @@map("currencies")
 }
 
-model UserToCurrencies {
+model UsersCurrencies {
   createdAt  DateTime @default(now()) @map("created_at")
   currency   Currency @relation(fields: [currencyId], references: [id])
   currencyId Int      @map("currency_id")
@@ -66,7 +66,7 @@ model UserToCurrencies {
   userId     Int      @map("user_id")
 
   @@id([currencyId, userId])
-  @@map("user_to_currencies")
+  @@map("users_currencies")
 }
 
 enum CategoryType {

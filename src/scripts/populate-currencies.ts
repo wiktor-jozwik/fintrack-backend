@@ -6,16 +6,12 @@ export const populateCurrencies = async (prisma?: PrismaService | null) => {
     prisma = new PrismaService();
   }
   for (const currency of SUPPORTED_CURRENCIES) {
-    const existingCurrency = await prisma.currency.findFirst({
-      where: { name: currency.name },
-    });
-
-    if (existingCurrency) {
-      continue;
-    }
-
-    await prisma.currency.create({
-      data: currency,
+    await prisma.currency.upsert({
+      create: currency,
+      where: {
+        name: currency.name,
+      },
+      update: {},
     });
     console.log(`Saved ${currency.name}`);
   }

@@ -17,10 +17,10 @@ export class OperationsController {
 
   @Post()
   create(
-    @UserId() userId: number,
     @Body() createOperationDto: CreateOperationDto,
+    @UserId() userId: number,
   ) {
-    return this.operationsService.create(userId, createOperationDto);
+    return this.operationsService.create(createOperationDto, userId);
   }
 
   @Get()
@@ -30,9 +30,9 @@ export class OperationsController {
 
   @Delete(':id')
   remove(
-    @UserId() userId: number,
     @Param('id', ParseIntPipe) operationId: number,
+    @UserId() userId: number,
   ) {
-    return this.operationsService.remove(userId, operationId);
+    return this.operationsService.remove(operationId, userId);
   }
 }

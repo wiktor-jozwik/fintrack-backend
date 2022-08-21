@@ -7,6 +7,7 @@ import { OperationsModule } from './modules/operations/operations.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
 import { UsersCurrenciesModule } from './modules/users-currencies/users-currencies.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UsersCurrenciesModule } from './modules/users-currencies/users-currenci
         JWT_EXPIRATION_TIME: Joi.string().required(),
       }),
     }),
+    PrismaModule,
     UsersModule,
     AuthModule,
     OperationsModule,

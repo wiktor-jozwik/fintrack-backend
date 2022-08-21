@@ -2,7 +2,7 @@ import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthRequest } from './auth-request';
 import { UsersService } from '../users/users.service';
 import { UserRegisterDto } from '../users/dto/user-register.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LocalAuthGuard } from '../../guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import { Public } from '../../decorators/public';
 

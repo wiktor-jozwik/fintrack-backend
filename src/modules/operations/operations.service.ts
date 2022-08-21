@@ -1,86 +1,74 @@
 import { Injectable } from '@nestjs/common';
 import { isValidIsoDate } from '../../utils/is-valid-iso-date';
-import { PrismaService } from '../prisma/prisma.service';
 import { Category, Currency, Operation } from '@prisma/client';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { OperationNotFoundException } from './exceptions/operation-not-found.exception';
 import { CategoryNotFoundException } from '../categories/exceptions/category-not-found.exception';
 import { InvalidDateFormatException } from './exceptions/invalid-date-format.exception';
 import { CurrencyNotAddedException } from '../users-currencies/exceptions/currency-not-added.exception';
+import { OperationsRepository } from './operations.repository';
+import { CategoriesRepository } from '../categories/categories.repository';
+import { UsersCurrenciesRepository } from '../users-currencies/users-currencies.repository';
 
 @Injectable()
 export class OperationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly operationsRepository: OperationsRepository,
+    private readonly categoriesRepository: CategoriesRepository,
+    private readonly usersCurrenciesRepository: UsersCurrenciesRepository,
+  ) {}
 
   async create(
-    userId: number,
     createOperationDto: CreateOperationDto,
+    userId: number,
   ): Promise<Operation> {
     const category = await this.findCategoryAndValidate(
-      userId,
       createOperationDto.categoryName,
+      userId,
     );
     const currency = await this.findCurrencyAndValidate(
-      userId,
       createOperationDto.currencyName,
+      userId,
     );
 
     const date = this.validateDate(createOperationDto.date);
     const { name, moneyAmount } = createOperationDto;
 
-    return await this.prisma.operation.create({
-      data: {
-        name,
-        moneyAmount,
-        date,
-        currency: {
-          connect: {
-            id: currency.id,
-          },
+    return await this.operationsRepository.create({
+      name,
+      moneyAmount,
+      date,
+      currency: {
+        connect: {
+          id: currency.id,
         },
-        category: {
-          connect: {
-            id: category.id,
-          },
+      },
+      category: {
+        connect: {
+          id: category.id,
         },
       },
     });
   }
 
   async findAll(userId: number): Promise<Operation[]> {
-    return await this.prisma.operation.findMany({
-      include: {
-        category: true,
-      },
-      where: {
-        category: {
-          userId,
-        },
-      },
-    });
+    return await this.operationsRepository.findAll(userId);
   }
 
-  async remove(userId: number, operationId: number): Promise<Operation> {
-    const operation = await this.findOperationAndValidate(userId, operationId);
+  async remove(operationId: number, userId: number): Promise<Operation> {
+    const operation = await this.findOperationAndValidate(operationId, userId);
 
-    return await this.prisma.operation.delete({ where: { id: operation.id } });
+    return await this.operationsRepository.delete(operation.id);
   }
 
   private async findOperationAndValidate(
-    userId: number,
     operationId: number,
+    userId: number,
   ): Promise<Operation> {
-    const operation = await this.prisma.operation.findFirst({
-      include: {
-        category: true,
-      },
-      where: {
-        id: operationId,
-        category: {
-          userId,
-        },
-      },
-    });
+    const operation = await this.operationsRepository.findById(
+      operationId,
+      userId,
+    );
 
     if (!operation) {
       throw new OperationNotFoundException(operationId);
@@ -89,37 +77,25 @@ export class OperationsService {
   }
 
   private async findCurrencyAndValidate(
-    userId: number,
     name: string,
+    userId: number,
   ): Promise<Currency> {
-    const userToCurrency = await this.prisma.userToCurrencies.findFirst({
-      include: {
-        currency: true,
-      },
-      where: {
-        userId,
-        currency: {
-          name,
-        },
-      },
-    });
+    const usersCurrencies = await this.usersCurrenciesRepository.findByName(
+      name,
+      userId,
+    );
 
-    if (!userToCurrency) {
+    if (!usersCurrencies) {
       throw new CurrencyNotAddedException(name);
     }
-    return userToCurrency.currency;
+    return usersCurrencies.currency;
   }
 
   private async findCategoryAndValidate(
-    userId: number,
     name: string,
+    userId: number,
   ): Promise<Category> {
-    const category = await this.prisma.category.findFirst({
-      where: {
-        userId,
-        name,
-      },
-    });
+    const category = await this.categoriesRepository.findByName(name, userId);
 
     if (!category) {
       throw new CategoryNotFoundException(undefined, name);

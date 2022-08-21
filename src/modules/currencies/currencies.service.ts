@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Currency } from '@prisma/client';
-import { PrismaService } from '../prisma/prisma.service';
+import { CurrenciesRepository } from './currencies.repository';
 
 @Injectable()
 export class CurrenciesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly currenciesRepository: CurrenciesRepository) {}
 
   async findAll(): Promise<Currency[]> {
-    return await this.prisma.currency.findMany();
+    return await this.currenciesRepository.findAll();
   }
 }

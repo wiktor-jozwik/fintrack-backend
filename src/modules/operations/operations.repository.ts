@@ -1,17 +1,23 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { Operation, Prisma } from '@prisma/client';
+import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class OperationsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll(userId: number): Promise<Operation[]> {
+  async findAll(
+    userId: number,
+  ): Promise<(Operation & { currency: Currency; category: Category })[]> {
     return await this.prisma.operation.findMany({
       where: {
         category: {
           userId,
         },
+      },
+      include: {
+        category: true,
+        currency: true,
       },
     });
   }

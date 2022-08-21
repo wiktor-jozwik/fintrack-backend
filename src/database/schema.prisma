@@ -38,7 +38,7 @@ model Category {
 model Operation {
   id          Int      @id @default(autoincrement())
   name        String
-  moneyAmount Decimal  @map("money_amount")
+  moneyAmount Decimal  @map("money_amount") @db.Money
   date        DateTime @db.Date
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int      @map("category_id")

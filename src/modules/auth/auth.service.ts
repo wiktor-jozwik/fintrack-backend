@@ -33,7 +33,7 @@ export class AuthService {
 
   async login(user: UserPayloadInterface) {
     return {
-      auth_token: this.jwtService.sign({ email: user.email, sub: user.id }),
+      jwtToken: this.jwtService.sign({ email: user.email, sub: user.id }),
     };
   }
 }

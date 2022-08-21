@@ -7,7 +7,6 @@ export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findByEmail(email: string): Promise<User | null> {
-    console.log(this.prisma);
     return await this.prisma.user.findUnique({
       where: {
         email,

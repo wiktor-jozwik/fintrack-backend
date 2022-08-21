@@ -1,10 +1,18 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthRequest } from './auth-request';
 import { UsersService } from '../users/users.service';
 import { UserRegisterDto } from '../users/dto/user-register.dto';
 import { LocalAuthGuard } from '../../guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import { Public } from '../../decorators/public';
+import { UserRegisterInterceptor } from './interceptors/user-register.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -23,6 +31,7 @@ export class AuthController {
     return null;
   }
 
+  @UseInterceptors(UserRegisterInterceptor)
   @Public()
   @Post('register')
   async register(@Body() userRegisterData: UserRegisterDto) {

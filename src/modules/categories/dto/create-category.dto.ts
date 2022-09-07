@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { CategoryType } from '../../../enums/category-type.enum';
+import { CategoryType } from '../../../common/enums/category-type.enum';
 
 export class CreateCategoryDto {
   @IsString()

@@ -6,13 +6,15 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { OperationsService } from './operations.service';
-import { UserId } from '../../decorators/user-id';
+import { UserId } from '../../common/decorators/user-id';
 import { OperationInterceptor } from './interceptors/operation.interceptor';
 import { OperationsInterceptor } from './interceptors/operations.interceptor';
+import { SearchOperationDto } from './dto/search-operation.dto';
 
 @Controller('operations')
 export class OperationsController {
@@ -29,8 +31,8 @@ export class OperationsController {
 
   @UseInterceptors(OperationsInterceptor)
   @Get()
-  findAll(@UserId() userId: number) {
-    return this.operationsService.findAll(userId);
+  findAll(@UserId() userId: number, @Query() query: SearchOperationDto) {
+    return this.operationsService.findAll(userId, query);
   }
 
   @UseInterceptors(OperationInterceptor)

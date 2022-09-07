@@ -5,18 +5,19 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { convertDatetimeToDate } from '../../../utils/convert-datetime-to-date';
+import { convertDatetimeToDate } from '../../../common/utils/convert-datetime-to-date';
 
 @Injectable()
 export class OperationsInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((value) => {
-        value.map((val: any) => {
-          val.date = convertDatetimeToDate(value.date);
+      map((valueArray) => {
+        valueArray.map((val: any) => {
+          console.log(val);
+          val.date = convertDatetimeToDate(val.date);
         });
 
-        return value;
+        return valueArray;
       }),
     );
   }

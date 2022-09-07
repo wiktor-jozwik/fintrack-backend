@@ -9,9 +9,9 @@ import {
 import { AuthRequest } from './auth-request';
 import { UsersService } from '../users/users.service';
 import { UserRegisterDto } from '../users/dto/user-register.dto';
-import { LocalAuthGuard } from '../../guards/local-auth.guard';
+import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
 import { AuthService } from './auth.service';
-import { Public } from '../../decorators/public';
+import { Public } from '../../common/decorators/public';
 import { UserRegisterInterceptor } from './interceptors/user-register.interceptor';
 
 @Controller('auth')

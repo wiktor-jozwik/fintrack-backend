@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
-import { UserId } from '../../decorators/user-id';
+import { UserId } from '../../common/decorators/user-id';
 
 @Controller('users_currencies')
 export class UsersCurrenciesController {

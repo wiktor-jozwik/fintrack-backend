@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { isValidIsoDate } from '../../utils/is-valid-iso-date';
+import { isValidIsoDate } from '../../common/utils/is-valid-iso-date';
 import { Category, Currency, Operation } from '@prisma/client';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { OperationNotFoundException } from './exceptions/operation-not-found.exception';
@@ -9,6 +9,7 @@ import { CurrencyNotAddedException } from '../users-currencies/exceptions/curren
 import { OperationsRepository } from './operations.repository';
 import { CategoriesRepository } from '../categories/categories.repository';
 import { UsersCurrenciesRepository } from '../users-currencies/users-currencies.repository';
+import { SearchOperationDto } from './dto/search-operation.dto';
 
 @Injectable()
 export class OperationsService {
@@ -51,8 +52,21 @@ export class OperationsService {
     });
   }
 
-  async findAll(userId: number): Promise<Operation[]> {
-    return await this.operationsRepository.findAll(userId);
+  async findAll(
+    userId: number,
+    query: SearchOperationDto,
+  ): Promise<Operation[]> {
+    const { startDate, endDate } = query;
+
+    const operations = await this.operationsRepository.findAll(
+      userId,
+      new Date(startDate),
+      new Date(endDate),
+    );
+
+    console.log(operations);
+
+    return operations;
   }
 
   async remove(operationId: number, userId: number): Promise<Operation> {

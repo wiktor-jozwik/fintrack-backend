@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoriesService } from './categories.service';
-import { UserId } from '../../decorators/user-id';
+import { UserId } from '../../common/decorators/user-id';
 
 @Controller('categories')
 export class CategoriesController {

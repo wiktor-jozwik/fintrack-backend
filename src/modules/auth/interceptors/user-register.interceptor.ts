@@ -5,7 +5,6 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import * as moment from 'moment';
 
 @Injectable()
 export class UserRegisterInterceptor implements NestInterceptor {
@@ -19,9 +18,5 @@ export class UserRegisterInterceptor implements NestInterceptor {
         return value;
       }),
     );
-  }
-
-  private interceptDate(date: Date) {
-    return moment(date).format(moment.HTML5_FMT.DATE);
   }
 }

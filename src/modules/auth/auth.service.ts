@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserPayloadInterface } from './user-payload.interface';
-import { compareHash } from '../../utils/compare-hash';
+import { compareHash } from '../../common/utils/compare-hash';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 import { UsersRepository } from '../users/users.repository';
 

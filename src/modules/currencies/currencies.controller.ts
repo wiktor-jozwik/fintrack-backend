@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
-import { Public } from '../../decorators/public';
+import { Public } from '../../common/decorators/public';
 
 @Controller('currencies')
 export class CurrenciesController {

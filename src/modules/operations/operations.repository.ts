@@ -8,12 +8,22 @@ export class OperationsRepository {
 
   async findAll(
     userId: number,
+    startDate: Date,
+    endDate: Date,
   ): Promise<(Operation & { currency: Currency; category: Category })[]> {
     return await this.prisma.operation.findMany({
       where: {
-        category: {
-          userId,
-        },
+        AND: [
+          {
+            category: {
+              userId,
+            },
+            date: {
+              gt: startDate,
+              lt: endDate,
+            },
+          },
+        ],
       },
       include: {
         category: true,

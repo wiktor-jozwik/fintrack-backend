@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import * as Joi from 'joi';
@@ -8,6 +8,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
 import { UsersCurrenciesModule } from './modules/users-currencies/users-currencies.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
+import LogsMiddleware from './common/middlewares/logs.middleware';
 
 @Module({
   imports: [
@@ -35,4 +36,8 @@ import { PrismaModule } from './modules/prisma/prisma.module';
     UsersCurrenciesModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(LogsMiddleware).forRoutes('*');
+  }
+}

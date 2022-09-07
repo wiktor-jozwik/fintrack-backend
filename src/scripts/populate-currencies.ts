@@ -1,5 +1,5 @@
 import { PrismaService } from '../modules/prisma/prisma.service';
-import { SUPPORTED_CURRENCIES } from '../constants/supported-currencies';
+import { SUPPORTED_CURRENCIES } from '../common/constants/supported-currencies';
 
 export const populateCurrencies = async (prisma?: PrismaService | null) => {
   if (!prisma) {

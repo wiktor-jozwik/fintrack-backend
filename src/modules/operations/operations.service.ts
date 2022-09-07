@@ -58,15 +58,7 @@ export class OperationsService {
   ): Promise<Operation[]> {
     const { startDate, endDate } = query;
 
-    const operations = await this.operationsRepository.findAll(
-      userId,
-      new Date(startDate),
-      new Date(endDate),
-    );
-
-    console.log(operations);
-
-    return operations;
+    return await this.operationsRepository.findAll(userId, startDate, endDate);
   }
 
   async remove(operationId: number, userId: number): Promise<Operation> {

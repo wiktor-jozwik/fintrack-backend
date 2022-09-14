@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { UserId } from '../../common/decorators/user-id';
@@ -25,5 +33,13 @@ export class UsersCurrenciesController {
     @UserId() userId: number,
   ) {
     return this.usersCurrenciesService.create(createCurrencyDto, userId);
+  }
+
+  @Delete(':id')
+  remove(
+    @Param('id', ParseIntPipe) currencyId: number,
+    @UserId() userId: number,
+  ) {
+    return this.usersCurrenciesService.remove(currencyId, userId);
   }
 }

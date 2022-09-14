@@ -22,11 +22,14 @@ export class UsersCurrenciesRepository {
   async findById(
     currencyId: number,
     userId: number,
-  ): Promise<UsersCurrencies | null> {
+  ): Promise<(UsersCurrencies & { currency: Currency }) | null> {
     return await this.prisma.usersCurrencies.findFirst({
       where: {
         currencyId,
         userId,
+      },
+      include: {
+        currency: true,
       },
     });
   }
@@ -52,6 +55,17 @@ export class UsersCurrenciesRepository {
     data: Prisma.UsersCurrenciesCreateInput,
   ): Promise<UsersCurrencies> {
     return await this.prisma.usersCurrencies.create({ data });
+  }
+
+  async delete(userCurrency: UsersCurrencies) {
+    await this.prisma.usersCurrencies.delete({
+      where: {
+        currencyId_userId: {
+          userId: userCurrency.userId,
+          currencyId: userCurrency.currencyId,
+        },
+      },
+    });
   }
 
   async findUsersDefault(

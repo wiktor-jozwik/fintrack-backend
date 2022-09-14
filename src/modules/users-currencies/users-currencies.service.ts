@@ -6,6 +6,8 @@ import { CurrencyAlreadyAddedException } from './exceptions/currency-already-add
 import { DefaultCurrencyNotFoundException } from './exceptions/default-currency-not-found.exception';
 import { UsersCurrenciesRepository } from './users-currencies.repository';
 import { CurrenciesRepository } from '../currencies/currencies.repository';
+import { CurrencyNotFoundException } from './exceptions/currency-not-found.exception';
+import { DefaultCurrencyDeleteException } from './exceptions/default-currency-delete.exception';
 
 @Injectable()
 export class UsersCurrenciesService {
@@ -20,6 +22,27 @@ export class UsersCurrenciesService {
     const currency = await this.findSupportedCurrency(createCurrencyDto.name);
 
     return await this.createUsersCurrency(currency, userId);
+  }
+
+  async remove(userCurrencyId: number, userId: number): Promise<Currency> {
+    const userCurrency = await this.usersCurrenciesRepository.findById(
+      userCurrencyId,
+      userId,
+    );
+
+    if (!userCurrency) {
+      throw new CurrencyNotFoundException(userCurrencyId);
+    }
+
+    const defaultCurrency = await this.findDefault(userId);
+    const currencyName = userCurrency.currency?.name;
+
+    if (currencyName === defaultCurrency.name) {
+      throw new DefaultCurrencyDeleteException(currencyName);
+    }
+
+    await this.usersCurrenciesRepository.delete(userCurrency);
+    return userCurrency.currency;
   }
 
   async findAll(userId: number): Promise<Currency[]> {
@@ -58,17 +81,6 @@ export class UsersCurrenciesService {
     });
   }
 
-  async checkIfCurrencyCanBeAdded(currency: Currency, userId: number) {
-    const existingCurrency = await this.usersCurrenciesRepository.findById(
-      currency.id,
-      userId,
-    );
-
-    if (existingCurrency) {
-      throw new CurrencyAlreadyAddedException(currency.name);
-    }
-  }
-
   async findSupportedCurrency(name: string): Promise<Currency> {
     const currency = await this.currenciesRepository.findByName(name);
 
@@ -77,5 +89,16 @@ export class UsersCurrenciesService {
     }
 
     return currency;
+  }
+
+  private async checkIfCurrencyCanBeAdded(currency: Currency, userId: number) {
+    const existingCurrency = await this.usersCurrenciesRepository.findById(
+      currency.id,
+      userId,
+    );
+
+    if (existingCurrency) {
+      throw new CurrencyAlreadyAddedException(currency.name);
+    }
   }
 }

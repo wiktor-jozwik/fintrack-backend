@@ -55,12 +55,12 @@ export class CategoriesService {
   }
 
   private async validateZeroOperations(categoryId: number): Promise<void> {
-    const operationsNumber = await this.operationsRepository.countByCategoryId(
+    const operations = await this.operationsRepository.findManyByCategoryId(
       categoryId,
     );
 
-    if (operationsNumber > 0) {
-      throw new OperationAssignedException(categoryId);
+    if (operations.length > 0) {
+      throw new OperationAssignedException(operations[0].name);
     }
   }
 }

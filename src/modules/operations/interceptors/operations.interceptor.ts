@@ -13,7 +13,6 @@ export class OperationsInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((valueArray) => {
         valueArray.map((val: any) => {
-          console.log(val);
           val.date = convertDatetimeToDate(val.date);
         });
 

@@ -31,7 +31,6 @@ export class OperationsRepository {
               userId,
             },
           };
-    console.log(where);
     return await this.prisma.operation.findMany({
       where,
       include: {
@@ -55,6 +54,19 @@ export class OperationsRepository {
     });
   }
 
+  async findManyByCategoryId(categoryId: number): Promise<Operation[]> {
+    return await this.prisma.operation.findMany({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+      include: {
+        category: true,
+      },
+    });
+  }
+
   async create(data: Prisma.OperationCreateInput): Promise<Operation> {
     return await this.prisma.operation.create({ data });
   }
@@ -63,14 +75,6 @@ export class OperationsRepository {
     return await this.prisma.operation.delete({
       where: {
         id,
-      },
-    });
-  }
-
-  async countByCategoryId(categoryId: number): Promise<number> {
-    return await this.prisma.operation.count({
-      where: {
-        categoryId,
       },
     });
   }

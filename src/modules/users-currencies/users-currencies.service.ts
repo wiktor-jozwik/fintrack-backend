@@ -53,6 +53,14 @@ export class UsersCurrenciesService {
     return usersCurrencies.map((usersCurrency) => usersCurrency.currency);
   }
 
+  async findAllWithoutDefault(userId: number): Promise<Currency[]> {
+    const currencies = await this.currenciesRepository.findAll();
+
+    const userDefault = await this.findDefault(userId);
+
+    return currencies.filter((currency) => currency.name !== userDefault.name);
+  }
+
   async findDefault(userId: number): Promise<Currency> {
     const userToCurrencies =
       await this.usersCurrenciesRepository.findUsersDefault(userId);

@@ -22,6 +22,11 @@ export class UsersCurrenciesController {
     return this.usersCurrenciesService.findAll(userId);
   }
 
+  @Get('without_default')
+  findAllWithoutDefault(@UserId() userId: number) {
+    return this.usersCurrenciesService.findAllWithoutDefault(userId);
+  }
+
   @Get('default')
   findDefault(@UserId() userId: number) {
     return this.usersCurrenciesService.findDefault(userId);

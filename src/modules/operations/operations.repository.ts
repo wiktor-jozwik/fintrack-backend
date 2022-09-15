@@ -54,7 +54,9 @@ export class OperationsRepository {
     });
   }
 
-  async findManyByCategoryId(categoryId: number): Promise<Operation[]> {
+  async findManyByCategoryId(
+    categoryId: number,
+  ): Promise<(Operation & { category: Category })[]> {
     return await this.prisma.operation.findMany({
       where: {
         category: {
@@ -69,6 +71,18 @@ export class OperationsRepository {
 
   async create(data: Prisma.OperationCreateInput): Promise<Operation> {
     return await this.prisma.operation.create({ data });
+  }
+
+  async update(
+    id: number,
+    data: Prisma.OperationUpdateInput,
+  ): Promise<Operation> {
+    return await this.prisma.operation.update({
+      where: {
+        id,
+      },
+      data,
+    });
   }
 
   async delete(id: number): Promise<Operation> {

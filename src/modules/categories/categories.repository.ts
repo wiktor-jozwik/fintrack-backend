@@ -33,8 +33,20 @@ export class CategoriesRepository {
     });
   }
 
-  async create(data: Prisma.CategoryCreateInput) {
+  async create(data: Prisma.CategoryCreateInput): Promise<Category> {
     return await this.prisma.category.create({ data });
+  }
+
+  async update(
+    id: number,
+    data: Prisma.CategoryUpdateInput,
+  ): Promise<Category> {
+    return await this.prisma.category.update({
+      where: {
+        id,
+      },
+      data,
+    });
   }
 
   async delete(categoryId: number): Promise<Category> {

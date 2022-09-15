@@ -6,6 +6,7 @@ import { CategoryExistsException } from './exceptions/category-exists.exception'
 import { OperationAssignedException } from './exceptions/operation-assigned.exception';
 import { CategoriesRepository } from './categories.repository';
 import { OperationsRepository } from '../operations/operations.repository';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -34,16 +35,25 @@ export class CategoriesService {
     return await this.categoriesRepository.findAll(userId);
   }
 
-  async remove(categoryId: number, userId: number): Promise<Category> {
-    const category = this.categoriesRepository.findById(categoryId, userId);
+  async update(
+    updateCategoryDto: UpdateCategoryDto,
+    categoryId: number,
+    userId: number,
+  ): Promise<Category> {
+    await this.validateCategoryPresence(categoryId, userId);
 
-    if (!category) {
-      throw new CategoryNotFoundException(categoryId);
-    }
+    return await this.categoriesRepository.update(
+      categoryId,
+      updateCategoryDto,
+    );
+  }
+
+  async remove(categoryId: number, userId: number): Promise<Category> {
+    await this.validateCategoryPresence(categoryId, userId);
 
     await this.validateZeroOperations(categoryId);
 
-    return this.categoriesRepository.delete(categoryId);
+    return await this.categoriesRepository.delete(categoryId);
   }
 
   async validateNameUniqueness(name: string, userId: number): Promise<void> {
@@ -54,13 +64,24 @@ export class CategoriesService {
     }
   }
 
+  private async validateCategoryPresence(
+    categoryId: number,
+    userId: number,
+  ): Promise<void> {
+    const category = this.categoriesRepository.findById(categoryId, userId);
+
+    if (!category) {
+      throw new CategoryNotFoundException(categoryId);
+    }
+  }
+
   private async validateZeroOperations(categoryId: number): Promise<void> {
     const operations = await this.operationsRepository.findManyByCategoryId(
       categoryId,
     );
 
     if (operations.length > 0) {
-      throw new OperationAssignedException(operations[0].name);
+      throw new OperationAssignedException(operations[0].category.name);
     }
   }
 }

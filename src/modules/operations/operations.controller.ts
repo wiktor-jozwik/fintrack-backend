@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UseInterceptors,
@@ -15,6 +16,8 @@ import { UserId } from '../../common/decorators/user-id';
 import { OperationInterceptor } from './interceptors/operation.interceptor';
 import { OperationsInterceptor } from './interceptors/operations.interceptor';
 import { SearchOperationDto } from './dto/search-operation.dto';
+import { UpdateCategoryDto } from '../categories/dto/update-category.dto';
+import { UpdateOperationDto } from './dto/update-operation.dto';
 
 @Controller('operations')
 export class OperationsController {
@@ -33,6 +36,20 @@ export class OperationsController {
   @Get()
   findAll(@UserId() userId: number, @Query() query: SearchOperationDto) {
     return this.operationsService.findAll(userId, query);
+  }
+
+  @UseInterceptors(OperationInterceptor)
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) operationId: number,
+    @Body() updateOperationDto: UpdateOperationDto,
+    @UserId() userId: number,
+  ) {
+    return this.operationsService.update(
+      updateOperationDto,
+      operationId,
+      userId,
+    );
   }
 
   @UseInterceptors(OperationInterceptor)

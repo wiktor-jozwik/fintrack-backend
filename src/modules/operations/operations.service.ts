@@ -10,6 +10,8 @@ import { OperationsRepository } from './operations.repository';
 import { CategoriesRepository } from '../categories/categories.repository';
 import { UsersCurrenciesRepository } from '../users-currencies/users-currencies.repository';
 import { SearchOperationDto } from './dto/search-operation.dto';
+import { UpdateCategoryDto } from '../categories/dto/update-category.dto';
+import { UpdateOperationDto } from './dto/update-operation.dto';
 
 @Injectable()
 export class OperationsService {
@@ -61,16 +63,62 @@ export class OperationsService {
     return await this.operationsRepository.findAll(userId, startDate, endDate);
   }
 
-  async remove(operationId: number, userId: number): Promise<Operation> {
-    const operation = await this.findOperationAndValidate(operationId, userId);
-
-    return await this.operationsRepository.delete(operation.id);
-  }
-
-  private async findOperationAndValidate(
+  async update(
+    updateOperationDto: UpdateOperationDto,
     operationId: number,
     userId: number,
   ): Promise<Operation> {
+    await this.validateOperationPresence(operationId, userId);
+
+    const { categoryName, currencyName } = updateOperationDto;
+    updateOperationDto.currencyName = undefined;
+    updateOperationDto.categoryName = undefined;
+
+    let categoryId;
+    let currencyId;
+    if (categoryName) {
+      const category = await this.findCategoryAndValidate(categoryName, userId);
+      categoryId = category.id;
+    }
+
+    if (currencyName) {
+      const currency = await this.findCurrencyAndValidate(currencyName, userId);
+      currencyId = currency.id;
+    }
+
+    if (updateOperationDto.date) {
+      updateOperationDto.date = this.validateDate(updateOperationDto.date);
+    }
+
+    return await this.operationsRepository.update(operationId, {
+      ...updateOperationDto,
+      currency: currencyId
+        ? {
+            connect: {
+              id: currencyId,
+            },
+          }
+        : {},
+      category: categoryId
+        ? {
+            connect: {
+              id: categoryId,
+            },
+          }
+        : {},
+    });
+  }
+
+  async remove(operationId: number, userId: number): Promise<Operation> {
+    await this.validateOperationPresence(operationId, userId);
+
+    return await this.operationsRepository.delete(operationId);
+  }
+
+  private async validateOperationPresence(
+    operationId: number,
+    userId: number,
+  ): Promise<void> {
     const operation = await this.operationsRepository.findById(
       operationId,
       userId,
@@ -79,7 +127,6 @@ export class OperationsService {
     if (!operation) {
       throw new OperationNotFoundException(operationId);
     }
-    return operation;
   }
 
   private async findCurrencyAndValidate(

@@ -5,11 +5,13 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoriesService } from './categories.service';
 import { UserId } from '../../common/decorators/user-id';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -26,6 +28,15 @@ export class CategoriesController {
   @Get()
   findAll(@UserId() userId: number) {
     return this.categoriesService.findAll(userId);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) categoryId: number,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+    @UserId() userId: number,
+  ) {
+    return this.categoriesService.update(updateCategoryDto, categoryId, userId);
   }
 
   @Delete(':id')

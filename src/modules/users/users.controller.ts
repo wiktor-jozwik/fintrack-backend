@@ -4,6 +4,7 @@ import { UsersService } from './users.service';
 import { ResendActivationLinkDto } from './dto/resend-activation-link.dto';
 import { Public } from '../../common/decorators/public';
 import { AcceptNotActiveUser } from '../../common/decorators/accept-not-active-user';
+import { StringResponse } from '../../common/interfaces/string-response';
 
 @Controller('users')
 export class UsersController {
@@ -12,10 +13,10 @@ export class UsersController {
   @AcceptNotActiveUser()
   @Public()
   @Get('confirm_email')
-  async confirmEmail(@Query() query: TokenDto): Promise<string> {
+  async confirmEmail(@Query() query: TokenDto): Promise<StringResponse> {
     await this.usersService.confirmEmail(query.token);
 
-    return `Successfully activated account!`;
+    return { response: `Successfully activated account!` };
   }
 
   @AcceptNotActiveUser()
@@ -23,11 +24,11 @@ export class UsersController {
   @Post('resend_activation_email')
   async resendActivationEmail(
     @Body() resendActivationLinkDto: ResendActivationLinkDto,
-  ): Promise<string> {
+  ): Promise<StringResponse> {
     const email = await this.usersService.resendActivationEmail(
       resendActivationLinkDto.email,
     );
 
-    return `Email with instructions sent to: ${email}`;
+    return { response: `Email with instructions sent to: ${email}` };
   }
 }

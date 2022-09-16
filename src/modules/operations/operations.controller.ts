@@ -16,7 +16,6 @@ import { UserId } from '../../common/decorators/user-id';
 import { OperationInterceptor } from './interceptors/operation.interceptor';
 import { OperationsInterceptor } from './interceptors/operations.interceptor';
 import { SearchOperationDto } from './dto/search-operation.dto';
-import { UpdateCategoryDto } from '../categories/dto/update-category.dto';
 import { UpdateOperationDto } from './dto/update-operation.dto';
 
 @Controller('operations')

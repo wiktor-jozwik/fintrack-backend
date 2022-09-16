@@ -9,6 +9,7 @@ import { CurrenciesModule } from './modules/currencies/currencies.module';
 import { UsersCurrenciesModule } from './modules/users-currencies/users-currencies.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import LogsMiddleware from './common/middlewares/logs.middleware';
+import { EmailModule } from './modules/email/email.module';
 
 @Module({
   imports: [
@@ -22,9 +23,16 @@ import LogsMiddleware from './common/middlewares/logs.middleware';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
-        PORT: Joi.number().default(3000),
+        PORT: Joi.number().required(),
+        API_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        JWT_USER_EMAILS_TOKEN_SECRET: Joi.string().required(),
+        JWT_USER_EMAILS_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_HOST: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        EMAIL_FROM: Joi.string().required(),
       }),
     }),
     PrismaModule,
@@ -34,6 +42,7 @@ import LogsMiddleware from './common/middlewares/logs.middleware';
     CategoriesModule,
     CurrenciesModule,
     UsersCurrenciesModule,
+    EmailModule,
   ],
 })
 export class AppModule implements NestModule {

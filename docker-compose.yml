@@ -13,7 +13,7 @@ services:
       - db
     command: npm run start:dev
     ports:
-      - 3000:${PORT}
+      - ${PORT}:${PORT}
 
   db:
     image: postgres

@@ -6,10 +6,12 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { UserId } from '../../common/decorators/user-id';
+import { UserIsActiveGuard } from '../../common/guards/user-is-active.guard';
 
 @Controller('users_currencies')
 export class UsersCurrenciesController {
@@ -17,6 +19,7 @@ export class UsersCurrenciesController {
     private readonly usersCurrenciesService: UsersCurrenciesService,
   ) {}
 
+  @UseGuards(UserIsActiveGuard)
   @Get()
   findAll(@UserId() userId: number) {
     return this.usersCurrenciesService.findAll(userId);

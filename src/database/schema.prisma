@@ -16,6 +16,7 @@ model User {
   lastName          String?           @map("last_name")
   phoneNumber       String?           @map("phone_number")
   email             String            @unique
+  isActive          Boolean           @default(false) @map("is_active")
   password          String
   categories        Category[]
   usersToCurrencies UsersCurrencies[]

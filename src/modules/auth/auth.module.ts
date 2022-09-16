@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
+import { UserIsActiveGuard } from '../../common/guards/user-is-active.guard';
 
 @Module({
   imports: [
@@ -34,6 +35,10 @@ import { UsersModule } from '../users/users.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: UserIsActiveGuard,
     },
   ],
   exports: [AuthService],

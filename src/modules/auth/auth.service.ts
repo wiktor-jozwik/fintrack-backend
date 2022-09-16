@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserPayloadInterface } from './user-payload.interface';
+import { UserPayload } from './interfaces/user.payload';
 import { compareHash } from '../../common/utils/compare-hash';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 import { UsersRepository } from '../users/users.repository';
+import { AccountNotActiveException } from './exceptions/account-not-active.exception';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,10 @@ export class AuthService {
       throw new InvalidCredentialsException();
     }
 
+    if (!user.isActive) {
+      throw new AccountNotActiveException();
+    }
+
     const doesPasswordMatch = await compareHash(
       plainTextPassword,
       user.password,
@@ -31,9 +36,13 @@ export class AuthService {
     return user;
   }
 
-  async login(user: UserPayloadInterface) {
+  async login(user: UserPayload) {
     return {
-      jwtToken: this.jwtService.sign({ email: user.email, sub: user.id }),
+      jwtToken: this.jwtService.sign({
+        email: user.email,
+        sub: user.id,
+        isActive: user.isActive,
+      }),
     };
   }
 }

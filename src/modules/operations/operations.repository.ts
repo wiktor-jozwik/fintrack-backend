@@ -8,8 +8,8 @@ export class OperationsRepository {
 
   async findAll(
     userId: number,
-    startDate: string,
-    endDate: string,
+    startDate: string | null,
+    endDate: string | null,
   ): Promise<(Operation & { currency: Currency; category: Category })[]> {
     const where =
       startDate && endDate

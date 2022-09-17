@@ -1,7 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 
 export class UserNotFoundException extends NotFoundException {
-  constructor(email: string) {
-    super(`User '${email}' not found`);
+  constructor(email: string | null) {
+    let message = '';
+    if (email) {
+      message = ` '${email}'`;
+      super(``);
+    }
+    super(`User${message} not found`);
   }
 }

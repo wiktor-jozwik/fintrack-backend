@@ -56,9 +56,14 @@ export class OperationsService {
 
   async findAll(
     userId: number,
-    query: SearchOperationDto,
+    query: SearchOperationDto | null,
   ): Promise<Operation[]> {
-    const { startDate, endDate } = query;
+    let startDate = null;
+    let endDate = null;
+    if (query) {
+      startDate = query.startDate;
+      endDate = query.endDate;
+    }
 
     return await this.operationsRepository.findAll(userId, startDate, endDate);
   }

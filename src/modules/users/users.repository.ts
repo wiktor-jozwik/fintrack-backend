@@ -6,6 +6,14 @@ import { Injectable } from '@nestjs/common';
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findById(id: number): Promise<User | null> {
+    return await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return await this.prisma.user.findUnique({
       where: {

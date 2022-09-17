@@ -16,6 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { TokenExpiredException } from './exceptions/token-expired.exception';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { UserAlreadyActiveException } from './exceptions/user-already-active.exception';
+import { UserProfileResponse } from './interfaces/user-profile-response';
 
 @Injectable()
 export class UsersService {
@@ -48,6 +49,19 @@ export class UsersService {
 
     this.sendActivationMail(email);
     return user;
+  }
+
+  async getProfileData(userId: number): Promise<UserProfileResponse> {
+    const [user, defaultCurrency] = await Promise.all([
+      this.usersRepository.findById(userId),
+      this.usersCurrenciesService.findDefault(userId),
+    ]);
+
+    if (!user) {
+      throw new UserNotFoundException(null);
+    }
+
+    return { user, defaultCurrency };
   }
 
   async confirmEmail(token: string) {

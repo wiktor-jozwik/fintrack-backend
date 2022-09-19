@@ -42,6 +42,16 @@ export class CategoriesService {
   ): Promise<Category> {
     await this.validateCategoryPresence(categoryId, userId);
 
+    const { name } = updateCategoryDto;
+
+    if (name) {
+      const category = await this.categoriesRepository.findByName(name, userId);
+
+      if (category) {
+        throw new CategoryExistsException(name);
+      }
+    }
+
     return await this.categoriesRepository.update(
       categoryId,
       updateCategoryDto,

@@ -7,7 +7,7 @@ const seedUsers = async () => {
   const prisma = new PrismaService();
   await populateCurrencies(prisma);
   const password = 'testtest';
-  const hashedPassword = await hashString(password);
+  const passwordHash = await hashString(password);
 
   const plnCurrency = await prisma.currency.findFirstOrThrow({
     where: { name: 'PLN' },
@@ -22,7 +22,8 @@ const seedUsers = async () => {
   await prisma.user.create({
     data: {
       email: 'pln@test.com',
-      password: hashedPassword,
+      passwordHash,
+      isActive: true,
       categories: {
         create: {
           name: 'INCOME_PLN',
@@ -68,7 +69,8 @@ const seedUsers = async () => {
   await prisma.user.create({
     data: {
       email: 'usd@test.com',
-      password: hashedPassword,
+      passwordHash,
+      isActive: true,
       categories: {
         createMany: {
           data: [

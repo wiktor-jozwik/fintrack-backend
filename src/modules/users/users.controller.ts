@@ -10,7 +10,7 @@ import { TokenDto } from './dto/token.dto';
 import { UsersService } from './users.service';
 import { ResendActivationLinkDto } from './dto/resend-activation-link.dto';
 import { Public } from '../../common/decorators/public';
-import { AcceptNotActiveUser } from '../../common/decorators/accept-not-active-user';
+import { SkipUserActiveCheck } from '../../common/decorators/skip-user-active-check';
 import { StringResponse } from '../../common/interfaces/string-response';
 import { UserId } from '../../common/decorators/user-id';
 import { UserProfileResponse } from './interfaces/user-profile-response';
@@ -26,7 +26,7 @@ export class UsersController {
     return await this.usersService.getProfileData(userId);
   }
 
-  @AcceptNotActiveUser()
+  @SkipUserActiveCheck()
   @Public()
   @Get('confirm_email')
   async confirmEmail(@Query() query: TokenDto): Promise<StringResponse> {
@@ -35,7 +35,7 @@ export class UsersController {
     return { response: `Successfully activated account!` };
   }
 
-  @AcceptNotActiveUser()
+  @SkipUserActiveCheck()
   @Public()
   @Post('resend_activation_email')
   async resendActivationEmail(

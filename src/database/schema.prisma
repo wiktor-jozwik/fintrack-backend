@@ -17,7 +17,8 @@ model User {
   phoneNumber       String?           @map("phone_number")
   email             String            @unique
   isActive          Boolean           @default(false) @map("is_active")
-  password          String
+  passwordHash      String            @map("password_hash")
+  refreshTokenHash  String?           @map("refresh_token_hash")
   categories        Category[]
   usersToCurrencies UsersCurrencies[]
 

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Post,
   Req,
   UseGuards,
@@ -13,8 +14,13 @@ import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import { Public } from '../../common/decorators/public';
 import { UserRegisterInterceptor } from './interceptors/user-register.interceptor';
-import { JwtTokenPayload } from './interfaces/jwt-token-payload';
-import { AcceptNotActiveUser } from '../../common/decorators/accept-not-active-user';
+import { SkipUserActiveCheck } from '../../common/decorators/skip-user-active-check';
+import { User } from '@prisma/client';
+import { JwtTokens } from './interfaces/jwt-tokens';
+import { UserId } from '../../common/decorators/user-id';
+import { JwtRefreshTokenGuard } from '../../common/guards/jwt-refresh-token.guard';
+import { RefreshToken } from '../../common/decorators/refresh-token';
+import { LogoutResponse } from './interfaces/logout-response';
 
 @Controller('auth')
 export class AuthController {
@@ -23,19 +29,36 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
+  @UseInterceptors(UserRegisterInterceptor)
   @Public()
-  @AcceptNotActiveUser()
+  @SkipUserActiveCheck()
+  @Post('register')
+  async register(@Body() userRegisterData: UserRegisterDto): Promise<User> {
+    return await this.usersService.register(userRegisterData);
+  }
+
+  @Public()
+  @SkipUserActiveCheck()
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req: AuthRequest): Promise<JwtTokenPayload> {
+  async login(@Req() req: AuthRequest): Promise<JwtTokens> {
     return this.authService.login(req.user);
   }
 
-  @UseInterceptors(UserRegisterInterceptor)
-  @AcceptNotActiveUser()
+  @Delete('logout')
+  async logout(@UserId() userId: number): Promise<LogoutResponse> {
+    const logoutResponse = await this.authService.logout(userId);
+    return { success: logoutResponse };
+  }
+
   @Public()
-  @Post('register')
-  async register(@Body() userRegisterData: UserRegisterDto) {
-    return await this.usersService.register(userRegisterData);
+  @SkipUserActiveCheck()
+  @UseGuards(JwtRefreshTokenGuard)
+  @Post('refresh')
+  async refreshTokens(
+    @UserId() userId: number,
+    @RefreshToken() refreshToken: string,
+  ): Promise<JwtTokens> {
+    return this.authService.refreshTokens(userId, refreshToken);
   }
 }

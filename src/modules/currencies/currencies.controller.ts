@@ -1,13 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
 import { Public } from '../../common/decorators/public';
-import { AcceptNotActiveUser } from '../../common/decorators/accept-not-active-user';
+import { SkipUserActiveCheck } from '../../common/decorators/skip-user-active-check';
 
 @Controller('currencies')
 export class CurrenciesController {
   constructor(private readonly currenciesService: CurrenciesService) {}
 
-  @AcceptNotActiveUser()
+  @SkipUserActiveCheck()
   @Public()
   @Get()
   findAll() {

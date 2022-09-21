@@ -1,5 +1,5 @@
-export interface UserPayload {
-  id: number;
-  email: string;
+import { UserEmailPayload } from './user-email.payload';
+
+export interface UserPayload extends UserEmailPayload {
   isActive: boolean;
 }

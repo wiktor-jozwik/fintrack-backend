@@ -31,7 +31,7 @@ export class UsersService {
   async register(registerData: UserRegisterDto): Promise<User> {
     await this.validateRegisterData(registerData);
 
-    const hashedPassword = await hashString(registerData.password);
+    const passwordHash = await hashString(registerData.password);
     const currency = await this.usersCurrenciesService.findSupportedCurrency(
       registerData.defaultCurrencyName,
     );
@@ -43,7 +43,7 @@ export class UsersService {
       lastName,
       phoneNumber,
       email,
-      password: hashedPassword,
+      passwordHash,
     });
     await this.usersCurrenciesService.createUsersCurrency(currency, user.id);
 
@@ -68,7 +68,7 @@ export class UsersService {
     const email = await this.decodeConfirmationToken(token);
     await this.checkIfUserAlreadyActive(email);
 
-    await this.usersRepository.update(email, { isActive: true });
+    await this.usersRepository.updateByEmail(email, { isActive: true });
   }
 
   async resendActivationEmail(email: string): Promise<string> {

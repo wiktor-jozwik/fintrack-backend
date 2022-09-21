@@ -26,7 +26,19 @@ export class UsersRepository {
     return await this.prisma.user.create({ data });
   }
 
-  async update(email: string, data: Prisma.UserUpdateInput): Promise<User> {
+  async updateById(id: number, data: Prisma.UserUpdateInput): Promise<User> {
+    return await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data,
+    });
+  }
+
+  async updateByEmail(
+    email: string,
+    data: Prisma.UserUpdateInput,
+  ): Promise<User> {
     return await this.prisma.user.update({
       where: {
         email,

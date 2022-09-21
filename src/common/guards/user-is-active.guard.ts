@@ -2,18 +2,18 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { AccountNotActiveException } from '../../modules/auth/exceptions/account-not-active.exception';
 import { AuthRequest } from '../../modules/auth/interfaces/auth-request';
 import { Reflector } from '@nestjs/core';
-import { ACCEPT_NOT_ACTIVE_USER_KEY } from '../decorators/accept-not-active-user';
+import { SKIP_USER_ACTIVE_CHECK } from '../decorators/skip-user-active-check';
 
 @Injectable()
 export class UserIsActiveGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const notActiveUser = this.reflector.getAllAndOverride<boolean>(
-      ACCEPT_NOT_ACTIVE_USER_KEY,
+    const skipUserActiveCheck = this.reflector.getAllAndOverride<boolean>(
+      SKIP_USER_ACTIVE_CHECK,
       [context.getHandler(), context.getClass()],
     );
-    if (notActiveUser) {
+    if (skipUserActiveCheck) {
       return true;
     }
 

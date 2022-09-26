@@ -3,13 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import * as Joi from 'joi';
 import { AuthModule } from './modules/auth/auth.module';
-import { OperationsModule } from './modules/operations/operations.module';
+import { OperationsModule } from './modules/operations/operations/operations.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { CurrenciesModule } from './modules/currencies/currencies.module';
 import { UsersCurrenciesModule } from './modules/users-currencies/users-currencies.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import LogsMiddleware from './common/middlewares/logs.middleware';
 import { EmailModule } from './modules/email/email.module';
+import { OperationsImportModule } from './modules/operations/operations-import/operations-import.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { EmailModule } from './modules/email/email.module';
     CurrenciesModule,
     UsersCurrenciesModule,
     EmailModule,
+    OperationsImportModule,
   ],
 })
 export class AppModule implements NestModule {

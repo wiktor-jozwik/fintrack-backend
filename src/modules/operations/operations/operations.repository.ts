@@ -1,4 +1,4 @@
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 
@@ -47,6 +47,22 @@ export class OperationsRepository {
     return await this.prisma.operation.findFirst({
       where: {
         id: operationId,
+        category: {
+          userId,
+        },
+      },
+    });
+  }
+
+  async findByReferentialNumberAndOrigin(
+    referentialNumber: string,
+    origin: string,
+    userId: number,
+  ): Promise<Operation | null> {
+    return await this.prisma.operation.findFirst({
+      where: {
+        origin,
+        referentialNumber,
         category: {
           userId,
         },

@@ -1,0 +1,1 @@
+export const SUPPORTED_CSV_IMPORTERS = ['PEKAO', 'PKO', 'ING', 'MBANK'];

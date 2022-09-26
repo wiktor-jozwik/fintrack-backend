@@ -5,7 +5,7 @@ import { CategoryNotFoundException } from './exceptions/category-not-found.excep
 import { CategoryExistsException } from './exceptions/category-exists.exception';
 import { OperationAssignedException } from './exceptions/operation-assigned.exception';
 import { CategoriesRepository } from './categories.repository';
-import { OperationsRepository } from '../operations/operations.repository';
+import { OperationsRepository } from '../operations/operations/operations.repository';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()

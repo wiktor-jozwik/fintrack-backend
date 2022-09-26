@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { OperationsService } from './operations.service';
-import { UserId } from '../../common/decorators/user-id';
+import { UserId } from '../../../common/decorators/user-id';
 import { OperationInterceptor } from './interceptors/operation.interceptor';
 import { OperationsInterceptor } from './interceptors/operations.interceptor';
 import { SearchOperationDto } from './dto/search-operation.dto';

@@ -30,6 +30,9 @@ export class CategoriesRepository {
   async findAll(userId: number): Promise<Category[]> {
     return await this.prisma.category.findMany({
       where: { userId },
+      orderBy: {
+        name: 'asc',
+      },
     });
   }
 

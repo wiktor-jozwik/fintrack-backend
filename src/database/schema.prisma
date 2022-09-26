@@ -33,20 +33,23 @@ model Category {
   userId     Int          @map("user_id")
   operations Operation[]
 
-  @@unique(fields: [name, userId], name: "user_category")
+  @@unique(fields: [name, type, userId], name: "user_category")
   @@map("categories")
 }
 
 model Operation {
-  id          Int      @id @default(autoincrement())
-  name        String
-  moneyAmount Decimal  @map("money_amount") @db.Money
-  date        DateTime @db.Date
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  Int      @map("category_id")
-  currency    Currency @relation(fields: [currencyId], references: [id])
-  currencyId  Int      @map("currency_id")
+  id                Int      @id @default(autoincrement())
+  name              String
+  moneyAmount       Decimal  @map("money_amount") @db.Money
+  date              DateTime @db.Date
+  referentialNumber String?  @map("referential_number")
+  origin            String?  @default("MANUAL")
+  category          Category @relation(fields: [categoryId], references: [id])
+  categoryId        Int      @map("category_id")
+  currency          Currency @relation(fields: [currencyId], references: [id])
+  currencyId        Int      @map("currency_id")
 
+  @@unique(fields: [referentialNumber, origin, id], name: "operation_referential_number")
   @@map("operations")
 }
 

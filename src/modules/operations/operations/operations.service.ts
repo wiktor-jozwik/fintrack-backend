@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { isValidIsoDate } from '../../common/utils/is-valid-iso-date';
+import { isValidIsoDate } from '../../../common/utils/is-valid-iso-date';
 import { Category, Currency, Operation } from '@prisma/client';
 import { CreateOperationDto } from './dto/create-operation.dto';
 import { OperationNotFoundException } from './exceptions/operation-not-found.exception';
-import { CategoryNotFoundException } from '../categories/exceptions/category-not-found.exception';
+import { CategoryNotFoundException } from '../../categories/exceptions/category-not-found.exception';
 import { InvalidDateFormatException } from './exceptions/invalid-date-format.exception';
-import { CurrencyNotAddedException } from '../users-currencies/exceptions/currency-not-added.exception';
+import { CurrencyNotAddedException } from '../../users-currencies/exceptions/currency-not-added.exception';
 import { OperationsRepository } from './operations.repository';
-import { CategoriesRepository } from '../categories/categories.repository';
-import { UsersCurrenciesRepository } from '../users-currencies/users-currencies.repository';
+import { CategoriesRepository } from '../../categories/categories.repository';
+import { UsersCurrenciesRepository } from '../../users-currencies/users-currencies.repository';
 import { SearchOperationDto } from './dto/search-operation.dto';
-import { UpdateCategoryDto } from '../categories/dto/update-category.dto';
+import { UpdateCategoryDto } from '../../categories/dto/update-category.dto';
 import { UpdateOperationDto } from './dto/update-operation.dto';
 
 @Injectable()

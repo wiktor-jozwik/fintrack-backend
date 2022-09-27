@@ -4,10 +4,10 @@ import {
   CsvOperationItem,
   OperationItem,
 } from '../../interfaces/csv-operation-item';
-import { CsvAbstractReader } from '../csv-abstract-reader';
+import { CsvReader } from '../csv-reader';
 
 @Injectable()
-class CsvIngReader extends CsvAbstractReader {
+class CsvIngReader extends CsvReader {
   constructor() {
     super();
     this.headers = [

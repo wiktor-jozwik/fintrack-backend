@@ -1,17 +1,19 @@
 import { OperationItem } from './interfaces/csv-operation-item';
-import { CsvAbstractReader } from './csv-readers/csv-abstract-reader';
-import { Injectable } from '@nestjs/common';
-import OperationsImportSaveService from '../operations-import-save.service';
+import { CsvReader } from './csv-readers/csv-reader';
+import { Injectable, Logger } from '@nestjs/common';
+import OperationsImportSaveService from './operations-import-save.service';
 import { SaveOperationItem } from './interfaces/save-operation-item';
 
 @Injectable()
 class CsvImporter {
-  private csvReader: CsvAbstractReader;
+  private readonly logger = new Logger(CsvImporter.name);
+  private csvReader: CsvReader;
+
   constructor(
     private readonly csvOperationSaveService: OperationsImportSaveService,
   ) {}
 
-  setReader(reader: CsvAbstractReader) {
+  setReader(reader: CsvReader) {
     this.csvReader = reader;
   }
 
@@ -60,11 +62,11 @@ class CsvImporter {
         saveOperationItem,
       );
 
-      console.log(
+      this.logger.log(
         `Saved operation: ${savedOperation.referentialNumber} with origin ${savedOperation.origin}`,
       );
     } catch (err) {
-      console.error(err);
+      this.logger.warn(err);
     }
   }
 }

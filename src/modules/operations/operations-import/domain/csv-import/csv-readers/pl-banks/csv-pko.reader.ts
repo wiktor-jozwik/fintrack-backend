@@ -4,15 +4,26 @@ import {
   CsvOperationItem,
   OperationItem,
 } from '../../interfaces/csv-operation-item';
-import { CsvAbstractReader } from '../csv-abstract-reader';
+import { CsvReader } from '../csv-reader';
+import { slugifyString } from '../../../../../../../common/utils/slugify-string';
 
 @Injectable()
-class CsvPkoReader extends CsvAbstractReader {
-  // TODO
+class CsvPkoReader extends CsvReader {
   constructor() {
     super();
-    this.headers = ['Data transakcji'];
-    this.delimiter = ';';
+    this.headers = [
+      'Data operacji',
+      'Data waluty',
+      'Typ transakcji',
+      'Kwota',
+      'Waluta',
+      'Opis transakcji',
+      '',
+      '',
+      '',
+      '',
+    ];
+    this.delimiter = ',';
   }
 
   readCsv(
@@ -26,20 +37,38 @@ class CsvPkoReader extends CsvAbstractReader {
     fs.createReadStream(filePath)
       .pipe(parseStream)
       .on('data', (row: any) => {
-        // TODO
-        // const csvOperationItem: CsvOperationItem =
-        //   this.prepareCsvOperationItem(row);
+        const csvOperationItem = this.prepareCsvOperationItem(row);
 
-        callback(row);
+        const operationItem =
+          this.changeNotFoundValuesToDefaults(csvOperationItem);
+
+        if (this.validateOperationItemCorrectness(operationItem)) {
+          callback(operationItem);
+        }
       });
   }
 
-  getIsoDateString(rawDate: string): string {
-    return '';
+  prepareCsvOperationItem(row: any): CsvOperationItem {
+    const { absMoneyAmount, categoryType } = this.getMoneyAmountAndCategoryType(
+      row['Kwota'],
+    );
+
+    return {
+      referentialNumber: this.prepareReferentialNumber(row),
+      originName: 'PKO',
+      isoDateString: this.getIsoDateString(row['Data operacji']),
+      absMoneyAmount,
+      categoryType,
+      categoryName: row['Typ transakcji'],
+      operationName: row['Opis transakcji'],
+      currencyName: row['Waluta'],
+    };
   }
 
-  prepareCsvOperationItem(row: any): CsvOperationItem {
-    return row;
+  private prepareReferentialNumber(row: any): string {
+    return slugifyString(
+      `${row['Data operacji']}_${row['Data waluty']}_${row['Kwota']}_${row['Opis transakcji']}`,
+    );
   }
 }
 

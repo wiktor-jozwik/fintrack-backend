@@ -8,7 +8,7 @@ import { CategoriesRepository } from '../../categories/categories.repository';
 import CsvPkoReader from './domain/csv-import/csv-readers/pl-banks/csv-pko.reader';
 import CsvImporter from './domain/csv-import/csv-importer';
 import CsvIngReader from './domain/csv-import/csv-readers/pl-banks/csv-ing-reader';
-import OperationsImportSaveService from './domain/operations-import-save.service';
+import OperationsImportSaveService from './domain/csv-import/operations-import-save.service';
 import { UsersCurrenciesRepository } from '../../users-currencies/users-currencies.repository';
 
 @Module({

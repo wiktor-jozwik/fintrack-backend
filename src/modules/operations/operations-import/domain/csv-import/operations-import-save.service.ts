@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from '../../../users/users.repository';
-import { OperationsRepository } from '../../operations/operations.repository';
-import { CategoriesRepository } from '../../../categories/categories.repository';
-import { SaveOperationItem } from './csv-import/interfaces/save-operation-item';
-import { CategoryType } from '../../../../common/enums/category-type.enum';
+import { UsersRepository } from '../../../../users/users.repository';
+import { OperationsRepository } from '../../../operations/operations.repository';
+import { CategoriesRepository } from '../../../../categories/categories.repository';
+import { SaveOperationItem } from './interfaces/save-operation-item';
+import { CategoryType } from '../../../../../common/enums/category-type.enum';
 import { Operation, Prisma } from '@prisma/client';
-import { UsersCurrenciesRepository } from '../../../users-currencies/users-currencies.repository';
-import { UserNotFoundException } from '../../../users/exceptions/user-not-found.exception';
-import { CurrencyNotAddedException } from '../../../users-currencies/exceptions/currency-not-added.exception';
-import { OperationAlreadyImportedException } from '../exceptions/operation-already-imported.exception';
-import { PrismaCodes } from '../../../../common/enums/prisma-codes.enum';
-import { CategoryNotFoundException } from '../../../categories/exceptions/category-not-found.exception';
+import { UsersCurrenciesRepository } from '../../../../users-currencies/users-currencies.repository';
+import { UserNotFoundException } from '../../../../users/exceptions/user-not-found.exception';
+import { CurrencyNotAddedException } from '../../../../users-currencies/exceptions/currency-not-added.exception';
+import { OperationAlreadyImportedException } from '../../exceptions/operation-already-imported.exception';
+import { PrismaCodes } from '../../../../../common/enums/prisma-codes.enum';
+import { CategoryNotFoundException } from '../../../../categories/exceptions/category-not-found.exception';
 
 @Injectable()
 class OperationsImportSaveService {
@@ -47,6 +47,14 @@ class OperationsImportSaveService {
     categoryName: string,
     userId: number,
   ): Promise<number> {
+    const category = await this.categoriesRepository.findByName(
+      categoryName,
+      userId,
+    );
+    if (category) {
+      return category.id;
+    }
+
     let categoryId;
     try {
       const category = await this.categoriesRepository.create({

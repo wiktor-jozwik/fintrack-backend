@@ -6,7 +6,7 @@ import { parse } from 'csv-parse';
 import { AbsMoneyAmountCategoryType } from '../interfaces/abs-money-amount-category-type';
 import { CategoryType } from '../../../../../../common/enums/category-type.enum';
 
-export abstract class CsvAbstractReader {
+export abstract class CsvReader {
   private readonly DEFAULT_CATEGORY_NAME = 'Default category';
   private readonly DEFAULT_OPERATION_NAME = 'Default operation name';
   private readonly DEFAULT_CURRENCY_NAME = 'PLN';

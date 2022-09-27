@@ -47,8 +47,9 @@ class OperationsImportSaveService {
     categoryName: string,
     userId: number,
   ): Promise<number> {
-    const category = await this.categoriesRepository.findByName(
+    const category = await this.categoriesRepository.findByNameAndType(
       categoryName,
+      categoryType,
       userId,
     );
     if (category) {
@@ -69,8 +70,9 @@ class OperationsImportSaveService {
       categoryId = category.id;
     } catch (err) {
       if (this.checkIfUniqueConstraintViolated(err)) {
-        const category = await this.categoriesRepository.findByName(
+        const category = await this.categoriesRepository.findByNameAndType(
           categoryName,
+          categoryType,
           userId,
         );
         if (!category) {

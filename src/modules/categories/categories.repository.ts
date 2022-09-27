@@ -1,6 +1,7 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Category } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
+import { CategoryType } from '../../common/enums/category-type.enum';
 
 @Injectable()
 export class CategoriesRepository {
@@ -22,6 +23,20 @@ export class CategoriesRepository {
     return await this.prisma.category.findFirst({
       where: {
         name: categoryName,
+        userId,
+      },
+    });
+  }
+
+  async findByNameAndType(
+    categoryName: string,
+    categoryType: CategoryType,
+    userId: number,
+  ): Promise<Category | null> {
+    return await this.prisma.category.findFirst({
+      where: {
+        name: categoryName,
+        type: categoryType,
         userId,
       },
     });

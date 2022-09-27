@@ -7,6 +7,7 @@ import { OperationAssignedException } from './exceptions/operation-assigned.exce
 import { CategoriesRepository } from './categories.repository';
 import { OperationsRepository } from '../operations/operations/operations.repository';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryType } from '../../common/enums/category-type.enum';
 
 @Injectable()
 export class CategoriesService {
@@ -19,7 +20,8 @@ export class CategoriesService {
     createCategoryDto: CreateCategoryDto,
     userId: number,
   ): Promise<Category> {
-    await this.validateNameUniqueness(createCategoryDto.name, userId);
+    const { name, type } = createCategoryDto;
+    await this.validateNameUniqueness(name, type, userId);
 
     return await this.categoriesRepository.create({
       ...createCategoryDto,
@@ -42,14 +44,10 @@ export class CategoriesService {
   ): Promise<Category> {
     await this.validateCategoryPresence(categoryId, userId);
 
-    const { name } = updateCategoryDto;
+    const { name, type } = updateCategoryDto;
 
-    if (name) {
-      const category = await this.categoriesRepository.findByName(name, userId);
-
-      if (category) {
-        throw new CategoryExistsException(name);
-      }
+    if (name && type) {
+      await this.validateNameUniqueness(name, type, userId);
     }
 
     return await this.categoriesRepository.update(
@@ -66,8 +64,16 @@ export class CategoriesService {
     return await this.categoriesRepository.delete(categoryId);
   }
 
-  async validateNameUniqueness(name: string, userId: number): Promise<void> {
-    const category = await this.categoriesRepository.findByName(name, userId);
+  async validateNameUniqueness(
+    name: string,
+    type: CategoryType,
+    userId: number,
+  ): Promise<void> {
+    const category = await this.categoriesRepository.findByNameAndType(
+      name,
+      type,
+      userId,
+    );
 
     if (category) {
       throw new CategoryExistsException(name);

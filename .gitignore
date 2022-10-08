@@ -5,6 +5,7 @@
 .env
 tmp/
 upload
+src/database/dbml
 
 # Logs
 logs

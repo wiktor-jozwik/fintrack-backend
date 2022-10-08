@@ -48,7 +48,7 @@ const seedUsers = async () => {
           },
         },
       },
-      usersToCurrencies: {
+      usersCurrencies: {
         createMany: {
           data: [
             {
@@ -89,7 +89,7 @@ const seedUsers = async () => {
           ],
         },
       },
-      usersToCurrencies: {
+      usersCurrencies: {
         createMany: {
           data: [
             {

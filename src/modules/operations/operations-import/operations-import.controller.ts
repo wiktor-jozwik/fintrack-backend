@@ -6,7 +6,6 @@ import {
   ParseFilePipe,
   Post,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -16,6 +15,7 @@ import { ImportOperationsDto } from './dto/import-operations.dto';
 import { Public } from '../../../common/decorators/public';
 import { SkipUserActiveCheck } from '../../../common/decorators/skip-user-active-check';
 import { UserId } from '../../../common/decorators/user-id';
+import { StringResponse } from '../../../common/interfaces/string-response';
 
 @Controller('operations_import')
 export class OperationsImportController {
@@ -45,7 +45,7 @@ export class OperationsImportController {
       }),
     }),
   )
-  async importBooks(
+  async importOperations(
     @UploadedFile(
       new ParseFilePipe({
         validators: [new FileTypeValidator({ fileType: 'csv' })],
@@ -54,11 +54,15 @@ export class OperationsImportController {
     file: Express.Multer.File,
     @UserId() userId: number,
     @Body() importOperationsDto: ImportOperationsDto,
-  ): Promise<void> {
+  ): Promise<StringResponse> {
     await this.operationsImportService.import(
       file.path,
       userId,
       importOperationsDto,
     );
+
+    return {
+      response: `'${file.originalname}' queued`,
+    };
   }
 }

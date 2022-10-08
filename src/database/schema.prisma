@@ -3,24 +3,28 @@ generator client {
   binaryTargets = ["native", "linux-musl"]
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                Int               @id @default(autoincrement())
-  createdAt         DateTime          @default(now()) @map("created_at")
-  updatedAt         DateTime          @updatedAt @map("updated_at")
-  firstName         String?           @map("first_name")
-  lastName          String?           @map("last_name")
-  phoneNumber       String?           @map("phone_number")
-  email             String            @unique
-  isActive          Boolean           @default(false) @map("is_active")
-  passwordHash      String            @map("password_hash")
-  refreshTokenHash  String?           @map("refresh_token_hash")
-  categories        Category[]
-  usersToCurrencies UsersCurrencies[]
+  id               Int               @id @default(autoincrement())
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  firstName        String?           @map("first_name")
+  lastName         String?           @map("last_name")
+  phoneNumber      String?           @map("phone_number")
+  email            String            @unique
+  isActive         Boolean           @default(false) @map("is_active")
+  passwordHash     String            @map("password_hash")
+  refreshTokenHash String?           @map("refresh_token_hash")
+  categories       Category[]
+  usersCurrencies  UsersCurrencies[]
 
   @@map("users")
 }
@@ -54,11 +58,11 @@ model Operation {
 }
 
 model Currency {
-  id                Int               @id @default(autoincrement())
-  name              String            @unique
-  symbol            String            @unique
-  operations        Operation[]
-  usersToCurrencies UsersCurrencies[]
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  symbol          String            @unique
+  operations      Operation[]
+  usersCurrencies UsersCurrencies[]
 
   @@map("currencies")
 }

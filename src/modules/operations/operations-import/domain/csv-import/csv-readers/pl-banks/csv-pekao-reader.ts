@@ -46,6 +46,9 @@ class CsvPekaoReader extends CsvReader {
         if (this.validateOperationItemCorrectness(operationItem)) {
           callback(operationItem);
         }
+      })
+      .on('error', (err) => {
+        console.error(err);
       });
   }
 

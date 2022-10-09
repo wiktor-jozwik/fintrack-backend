@@ -42,13 +42,14 @@ export class CategoriesService {
     categoryId: number,
     userId: number,
   ): Promise<Category> {
-    await this.validateCategoryPresence(categoryId, userId);
+    const category = await this.validateCategoryPresence(categoryId, userId);
 
-    const { name, type } = updateCategoryDto;
-
-    if (name && type) {
-      await this.validateNameUniqueness(name, type, userId);
-    }
+    await this.validateIfFieldsChanged(
+      category,
+      updateCategoryDto.name,
+      updateCategoryDto.type,
+      userId,
+    );
 
     return await this.categoriesRepository.update(
       categoryId,
@@ -57,9 +58,10 @@ export class CategoriesService {
   }
 
   async remove(categoryId: number, userId: number): Promise<Category> {
-    await this.validateCategoryPresence(categoryId, userId);
-
-    await this.validateZeroOperations(categoryId);
+    await Promise.all([
+      this.validateCategoryPresence(categoryId, userId),
+      this.validateZeroOperations(categoryId),
+    ]);
 
     return await this.categoriesRepository.delete(categoryId);
   }
@@ -83,12 +85,17 @@ export class CategoriesService {
   private async validateCategoryPresence(
     categoryId: number,
     userId: number,
-  ): Promise<void> {
-    const category = this.categoriesRepository.findById(categoryId, userId);
+  ): Promise<Category> {
+    const category = await this.categoriesRepository.findById(
+      categoryId,
+      userId,
+    );
 
     if (!category) {
       throw new CategoryNotFoundException(categoryId);
     }
+
+    return category;
   }
 
   private async validateZeroOperations(categoryId: number): Promise<void> {
@@ -98,6 +105,30 @@ export class CategoriesService {
 
     if (operations.length > 0) {
       throw new OperationAssignedException(operations[0].category.name);
+    }
+  }
+
+  private async validateIfFieldsChanged(
+    category: Category,
+    name: string | undefined,
+    type: CategoryType | undefined,
+    userId: number,
+  ) {
+    if (name && name !== category.name && type === category.type) {
+      await this.validateNameUniqueness(
+        name,
+        CategoryType[category.type],
+        userId,
+      );
+    } else if (type && type !== category.type && name === category.name) {
+      await this.validateNameUniqueness(category.name, type, userId);
+    } else if (
+      type &&
+      type !== category.type &&
+      name &&
+      category.name !== name
+    ) {
+      await this.validateNameUniqueness(name, type, userId);
     }
   }
 }

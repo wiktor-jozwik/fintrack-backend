@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { CategoryType } from '../../../common/enums/category-type.enum';
 
 export class CreateCategoryDto {
@@ -8,4 +8,7 @@ export class CreateCategoryDto {
 
   @IsEnum(CategoryType)
   type: CategoryType;
+
+  @IsBoolean()
+  isInternal: boolean;
 }

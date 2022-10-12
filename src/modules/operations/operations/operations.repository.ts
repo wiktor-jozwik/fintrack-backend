@@ -20,8 +20,8 @@ export class OperationsRepository {
                   userId,
                 },
                 date: {
-                  gt: new Date(startDate),
-                  lt: new Date(endDate),
+                  gte: new Date(startDate),
+                  lte: new Date(endDate),
                 },
               },
             ],

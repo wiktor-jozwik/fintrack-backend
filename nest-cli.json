@@ -1,9 +1,35 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/api/src",
   "compilerOptions": {
-    "assets": ["**/*.hbs"],
-    "watchAssets": true
+    "assets": [
+      "**/*.hbs"
+    ],
+    "watchAssets": true,
+    "webpack": true,
+    "tsConfigPath": "apps/api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/api",
+  "projects": {
+    "money-tracker-api-nestjs": {
+      "type": "application",
+      "root": "apps/api",
+      "entryFile": "main",
+      "sourceRoot": "apps/api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/api/tsconfig.app.json"
+      }
+    },
+    "currency-rates-importer": {
+      "type": "application",
+      "root": "apps/currency-rates-importer",
+      "entryFile": "main",
+      "sourceRoot": "apps/currency-rates-importer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/currency-rates-importer/tsconfig.app.json"
+      }
+    }
   }
 }

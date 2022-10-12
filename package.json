@@ -8,13 +8,13 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \\\\\\\\\\\\\\\"src/**/*.ts\\\\\\\\\\\\\\\" \\\\\\\\\\\\\\\"spec/**/*.ts\\\\\\\\\\\\\\\"",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "start:docker": "docker-compose up",
-    "migrate:currencies": "ts-node src/common/scripts/populate-currencies.script.ts",
+    "migrate:currencies": "ts-node apps/api/src/common/scripts/populate-currencies.script.ts",
     "prisma:generate": "npx prisma generate",
     "prisma:seed": "npx prisma db seed",
     "prisma:studio": "npx prisma studio",
@@ -30,7 +30,7 @@
     "test:e2e": "jest --config spec/jest-e2e.json"
   },
   "prisma": {
-    "schema": "src/database/schema.prisma",
+    "schema": "apps/api/src/database/schema.prisma",
     "seed": "ts-node src/database/seed.ts"
   },
   "dependencies": {
@@ -105,6 +105,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/apps/"
+    ]
   }
 }

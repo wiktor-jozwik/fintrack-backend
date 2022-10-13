@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { CurrencyRatesImporterService } from './currency-rates-importer.service';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './modules/prisma/prisma.module';
+import { ImporterModule } from './modules/import/importer.module';
 
 @Module({
-  imports: [PrismaModule],
-  providers: [CurrencyRatesImporterService],
+  imports: [PrismaModule, ImporterModule],
 })
 export class CurrencyRatesImporterModule {}

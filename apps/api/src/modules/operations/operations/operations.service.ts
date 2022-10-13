@@ -10,7 +10,6 @@ import { OperationsRepository } from './operations.repository';
 import { CategoriesRepository } from '../../categories/categories.repository';
 import { UsersCurrenciesRepository } from '../../users-currencies/users-currencies.repository';
 import { SearchOperationDto } from './dto/search-operation.dto';
-import { UpdateCategoryDto } from '../../categories/dto/update-category.dto';
 import { UpdateOperationDto } from './dto/update-operation.dto';
 
 @Injectable()

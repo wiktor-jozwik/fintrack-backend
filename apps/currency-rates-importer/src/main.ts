@@ -3,6 +3,6 @@ import { CurrencyRatesImporterModule } from './currency-rates-importer.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(CurrencyRatesImporterModule);
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

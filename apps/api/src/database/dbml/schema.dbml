@@ -1,0 +1,99 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  id Int [pk, increment]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  firstName String
+  lastName String
+  phoneNumber String
+  email String [unique, not null]
+  isActive Boolean [not null, default: false]
+  passwordHash String [not null]
+  refreshTokenHash String
+  categories categories [not null]
+  usersCurrencies users_currencies [not null]
+}
+
+Table categories {
+  id Int [pk, increment]
+  name String [not null]
+  type CategoryType [not null]
+  user users [not null]
+  userId Int [not null]
+  isInternal Boolean [not null, default: false]
+  operations operations [not null]
+
+  indexes {
+    (name, type, userId) [unique]
+  }
+}
+
+Table operations {
+  id Int [pk, increment]
+  name String [not null]
+  moneyAmount Decimal [not null]
+  date DateTime [not null]
+  referentialNumber String
+  origin String [default: 'MANUAL']
+  category categories [not null]
+  categoryId Int [not null]
+  currency currencies [not null]
+  currencyId Int [not null]
+
+  indexes {
+    (referentialNumber, origin, id) [unique]
+  }
+}
+
+Table currencies {
+  id Int [pk, increment]
+  name String [unique, not null]
+  symbol String [unique, not null]
+  operations operations [not null]
+  usersCurrencies users_currencies [not null]
+  CurrencyRate currency_rates [not null]
+}
+
+Table users_currencies {
+  createdAt DateTime [default: `now()`, not null]
+  currency currencies [not null]
+  currencyId Int [not null]
+  user users [not null]
+  userId Int [not null]
+
+  indexes {
+    (currencyId, userId) [pk]
+  }
+}
+
+Table currency_rates {
+  id Int [pk, increment]
+  date DateTime [not null]
+  avgValue Float [not null]
+  currency currencies [not null]
+  currencyId Int [not null]
+
+  indexes {
+    (date, currencyId) [unique]
+  }
+}
+
+Enum CategoryType {
+  INCOME
+  OUTCOME
+}
+
+Ref: categories.userId > users.id
+
+Ref: operations.categoryId > categories.id
+
+Ref: operations.currencyId > currencies.id
+
+Ref: users_currencies.currencyId > currencies.id
+
+Ref: users_currencies.userId > users.id
+
+Ref: currency_rates.currencyId > currencies.id

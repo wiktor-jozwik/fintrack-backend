@@ -49,7 +49,7 @@ import { OperationsImportModule } from './modules/operations/operations-import/o
     OperationsImportModule,
   ],
 })
-export class AppModule implements NestModule {
+export class ApiModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(LogsMiddleware).forRoutes('*');
   }

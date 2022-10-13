@@ -64,6 +64,7 @@ model Currency {
   symbol          String            @unique
   operations      Operation[]
   usersCurrencies UsersCurrencies[]
+  currencyRates   CurrencyRate[]
 
   @@map("currencies")
 }
@@ -77,6 +78,17 @@ model UsersCurrencies {
 
   @@id([currencyId, userId])
   @@map("users_currencies")
+}
+
+model CurrencyRate {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @db.Date
+  avgValue   Float    @map("avg_value")
+  currency   Currency @relation(fields: [currencyId], references: [id])
+  currencyId Int      @map("currency_id")
+
+  @@unique(fields: [date, currencyId], name: "currency_rate_on_date")
+  @@map("currency_rates")
 }
 
 enum CategoryType {

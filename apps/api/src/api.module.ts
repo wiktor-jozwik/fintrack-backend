@@ -11,6 +11,7 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import LogsMiddleware from './common/middlewares/logs.middleware';
 import { EmailModule } from './modules/email/email.module';
 import { OperationsImportModule } from './modules/operations/operations-import/operations-import.module';
+import { OperationsCalculatorModule } from './modules/operations/operations-calculator/operations-calculator.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { OperationsImportModule } from './modules/operations/operations-import/o
     UsersCurrenciesModule,
     EmailModule,
     OperationsImportModule,
+    OperationsCalculatorModule,
   ],
 })
 export class ApiModule implements NestModule {

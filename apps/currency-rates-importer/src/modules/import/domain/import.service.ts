@@ -28,9 +28,7 @@ export class ImportService {
     startDate = moment('2002-01-02'),
     endDate = moment(),
   ) {
-    while (
-      convertMomentToIsoDate(endDate) !== convertMomentToIsoDate(startDate)
-    ) {
+    while (startDate <= endDate) {
       await this.currencyFetcherService.saveCurrencyForDate(
         currencyName,
         startDate,

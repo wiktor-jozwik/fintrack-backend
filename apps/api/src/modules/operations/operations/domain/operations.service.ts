@@ -1,20 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { isValidIsoDate } from '../../../common/utils/is-valid-iso-date';
+import { isValidIsoDate } from '../../../../common/utils/is-valid-iso-date';
 import { Category, Currency, Operation } from '@prisma/client';
-import { CreateOperationDto } from './dto/create-operation.dto';
-import { OperationNotFoundException } from './exceptions/operation-not-found.exception';
-import { CategoryNotFoundException } from '../../categories/exceptions/category-not-found.exception';
-import { InvalidDateFormatException } from './exceptions/invalid-date-format.exception';
-import { CurrencyNotAddedException } from '../../users-currencies/exceptions/currency-not-added.exception';
-import { OperationsRepository } from './operations.repository';
-import { CategoriesRepository } from '../../categories/categories.repository';
-import { UsersCurrenciesRepository } from '../../users-currencies/users-currencies.repository';
-import { SearchOperationDto } from './dto/search-operation.dto';
-import { UpdateOperationDto } from './dto/update-operation.dto';
+import { CreateOperationDto } from '../dto/create-operation.dto';
+import { OperationNotFoundException } from '../exceptions/operation-not-found.exception';
+import { CategoryNotFoundException } from '../../../categories/exceptions/category-not-found.exception';
+import { InvalidDateFormatException } from '../exceptions/invalid-date-format.exception';
+import { CurrencyNotAddedException } from '../../../users-currencies/exceptions/currency-not-added.exception';
+import { OperationsRepository } from '../operations.repository';
+import { CategoriesRepository } from '../../../categories/categories.repository';
+import { UsersCurrenciesRepository } from '../../../users-currencies/users-currencies.repository';
+import { SearchOperationDto } from '../dto/search-operation.dto';
+import { UpdateOperationDto } from '../dto/update-operation.dto';
+import { DefaultCurrencyOperationCalculatorService } from './default-currency-operation-calculator.service';
+import { DefaultCurrencyNotFoundException } from '../../../users-currencies/exceptions/default-currency-not-found.exception';
+import { DefaultCurrencyOperation } from '../interfaces/default-currency-operation';
 
 @Injectable()
 export class OperationsService {
   constructor(
+    private readonly defaultCurrencyOperationCalculatorService: DefaultCurrencyOperationCalculatorService,
     private readonly operationsRepository: OperationsRepository,
     private readonly categoriesRepository: CategoriesRepository,
     private readonly usersCurrenciesRepository: UsersCurrenciesRepository,
@@ -56,7 +60,7 @@ export class OperationsService {
   async findAll(
     userId: number,
     query: SearchOperationDto | null,
-  ): Promise<Operation[]> {
+  ): Promise<(Operation & { currency: Currency; category: Category })[]> {
     let startDate = null;
     let endDate = null;
     if (query) {
@@ -65,6 +69,42 @@ export class OperationsService {
     }
 
     return await this.operationsRepository.findAll(userId, startDate, endDate);
+  }
+
+  async findAllInDefaultCurrency(
+    userId: number,
+    query: SearchOperationDto | null,
+  ): Promise<DefaultCurrencyOperation[]> {
+    const defaultCurrencyOperations: DefaultCurrencyOperation[] = [];
+    const operations = await this.findAll(userId, query);
+
+    const defaultCurrency =
+      await this.usersCurrenciesRepository.findUsersDefault(userId);
+    if (!defaultCurrency) {
+      throw new DefaultCurrencyNotFoundException();
+    }
+
+    const defaultCurrencyName = defaultCurrency.currency.name;
+
+    for (const operation of operations) {
+      const operationCurrencyRate =
+        await this.defaultCurrencyOperationCalculatorService.getOperationCurrencyRateInDefaultCurrency(
+          operation,
+          defaultCurrencyName,
+        );
+
+      const moneyAmountInDefaultCurrency =
+        Number(operation.moneyAmount) * operationCurrencyRate;
+
+      defaultCurrencyOperations.push({
+        name: operation.name,
+        moneyAmountInDefaultCurrency,
+        date: operation.date,
+        category: operation.category,
+      });
+    }
+
+    return defaultCurrencyOperations;
   }
 
   async update(

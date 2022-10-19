@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateOperationDto } from './dto/create-operation.dto';
-import { OperationsService } from './operations.service';
+import { OperationsService } from './domain/operations.service';
 import { UserId } from '../../../common/decorators/user-id';
 import { OperationInterceptor } from './interceptors/operation.interceptor';
 import { OperationsInterceptor } from './interceptors/operations.interceptor';
@@ -35,6 +35,15 @@ export class OperationsController {
   @Get()
   findAll(@UserId() userId: number, @Query() query: SearchOperationDto) {
     return this.operationsService.findAll(userId, query);
+  }
+
+  @UseInterceptors(OperationsInterceptor)
+  @Get('default_currency')
+  findAllInDefaultCurrency(
+    @UserId() userId: number,
+    @Query() query: SearchOperationDto,
+  ) {
+    return this.operationsService.findAllInDefaultCurrency(userId, query);
   }
 
   @UseInterceptors(OperationInterceptor)

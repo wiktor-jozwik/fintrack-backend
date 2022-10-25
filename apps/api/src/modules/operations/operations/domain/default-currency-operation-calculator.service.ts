@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Currency, Operation } from '@prisma/client';
-import CurrencyRatesRepository from '../../../../database/repositories/currency-rates.repository';
+import { CurrencyRatesRepository } from '@app/database';
 
 @Injectable()
 export class DefaultCurrencyOperationCalculatorService {

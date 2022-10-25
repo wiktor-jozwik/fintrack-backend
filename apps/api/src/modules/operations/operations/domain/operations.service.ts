@@ -6,14 +6,16 @@ import { OperationNotFoundException } from '../exceptions/operation-not-found.ex
 import { CategoryNotFoundException } from '../../../categories/exceptions/category-not-found.exception';
 import { InvalidDateFormatException } from '../exceptions/invalid-date-format.exception';
 import { CurrencyNotAddedException } from '../../../users-currencies/exceptions/currency-not-added.exception';
-import { OperationsRepository } from '../operations.repository';
-import { CategoriesRepository } from '../../../categories/categories.repository';
-import { UsersCurrenciesRepository } from '../../../users-currencies/users-currencies.repository';
 import { SearchOperationDto } from '../dto/search-operation.dto';
 import { UpdateOperationDto } from '../dto/update-operation.dto';
 import { DefaultCurrencyOperationCalculatorService } from './default-currency-operation-calculator.service';
 import { DefaultCurrencyNotFoundException } from '../../../users-currencies/exceptions/default-currency-not-found.exception';
 import { DefaultCurrencyOperation } from '../interfaces/default-currency-operation';
+import {
+  CategoriesRepository,
+  OperationsRepository,
+  UsersCurrenciesRepository,
+} from '@app/database';
 
 @Injectable()
 export class OperationsService {

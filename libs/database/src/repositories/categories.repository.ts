@@ -1,7 +1,6 @@
-import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, Category } from '@prisma/client';
+import { Prisma, Category, CategoryType } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
-import { CategoryType } from '../../common/enums/category-type.enum';
+import { PrismaService } from '@app/database';
 
 @Injectable()
 export class CategoriesRepository {

@@ -9,7 +9,6 @@ import { User } from '@prisma/client';
 import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
 import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception';
 import { PasswordsDoNotMatchException } from './exceptions/passwords-do-not-match.exception';
-import { UsersRepository } from './users.repository';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -17,15 +16,16 @@ import { TokenExpiredException } from './exceptions/token-expired.exception';
 import { UserNotFoundException } from './exceptions/user-not-found.exception';
 import { UserAlreadyActiveException } from './exceptions/user-already-active.exception';
 import { UserProfileResponse } from './interfaces/user-profile-response';
+import { UsersRepository } from '@app/database';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly usersRepository: UsersRepository,
     private readonly usersCurrenciesService: UsersCurrenciesService,
     private readonly emailService: EmailService,
+    private readonly usersRepository: UsersRepository,
   ) {}
 
   async register(registerData: UserRegisterDto): Promise<User> {

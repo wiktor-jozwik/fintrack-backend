@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
 import { UsersCurrenciesController } from './users-currencies.controller';
-import { UsersCurrenciesRepository } from './users-currencies.repository';
-import { CurrenciesRepository } from '../currencies/currencies.repository';
+import { CurrenciesRepository, UsersCurrenciesRepository } from '@app/database';
 
 @Module({
   controllers: [UsersCurrenciesController],
@@ -11,6 +10,6 @@ import { CurrenciesRepository } from '../currencies/currencies.repository';
     UsersCurrenciesRepository,
     CurrenciesRepository,
   ],
-  exports: [UsersCurrenciesService, UsersCurrenciesRepository],
+  exports: [UsersCurrenciesService],
 })
 export class UsersCurrenciesModule {}

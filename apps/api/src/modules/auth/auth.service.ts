@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserPayload } from './interfaces/user.payload';
 import { compareHash } from '../../common/utils/compare-hash';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
-import { UsersRepository } from '../users/users.repository';
+import { UsersRepository } from '@app/database/repositories/users.repository';
 import { AccountNotActiveException } from './exceptions/account-not-active.exception';
 import { hashString } from '../../common/utils/hash-password';
 import { User } from '@prisma/client';

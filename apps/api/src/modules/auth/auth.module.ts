@@ -11,6 +11,7 @@ import { UserIsActiveGuard } from '../../common/guards/user-is-active.guard';
 import { JwtAccessTokenStrategy } from './strategies/jwt-access-token.strategy';
 import { JwtRefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
 import { JwtAccessTokenGuard } from '../../common/guards/jwt-access-token.guard';
+import { UsersRepository } from '@app/database';
 
 @Module({
   imports: [UsersModule, PassportModule, ConfigModule, JwtModule.register({})],
@@ -28,6 +29,7 @@ import { JwtAccessTokenGuard } from '../../common/guards/jwt-access-token.guard'
       provide: APP_GUARD,
       useClass: UserIsActiveGuard,
     },
+    UsersRepository,
   ],
   exports: [AuthService],
 })

@@ -4,10 +4,9 @@ import { Currency, UsersCurrencies } from '@prisma/client';
 import { CurrencyNotSupportedException } from './exceptions/currency-not-supported.exception';
 import { CurrencyAlreadyAddedException } from './exceptions/currency-already-added.exception';
 import { DefaultCurrencyNotFoundException } from './exceptions/default-currency-not-found.exception';
-import { UsersCurrenciesRepository } from './users-currencies.repository';
-import { CurrenciesRepository } from '../currencies/currencies.repository';
 import { CurrencyNotFoundException } from './exceptions/currency-not-found.exception';
 import { DefaultCurrencyDeleteException } from './exceptions/default-currency-delete.exception';
+import { CurrenciesRepository, UsersCurrenciesRepository } from '@app/database';
 
 @Injectable()
 export class UsersCurrenciesService {

@@ -4,10 +4,9 @@ import { Category } from '@prisma/client';
 import { CategoryNotFoundException } from './exceptions/category-not-found.exception';
 import { CategoryExistsException } from './exceptions/category-exists.exception';
 import { OperationAssignedException } from './exceptions/operation-assigned.exception';
-import { CategoriesRepository } from './categories.repository';
-import { OperationsRepository } from '../operations/operations/operations.repository';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryType } from '../../common/enums/category-type.enum';
+import { CategoriesRepository, OperationsRepository } from '@app/database';
 
 @Injectable()
 export class CategoriesService {

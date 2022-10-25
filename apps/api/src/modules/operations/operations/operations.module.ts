@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { OperationsService } from './domain/operations.service';
 import { OperationsController } from './operations.controller';
-import { OperationsRepository } from './operations.repository';
-import { CategoriesRepository } from '../../categories/categories.repository';
-import { UsersCurrenciesRepository } from '../../users-currencies/users-currencies.repository';
 import { DefaultCurrencyOperationCalculatorService } from './domain/default-currency-operation-calculator.service';
-import CurrencyRatesRepository from '../../../database/repositories/currency-rates.repository';
+import {
+  CategoriesRepository,
+  CurrencyRatesRepository,
+  OperationsRepository,
+  UsersCurrenciesRepository,
+} from '@app/database';
 
 @Module({
   controllers: [OperationsController],
@@ -17,6 +19,6 @@ import CurrencyRatesRepository from '../../../database/repositories/currency-rat
     CurrencyRatesRepository,
     UsersCurrenciesRepository,
   ],
-  exports: [OperationsService, OperationsRepository],
+  exports: [OperationsService],
 })
 export class OperationsModule {}

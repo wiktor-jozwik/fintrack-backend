@@ -28,9 +28,6 @@ const importCurrencyRatesInRange = async () => {
     momentEndDate = moment();
   }
 
-  console.log(momentStartDate);
-  console.log(momentEndDate);
-
   const app = await NestFactory.create(CurrencyRatesImporterModule);
   const importService = app.get<ImportService>(ImportService);
 

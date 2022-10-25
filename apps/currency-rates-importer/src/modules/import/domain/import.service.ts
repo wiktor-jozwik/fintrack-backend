@@ -3,7 +3,6 @@ import { Cron } from '@nestjs/schedule';
 import CurrencyFetchService from './currency-fetch.service';
 import { SUPPORTED_CURRENCIES } from '../../../common/constants/supported-currencies';
 import * as moment from 'moment';
-import { convertMomentToIsoDate } from '../../../common/utils/convert-moment-to-iso-date';
 
 @Injectable()
 export class ImportService {
@@ -14,7 +13,6 @@ export class ImportService {
   @Cron('*/1 * * * *')
   async importCurrencyRates() {
     for (const currency of SUPPORTED_CURRENCIES) {
-      console.log(`Importing ${currency.name}`);
       if (currency.name === 'PLN') continue;
 
       const date = moment().subtract(this.PREVIOUS_DAYS_TO_FETCH_AMOUNT, 'day');

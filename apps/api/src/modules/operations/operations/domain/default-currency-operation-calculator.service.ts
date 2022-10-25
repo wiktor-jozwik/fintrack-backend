@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Currency, Operation } from '@prisma/client';
-import { OperationCurrencyRateNotFoundException } from '../../operations/exceptions/operation-currency-rate-not-found.exception';
 import CurrencyRatesRepository from '../../../../database/repositories/currency-rates.repository';
 
 @Injectable()
@@ -18,26 +17,38 @@ export class DefaultCurrencyOperationCalculatorService {
     }
 
     if (operation.currency.name === 'PLN') {
-      const defaultCurrencyRateForDate = await this.findCurrencyRateOrThrow(
+      const defaultCurrencyRateForDate = await this.findCurrency(
         defaultCurrencyName,
         operation.date,
       );
+      if (!defaultCurrencyRateForDate) {
+        return 0;
+      }
+
       return 1 / defaultCurrencyRateForDate.avgValue;
     }
 
-    const operationCurrencyRateForDate = await this.findCurrencyRateOrThrow(
+    const operationCurrencyRateForDate = await this.findCurrency(
       operation.currency.name,
       operation.date,
     );
+
+    if (!operationCurrencyRateForDate) {
+      return 0;
+    }
 
     if (defaultCurrencyName === 'PLN') {
       return operationCurrencyRateForDate.avgValue;
     }
 
-    const defaultCurrencyRateForDate = await this.findCurrencyRateOrThrow(
+    const defaultCurrencyRateForDate = await this.findCurrency(
       defaultCurrencyName,
       operation.date,
     );
+
+    if (!defaultCurrencyRateForDate) {
+      return 0;
+    }
 
     return (
       operationCurrencyRateForDate.avgValue /
@@ -45,17 +56,10 @@ export class DefaultCurrencyOperationCalculatorService {
     );
   }
 
-  private async findCurrencyRateOrThrow(currencyName: string, date: Date) {
-    const operationCurrencyRateForDate =
-      await this.currencyRatesRepository.findCurrencyRateForDate(
-        currencyName,
-        date,
-      );
-
-    if (!operationCurrencyRateForDate) {
-      throw new OperationCurrencyRateNotFoundException(currencyName, date);
-    }
-
-    return operationCurrencyRateForDate;
+  private async findCurrency(currencyName: string, date: Date) {
+    return await this.currencyRatesRepository.findCurrencyRateForDate(
+      currencyName,
+      date,
+    );
   }
 }

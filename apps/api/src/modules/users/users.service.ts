@@ -3,20 +3,22 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { UserRegisterDto } from './dto/user-register.dto';
 import { hashString } from '@app/common/utils';
 import { User } from '@prisma/client';
-import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
-import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception';
-import { PasswordsDoNotMatchException } from './exceptions/passwords-do-not-match.exception';
 import { EmailService } from '../email/email.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { TokenExpiredException } from './exceptions/token-expired.exception';
-import { UserNotFoundException } from './exceptions/user-not-found.exception';
-import { UserAlreadyActiveException } from './exceptions/user-already-active.exception';
-import { UserProfileResponse } from './interfaces/user-profile-response';
 import { UsersRepository } from '@app/database';
+import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
+import { UserRegisterDto } from './dto';
+import {
+  PasswordsDoNotMatchException,
+  TokenExpiredException,
+  UserAlreadyActiveException,
+  UserAlreadyExistsException,
+  UserNotFoundException,
+} from '@api/exceptions';
+import { UserProfileResponse } from './interfaces';
 
 @Injectable()
 export class UsersService {

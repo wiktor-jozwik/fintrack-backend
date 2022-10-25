@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import NbpHttpService from './nbp-http.service';
 import * as moment from 'moment';
 import { AxiosError } from 'axios';
 import { Moment } from 'moment';
 import { convertMomentToIsoDate } from '@app/common/utils/convert-moment-to-iso-date';
 import { CurrencyRatesRepository } from '@app/database';
+import { NbpHttpService } from './nbp-http.service';
 
 @Injectable()
-class CurrencyFetchService {
+export class CurrencyFetchService {
   private readonly logger = new Logger(CurrencyFetchService.name);
 
   constructor(
@@ -87,5 +87,3 @@ class CurrencyFetchService {
     this.logger.log(`Saved rate for currency '${name}' on previous date`);
   }
 }
-
-export default CurrencyFetchService;

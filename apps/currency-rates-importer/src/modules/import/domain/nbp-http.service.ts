@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { nbpApiUrl } from '../../../common/constants/nbp-api-url';
 import { lastValueFrom } from 'rxjs';
 import { CurrencyNbpRate } from '../../../common/interfaces/currency-nbp-rate';
 
 @Injectable()
-class NbpHttpService {
+export class NbpHttpService {
+  private readonly NBP_API_URL = 'http://api.nbp.pl/api';
+
   constructor(private readonly httpService: HttpService) {}
 
   async fetchCurrencyRateForDate(
@@ -13,7 +14,7 @@ class NbpHttpService {
     isoDate: string,
     table = 'A',
   ): Promise<number> {
-    const url = `${nbpApiUrl}/exchangerates/rates/${table}/${currencyName}/${isoDate}?format=json`;
+    const url = `${this.NBP_API_URL}/exchangerates/rates/${table}/${currencyName}/${isoDate}?format=json`;
     const currencyRateObservable = this.httpService.get(url);
 
     const currencyRateResponse = await lastValueFrom(currencyRateObservable);
@@ -22,5 +23,3 @@ class NbpHttpService {
     return currencyData.rates[0].mid;
   }
 }
-
-export default NbpHttpService;

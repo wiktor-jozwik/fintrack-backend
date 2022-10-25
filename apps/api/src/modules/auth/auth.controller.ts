@@ -7,20 +7,19 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthRequest } from './interfaces/auth-request';
 import { UsersService } from '../users/users.service';
-import { UserRegisterDto } from '../users/dto/user-register.dto';
-import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
 import { AuthService } from './auth.service';
-import { Public } from '../../common/decorators/public';
-import { UserRegisterInterceptor } from './interceptors/user-register.interceptor';
-import { SkipUserActiveCheck } from '../../common/decorators/skip-user-active-check';
 import { User } from '@prisma/client';
-import { JwtTokens } from './interfaces/jwt-tokens';
-import { UserId } from '../../common/decorators/user-id';
-import { JwtRefreshTokenGuard } from '../../common/guards/jwt-refresh-token.guard';
-import { RefreshToken } from '../../common/decorators/refresh-token';
-import { LogoutResponse } from './interfaces/logout-response';
+import {
+  Public,
+  RefreshToken,
+  SkipUserActiveCheck,
+  UserId,
+} from '@api/common/decorators';
+import { UserRegisterInterceptor } from './interceptors';
+import { UserRegisterDto } from '../users/dto';
+import { JwtRefreshTokenGuard, LocalAuthGuard } from '@api/common/guards';
+import { AuthRequest, JwtTokens, LogoutResponse } from './interfaces';
 
 @Controller('auth')
 export class AuthController {

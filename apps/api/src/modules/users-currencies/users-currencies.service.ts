@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { Currency, UsersCurrencies } from '@prisma/client';
-import { CurrencyNotSupportedException } from './exceptions/currency-not-supported.exception';
-import { CurrencyAlreadyAddedException } from './exceptions/currency-already-added.exception';
-import { DefaultCurrencyNotFoundException } from './exceptions/default-currency-not-found.exception';
-import { CurrencyNotFoundException } from './exceptions/currency-not-found.exception';
-import { DefaultCurrencyDeleteException } from './exceptions/default-currency-delete.exception';
 import { CurrenciesRepository, UsersCurrenciesRepository } from '@app/database';
+import {
+  CurrencyAlreadyAddedException,
+  CurrencyNotFoundException,
+  CurrencyNotSupportedException,
+  DefaultCurrencyDeleteException,
+  DefaultCurrencyNotFoundException,
+} from '@api/exceptions';
+import { CreateCurrencyDto } from './dto';
 
 @Injectable()
 export class UsersCurrenciesService {

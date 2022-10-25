@@ -6,15 +6,12 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { TokenDto } from './dto/token.dto';
 import { UsersService } from './users.service';
-import { ResendActivationLinkDto } from './dto/resend-activation-link.dto';
-import { Public } from '../../common/decorators/public';
-import { SkipUserActiveCheck } from '../../common/decorators/skip-user-active-check';
-import { StringResponse } from '../../common/interfaces/string-response';
-import { UserId } from '../../common/decorators/user-id';
-import { UserProfileResponse } from './interfaces/user-profile-response';
-import { UserProfileInterceptor } from './interceptors/user-profile.interceptor';
+import { UserProfileInterceptor } from './interceptors';
+import { Public, SkipUserActiveCheck, UserId } from '@api/common/decorators';
+import { UserProfileResponse } from './interfaces';
+import { ResendActivationLinkDto, TokenDto } from './dto';
+import { StringResponse } from '@api/common/interfaces';
 
 @Controller('users')
 export class UsersController {

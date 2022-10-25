@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
-import { CreateCurrencyDto } from './dto/create-currency.dto';
-import { UserId } from '../../common/decorators/user-id';
-import { UserIsActiveGuard } from '../../common/guards/user-is-active.guard';
+import { UserIsActiveGuard } from '@api/common/guards';
+import { UserId } from '@api/common/decorators';
+import { CreateCurrencyDto } from './dto';
 
 @Controller('users_currencies')
 export class UsersCurrenciesController {

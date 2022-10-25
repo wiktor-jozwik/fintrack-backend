@@ -10,13 +10,14 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { CreateOperationDto } from './dto/create-operation.dto';
-import { OperationsService } from './domain/operations.service';
-import { UserId } from '../../../common/decorators/user-id';
-import { OperationInterceptor } from './interceptors/operation.interceptor';
-import { OperationsInterceptor } from './interceptors/operations.interceptor';
-import { SearchOperationDto } from './dto/search-operation.dto';
-import { UpdateOperationDto } from './dto/update-operation.dto';
+import { OperationsService } from './domain';
+import { OperationInterceptor, OperationsInterceptor } from './interceptors';
+import {
+  CreateOperationDto,
+  SearchOperationDto,
+  UpdateOperationDto,
+} from './dto';
+import { UserId } from '@api/common/decorators';
 
 @Controller('operations')
 export class OperationsController {

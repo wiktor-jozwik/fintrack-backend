@@ -8,10 +8,9 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoriesService } from './categories.service';
-import { UserId } from '../../common/decorators/user-id';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryDto, UpdateCategoryDto } from './dto';
+import { UserId } from '@api/common/decorators';
 
 @Controller('categories')
 export class CategoriesController {

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category, CategoryType } from '@prisma/client';
-import { CategoryNotFoundException } from './exceptions/category-not-found.exception';
-import { CategoryExistsException } from './exceptions/category-exists.exception';
-import { OperationAssignedException } from './exceptions/operation-assigned.exception';
-import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoriesRepository, OperationsRepository } from '@app/database';
+import {
+  CategoryExistsException,
+  CategoryNotFoundException,
+  OperationAssignedException,
+} from '@api/exceptions';
+import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 
 @Injectable()
 export class CategoriesService {

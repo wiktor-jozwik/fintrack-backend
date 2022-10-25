@@ -1,12 +1,8 @@
-interface Rate {
-  no: string;
-  effectiveDate: string;
-  mid: number;
-}
+import { NbpRate } from './nbp-rate';
 
 export interface CurrencyNbpRate {
   table: string;
   currency: string;
   code: string;
-  rates: Rate[];
+  rates: NbpRate[];
 }

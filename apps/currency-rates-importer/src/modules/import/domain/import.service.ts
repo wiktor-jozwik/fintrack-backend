@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import CurrencyFetchService from './currency-fetch.service';
 import * as moment from 'moment';
 import { SUPPORTED_CURRENCIES } from '@app/common';
+import { CurrencyFetchService } from './currency-fetch.service';
 
 @Injectable()
 export class ImportService {
@@ -10,7 +10,7 @@ export class ImportService {
 
   constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
 
-  @Cron('*/20 * * * * *')
+  @Cron('*/1 * * * *')
   async importCurrencyRates() {
     for (const currency of SUPPORTED_CURRENCIES) {
       if (currency.name === 'PLN') continue;

@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { CurrenciesService } from './currencies.service';
-import { Public } from '../../common/decorators/public';
-import { SkipUserActiveCheck } from '../../common/decorators/skip-user-active-check';
+import { Public, SkipUserActiveCheck } from '@api/common/decorators';
 
 @Controller('currencies')
 export class CurrenciesController {

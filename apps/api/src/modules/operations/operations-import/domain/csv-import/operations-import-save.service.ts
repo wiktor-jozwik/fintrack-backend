@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { SaveOperationItem } from './interfaces/save-operation-item';
 import { CategoryType, Operation, Prisma } from '@prisma/client';
-import { UserNotFoundException } from '../../../../users/exceptions/user-not-found.exception';
-import { CurrencyNotAddedException } from '../../../../users-currencies/exceptions/currency-not-added.exception';
+import { UserNotFoundException } from '@api/exceptions/users/user-not-found.exception';
+import { CurrencyNotAddedException } from '@api/exceptions/users-currencies/currency-not-added.exception';
 import { OperationAlreadyImportedException } from '../../exceptions/operation-already-imported.exception';
 import { PrismaCodes } from '@app/common/enums/prisma-codes.enum';
-import { CategoryNotFoundException } from '../../../../categories/exceptions/category-not-found.exception';
+import { CategoryNotFoundException } from '@api/exceptions/categories/category-not-found.exception';
 import {
   CategoriesRepository,
   OperationsRepository,

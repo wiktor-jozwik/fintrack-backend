@@ -1,4 +1,4 @@
-import { CsvImportWay } from '../../../../common/enums/csv-import-way.enum';
+import { CsvImportWay } from '../enums/csv-import-way.enum';
 import { IsEnum } from 'class-validator';
 
 export class ImportOperationsDto {

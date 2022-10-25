@@ -1,7 +1,7 @@
-import { hashString } from '../common/utils/hash-password';
-import { CategoryType } from '../common/enums/category-type.enum';
-import { PrismaService } from '../modules/prisma/prisma.service';
-import { populateCurrencies } from '../common/scripts/populate-currencies';
+import { hashString } from '../../../apps/api/src/common/utils/hash-password';
+import { populateCurrencies } from '../../../apps/api/src/common/scripts/populate-currencies';
+import { PrismaService } from '@app/database/prisma';
+import { CategoryType } from '@prisma/client';
 
 const seedUsers = async () => {
   const prisma = new PrismaService();

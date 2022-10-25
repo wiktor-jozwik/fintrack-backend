@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ImportOperationsDto } from '../dto/import-operations.dto';
-import { CsvImportWay } from '../../../../common/enums/csv-import-way.enum';
+import { CsvImportWay } from '../enums/csv-import-way.enum';
 import CsvPkoReader from './csv-import/csv-readers/pl-banks/csv-pko.reader';
 import { CsvReaderNotImplementedException } from '../exceptions/csv-reader-not-implemented.exception';
 import CsvPekaoReader from './csv-import/csv-readers/pl-banks/csv-pekao-reader';

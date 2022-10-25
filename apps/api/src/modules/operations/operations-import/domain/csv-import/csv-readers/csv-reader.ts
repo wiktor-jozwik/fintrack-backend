@@ -4,7 +4,7 @@ import {
 } from '../interfaces/csv-operation-item';
 import { parse } from 'csv-parse';
 import { AbsMoneyAmountCategoryType } from '../interfaces/abs-money-amount-category-type';
-import { CategoryType } from '../../../../../../common/enums/category-type.enum';
+import { CategoryType } from '@prisma/client';
 
 export abstract class CsvReader {
   private readonly DEFAULT_CATEGORY_NAME = 'Default category';
@@ -62,7 +62,7 @@ export abstract class CsvReader {
   getMoneyAmountAndCategoryType(
     rawMoneyAmount: string,
   ): AbsMoneyAmountCategoryType {
-    let categoryType = CategoryType.INCOME;
+    let categoryType: CategoryType = CategoryType.INCOME;
     const moneyAmount = +rawMoneyAmount.replace(',', '.').replace(/\s+/, '');
 
     if (moneyAmount < 0) {

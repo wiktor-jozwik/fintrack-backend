@@ -1,4 +1,4 @@
-import { CategoryType } from '../../../../../../common/enums/category-type.enum';
+import { CategoryType } from '@prisma/client';
 
 export interface AbsMoneyAmountCategoryType {
   absMoneyAmount: number;

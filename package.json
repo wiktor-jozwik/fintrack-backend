@@ -30,8 +30,8 @@
     "test:e2e": "jest --config spec/jest-e2e.json"
   },
   "prisma": {
-    "schema": "apps/api/src/database/schema.prisma",
-    "seed": "ts-node apps/api/src/database/seed.ts"
+    "schema": "libs/database/src/schema.prisma",
+    "seed": "ts-node libs/database/src/seed.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",

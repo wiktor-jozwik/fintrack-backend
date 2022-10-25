@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import CurrencyFetchService from './currency-fetch.service';
-import { SUPPORTED_CURRENCIES } from '../../../common/constants/supported-currencies';
 import * as moment from 'moment';
+import { SUPPORTED_CURRENCIES } from '@app/common';
 
 @Injectable()
 export class ImportService {

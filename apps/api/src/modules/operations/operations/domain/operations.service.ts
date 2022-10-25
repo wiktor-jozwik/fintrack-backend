@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { isValidIsoDate } from '../../../../common/utils/is-valid-iso-date';
+import { isValidIsoDate } from '../../../../../../../libs/common/src/utils/is-valid-iso-date';
 import { Category, Currency, Operation } from '@prisma/client';
 import { CreateOperationDto } from '../dto/create-operation.dto';
 import { OperationNotFoundException } from '../exceptions/operation-not-found.exception';

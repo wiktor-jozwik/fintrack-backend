@@ -5,7 +5,7 @@ import {
   OperationItem,
 } from '../../interfaces/csv-operation-item';
 import { CsvReader } from '../csv-reader';
-import { slugifyString } from '../../../../../../../common/utils/slugify-string';
+import { slugifyString } from '../../../../../../../../../../libs/common/src/utils/slugify-string';
 
 @Injectable()
 class CsvPkoReader extends CsvReader {

@@ -3,20 +3,20 @@ import { JwtService } from '@nestjs/jwt';
 import { UserPayload } from './interfaces/user.payload';
 import { compareHash } from '../../common/utils/compare-hash';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
-import { UsersRepository } from '@app/database/repositories/users.repository';
 import { AccountNotActiveException } from './exceptions/account-not-active.exception';
 import { hashString } from '../../common/utils/hash-password';
 import { User } from '@prisma/client';
 import { JwtTokens } from './interfaces/jwt-tokens';
 import { ConfigService } from '@nestjs/config';
 import { UserEmailPayload } from './interfaces/user-email.payload';
+import { UsersRepository } from '@app/database';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly usersRepository: UsersRepository,
     private readonly jwtService: JwtService,
+    private readonly usersRepository: UsersRepository,
   ) {}
 
   async validateUser(email: string, plainTextPassword: string): Promise<any> {

@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserPayload } from './interfaces/user.payload';
-import { compareHash } from '../../common/utils/compare-hash';
 import { InvalidCredentialsException } from './exceptions/invalid-credentials.exception';
 import { AccountNotActiveException } from './exceptions/account-not-active.exception';
-import { hashString } from '../../common/utils/hash-password';
 import { User } from '@prisma/client';
 import { JwtTokens } from './interfaces/jwt-tokens';
 import { ConfigService } from '@nestjs/config';
 import { UserEmailPayload } from './interfaces/user-email.payload';
 import { UsersRepository } from '@app/database';
+import { compareHash, hashString } from '@app/common/utils';
 
 @Injectable()
 export class AuthService {

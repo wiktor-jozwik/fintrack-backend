@@ -1,5 +1,5 @@
-import { hashString } from '../../../apps/api/src/common/utils/hash-password';
-import { populateCurrencies } from '../../../apps/api/src/common/scripts/populate-currencies';
+import { hashString } from '@app/common/utils';
+import { populateCurrencies } from '@app/common/scripts/populate-currencies';
 import { PrismaService } from '@app/database/prisma';
 import { CategoryType } from '@prisma/client';
 

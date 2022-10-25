@@ -71,3 +71,16 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+
+## Migrate currencies
+```bash
+npm run migrate:currencies
+```
+
+## Import currency rates script
+
+```bash
+npm run import:currency-rates {currency_name} {start_date} {end_date}
+```

@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { hashString } from '../../common/utils/hash-password';
+import { hashString } from '@app/common/utils';
 import { User } from '@prisma/client';
 import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
 import { UserAlreadyExistsException } from './exceptions/user-already-exists.exception';

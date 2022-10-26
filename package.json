@@ -31,8 +31,8 @@
     "test:e2e": "jest --config spec/jest-e2e.json"
   },
   "prisma": {
-    "schema": "libs/database/src/schema.prisma",
-    "seed": "ts-node libs/database/src/seed.ts"
+    "schema": "database/src/schema.prisma",
+    "seed": "ts-node database/src/seed.ts"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
@@ -50,6 +50,7 @@
     "@types/nodemailer": "^6.4.6",
     "axios": "^1.1.2",
     "bcrypt": "^5.0.1",
+    "cache-manager": "^4.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "csv-parse": "^5.3.0",
@@ -71,6 +72,7 @@
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.8",
+    "@types/cache-manager": "^4.0.2",
     "@types/cron": "^2.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "28.1.4",

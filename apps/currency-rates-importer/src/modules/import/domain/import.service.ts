@@ -10,7 +10,7 @@ export class ImportService {
 
   constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
 
-  @Cron('*/1 * * * *')
+  @Cron('*/30 * * * *')
   async importCurrencyRates() {
     for (const currency of SUPPORTED_CURRENCIES) {
       if (currency.name === 'PLN') continue;

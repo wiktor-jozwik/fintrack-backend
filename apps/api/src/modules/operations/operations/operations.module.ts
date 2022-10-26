@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { OperationsController } from './operations.controller';
 import {
   CategoriesRepository,
@@ -12,6 +12,11 @@ import {
 } from './domain';
 
 @Module({
+  imports: [
+    CacheModule.register({
+      max: 10000,
+    }),
+  ],
   controllers: [OperationsController],
   providers: [
     DefaultCurrencyOperationCalculatorService,

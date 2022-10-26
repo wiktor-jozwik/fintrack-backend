@@ -1,11 +1,5 @@
 import { Module } from '@nestjs/common';
-import { OperationsImportService } from './domain/operations-import.service';
 import { OperationsImportController } from './operations-import.controller';
-import CsvPekaoReader from './domain/csv-import/csv-readers/pl-banks/csv-pekao-reader';
-import CsvPkoReader from './domain/csv-import/csv-readers/pl-banks/csv-pko.reader';
-import CsvImporter from './domain/csv-import/csv-importer';
-import CsvIngReader from './domain/csv-import/csv-readers/pl-banks/csv-ing-reader';
-import OperationsImportSaveService from './domain/csv-import/operations-import-save.service';
 import {
   CategoriesRepository,
   CurrencyRatesRepository,
@@ -13,6 +7,9 @@ import {
   UsersCurrenciesRepository,
   UsersRepository,
 } from '@app/database';
+import { OperationsImportService } from '@api/modules/operations/operations-import/domain';
+import { CsvImporter, OperationsImportSaveService } from './domain/csv-import';
+import { CsvPekaoReader, CsvPkoReader } from './domain/csv-import/csv-readers';
 
 @Module({
   providers: [
@@ -26,7 +23,6 @@ import {
     OperationsImportSaveService,
     CsvPekaoReader,
     CsvPkoReader,
-    CsvIngReader,
   ],
   controllers: [OperationsImportController],
 })

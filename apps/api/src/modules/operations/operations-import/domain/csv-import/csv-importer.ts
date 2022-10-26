@@ -1,11 +1,10 @@
-import { OperationItem } from './interfaces/csv-operation-item';
-import { CsvReader } from './csv-readers/csv-reader';
+import { CsvReader } from './csv-readers';
 import { Injectable, Logger } from '@nestjs/common';
-import OperationsImportSaveService from './operations-import-save.service';
-import { SaveOperationItem } from './interfaces/save-operation-item';
+import { OperationItem, SaveOperationItem } from './interfaces/';
+import { OperationsImportSaveService } from './operations-import-save.service';
 
 @Injectable()
-class CsvImporter {
+export class CsvImporter {
   private readonly logger = new Logger(CsvImporter.name);
   private csvReader: CsvReader;
 
@@ -70,5 +69,3 @@ class CsvImporter {
     }
   }
 }
-
-export default CsvImporter;

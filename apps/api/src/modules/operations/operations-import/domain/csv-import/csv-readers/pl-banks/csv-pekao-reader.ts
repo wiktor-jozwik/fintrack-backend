@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as moment from 'moment';
-import {
-  CsvOperationItem,
-  OperationItem,
-} from '../../interfaces/csv-operation-item';
+import { CsvOperationItem, OperationItem } from '../../interfaces';
 import { CsvReader } from '../csv-reader';
 
 @Injectable()
-class CsvPekaoReader extends CsvReader {
+export class CsvPekaoReader extends CsvReader {
   constructor() {
     super();
     this.headers = [
@@ -73,5 +70,3 @@ class CsvPekaoReader extends CsvReader {
     return moment(rawDate, 'DD.MM.YYYY').format('YYYY-MM-DD');
   }
 }
-
-export default CsvPekaoReader;

@@ -10,12 +10,10 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { OperationsImportService } from './domain/operations-import.service';
-import { ImportOperationsDto } from './dto/import-operations.dto';
-import { Public } from '../../../common/decorators/public';
-import { SkipUserActiveCheck } from '../../../common/decorators/skip-user-active-check';
-import { UserId } from '../../../common/decorators/user-id';
-import { StringResponse } from '../../../common/interfaces/string-response';
+import { OperationsImportService } from './domain';
+import { ImportOperationsDto } from './dto';
+import { Public, SkipUserActiveCheck, UserId } from '@api/common/decorators';
+import { StringResponse } from '@api/common/interfaces';
 
 @Controller('operations_import')
 export class OperationsImportController {

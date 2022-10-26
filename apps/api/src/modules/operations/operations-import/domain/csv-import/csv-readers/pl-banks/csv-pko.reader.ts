@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
-import {
-  CsvOperationItem,
-  OperationItem,
-} from '../../interfaces/csv-operation-item';
+import { CsvOperationItem, OperationItem } from '../../interfaces/';
 import { CsvReader } from '../csv-reader';
-import { slugifyString } from '../../../../../../../../../../libs/common/src/utils/slugify-string';
+import { slugifyString } from '@app/common/utils';
 
 @Injectable()
-class CsvPkoReader extends CsvReader {
+export class CsvPkoReader extends CsvReader {
   constructor() {
     super();
     this.headers = [
@@ -71,5 +68,3 @@ class CsvPkoReader extends CsvReader {
     );
   }
 }
-
-export default CsvPkoReader;

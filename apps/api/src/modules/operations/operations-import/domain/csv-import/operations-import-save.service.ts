@@ -1,20 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { SaveOperationItem } from './interfaces/save-operation-item';
 import { CategoryType, Operation, Prisma } from '@prisma/client';
-import { UserNotFoundException } from '@api/exceptions/users/user-not-found.exception';
-import { CurrencyNotAddedException } from '@api/exceptions/users-currencies/currency-not-added.exception';
-import { OperationAlreadyImportedException } from '../../exceptions/operation-already-imported.exception';
 import { PrismaCodes } from '@app/common/enums/prisma-codes.enum';
-import { CategoryNotFoundException } from '@api/exceptions/categories/category-not-found.exception';
 import {
   CategoriesRepository,
   OperationsRepository,
   UsersCurrenciesRepository,
   UsersRepository,
 } from '@app/database';
+import {
+  CategoryNotFoundException,
+  CurrencyNotAddedException,
+  OperationAlreadyImportedException,
+  UserNotFoundException,
+} from '@api/exceptions';
+import { SaveOperationItem } from './interfaces';
 
 @Injectable()
-class OperationsImportSaveService {
+export class OperationsImportSaveService {
   constructor(
     private readonly usersRepository: UsersRepository,
     private readonly operationsRepository: OperationsRepository,
@@ -142,5 +144,3 @@ class OperationsImportSaveService {
     );
   }
 }
-
-export default OperationsImportSaveService;

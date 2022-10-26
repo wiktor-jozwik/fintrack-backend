@@ -25,10 +25,10 @@
         "libs/common/src/*"
       ],
       "@app/database": [
-        "libs/database/src"
+        "database/src"
       ],
       "@app/database/*": [
-        "libs/database/src/*"
+        "database/src/*"
       ]
     }
   },

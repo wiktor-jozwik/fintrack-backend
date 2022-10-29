@@ -6,6 +6,27 @@ import { PrismaService } from '@app/database/prisma';
 export class CurrencyRatesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findCurrencyRatesForDates(
+    currencyName: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<CurrencyRate[]> {
+    return await this.prisma.currencyRate.findMany({
+      where: {
+        currency: {
+          name: currencyName,
+        },
+        date: {
+          gte: new Date(startDate),
+          lte: new Date(endDate),
+        },
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+  }
+
   async findCurrencyRateForDate(
     currencyName: string,
     date: Date,

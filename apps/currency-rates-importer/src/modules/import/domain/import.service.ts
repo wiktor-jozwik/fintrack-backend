@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import { SUPPORTED_CURRENCIES } from '@app/common';
 import { CurrencyFetchService } from './currency-fetch.service';
 
@@ -10,14 +11,34 @@ export class ImportService {
 
   constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
 
-  @Cron('*/30 * * * *')
+  @Cron('0 */1 * * *')
   async importCurrencyRates() {
+    const startDate = moment().subtract(
+      this.PREVIOUS_DAYS_TO_FETCH_AMOUNT,
+      'day',
+    );
+    await this.importSupportedCurrenciesForDateRange(startDate);
+  }
+
+  // at 00:00 on Sunday - on prod (check if all currencies are imported)
+  // @Cron('0 0 * * 0')
+  @Cron('0 */2 * * *')
+  async ensureWholeTimeCurrencyRates() {
+    await this.importSupportedCurrenciesForDateRange();
+  }
+
+  async importSupportedCurrenciesForDateRange(
+    startDate?: Moment | undefined,
+    endDate?: Moment | undefined,
+  ) {
     for (const currency of SUPPORTED_CURRENCIES) {
       if (currency.name === 'PLN') continue;
 
-      const date = moment().subtract(this.PREVIOUS_DAYS_TO_FETCH_AMOUNT, 'day');
-
-      await this.importCurrencyRatesForDateRange(currency.name, date);
+      await this.importCurrencyRatesForDateRange(
+        currency.name,
+        startDate,
+        endDate,
+      );
     }
   }
 
@@ -26,12 +47,13 @@ export class ImportService {
     startDate = moment('2002-01-02'),
     endDate = moment(),
   ) {
-    while (startDate <= endDate) {
+    const startDateCopy = moment(startDate);
+    while (startDateCopy <= endDate) {
       await this.currencyFetcherService.saveCurrencyForDate(
         currencyName,
-        startDate,
+        startDateCopy,
       );
-      startDate.add(1, 'day');
+      startDateCopy.add(1, 'day');
     }
   }
 }

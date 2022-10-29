@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { convertDatetimeToDate } from '../../../../../../../libs/common/src/utils/convert-datetime-to-date';
+import { convertDatetimeToDate } from '@app/common/utils';
 
 @Injectable()
 export class OperationInterceptor implements NestInterceptor {

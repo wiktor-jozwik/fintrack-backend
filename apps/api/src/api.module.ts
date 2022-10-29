@@ -6,6 +6,7 @@ import {
   AuthModule,
   CategoriesModule,
   CurrenciesModule,
+  CurrencyRatesModule,
   EmailModule,
   OperationsImportModule,
   OperationsModule,
@@ -49,6 +50,7 @@ import { LogsMiddleware } from '@api/common/middlewares';
     UsersCurrenciesModule,
     EmailModule,
     OperationsImportModule,
+    CurrencyRatesModule,
   ],
 })
 export class ApiModule implements NestModule {

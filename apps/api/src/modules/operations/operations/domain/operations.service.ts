@@ -65,21 +65,14 @@ export class OperationsService {
 
   async findAll(
     userId: number,
-    query: SearchOperationDto | null,
+    query: SearchOperationDto,
   ): Promise<(Operation & { currency: Currency; category: Category })[]> {
-    let startDate = null;
-    let endDate = null;
-    if (query) {
-      startDate = query.startDate;
-      endDate = query.endDate;
-    }
-
-    return await this.operationsRepository.findAll(userId, startDate, endDate);
+    return await this.operationsRepository.findAll(userId, query);
   }
 
   async findAllInDefaultCurrency(
     userId: number,
-    query: SearchOperationDto | null,
+    query: SearchOperationDto,
   ): Promise<DefaultCurrencyOperation[]> {
     const defaultCurrencyOperations: DefaultCurrencyOperation[] = [];
     const operations = await this.findAll(userId, query);

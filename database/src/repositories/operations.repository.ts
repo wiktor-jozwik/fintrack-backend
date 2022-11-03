@@ -1,6 +1,8 @@
 import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/database/prisma';
+import { SearchOperationDto } from '@app/api/src/modules/operations/operations/dto';
+import { prismaComparisonOperatorsMap } from '@app/common/enums/prisma-comparison-operators-map';
 
 @Injectable()
 export class OperationsRepository {
@@ -8,31 +10,12 @@ export class OperationsRepository {
 
   async findAll(
     userId: number,
-    startDate: string | null,
-    endDate: string | null,
+    query: SearchOperationDto,
   ): Promise<(Operation & { currency: Currency; category: Category })[]> {
-    const where =
-      startDate && endDate
-        ? {
-            AND: [
-              {
-                category: {
-                  userId,
-                },
-                date: {
-                  gte: new Date(startDate),
-                  lte: new Date(endDate),
-                },
-              },
-            ],
-          }
-        : {
-            category: {
-              userId,
-            },
-          };
     return await this.prisma.operation.findMany({
-      where,
+      where: {
+        AND: [this.applyFindAllFilters(userId, query)],
+      },
       include: {
         category: true,
         currency: true,
@@ -107,5 +90,78 @@ export class OperationsRepository {
         id,
       },
     });
+  }
+
+  private applyFindAllFilters(
+    userId: number,
+    query: SearchOperationDto,
+  ): Prisma.OperationWhereInput {
+    const {
+      startDate,
+      endDate,
+      categoryType,
+      searchName,
+      isInternal,
+      operator,
+      moneyAmount,
+    } = query;
+
+    const andFilter: Prisma.OperationWhereInput = {
+      category: {
+        userId,
+      },
+    };
+
+    if (startDate && endDate) {
+      andFilter['date'] = {
+        gte: new Date(startDate),
+        lte: new Date(endDate),
+      };
+    }
+
+    if (categoryType) {
+      if (andFilter['category']) {
+        andFilter['category']['type'] = categoryType;
+      }
+    }
+
+    if (isInternal) {
+      if (andFilter['category']) {
+        andFilter['category']['isInternal'] = isInternal;
+      }
+    }
+
+    if (operator && moneyAmount) {
+      const prismaOperatorName = prismaComparisonOperatorsMap[operator];
+
+      const decimalFilter: Prisma.DecimalFilter = {
+        [prismaOperatorName]: moneyAmount,
+      } as Prisma.DecimalFilter;
+
+      andFilter['moneyAmount'] = {
+        ...decimalFilter,
+      };
+    }
+
+    if (searchName) {
+      andFilter['OR'] = [
+        {
+          name: {
+            mode: 'insensitive',
+            contains: searchName,
+          },
+        },
+        {
+          category: {
+            name: {
+              mode: 'insensitive',
+              contains: searchName,
+            },
+          },
+        },
+      ];
+    }
+
+    return andFilter;
   }
 }

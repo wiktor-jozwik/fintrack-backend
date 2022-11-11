@@ -11,7 +11,7 @@ export class ImportService {
 
   constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
 
-  @Cron('0 */1 * * *')
+  @Cron('0 */12 * * *')
   async importCurrencyRates() {
     const startDate = moment().subtract(
       this.PREVIOUS_DAYS_TO_FETCH_AMOUNT,
@@ -21,8 +21,8 @@ export class ImportService {
   }
 
   // at 00:00 on Sunday - on prod (check if all currencies are imported)
-  // @Cron('0 0 * * 0')
-  @Cron('0 */2 * * *')
+  @Cron('0 0 * * 0')
+  // @Cron('0 */2 * * *')
   async ensureWholeTimeCurrencyRates() {
     await this.importSupportedCurrenciesForDateRange();
   }

@@ -29,7 +29,7 @@ export class SearchOperationDto {
 
   @IsOptional()
   @Transform(({ value }) => value === 'true')
-  isInternal?: boolean;
+  includeInternal?: boolean;
 
   @IsOptional()
   @IsIn(comparisonOperators)

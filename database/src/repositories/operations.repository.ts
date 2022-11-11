@@ -1,8 +1,8 @@
 import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/database/prisma';
-import { SearchOperationDto } from '@app/api/src/modules/operations/operations/dto';
 import { prismaComparisonOperatorsMap } from '@app/common/enums/prisma-comparison-operators-map';
+import { SearchOperationDto } from '@app/api/src/modules/operations/operations/dto';
 
 @Injectable()
 export class OperationsRepository {
@@ -101,7 +101,7 @@ export class OperationsRepository {
       endDate,
       categoryType,
       searchName,
-      isInternal,
+      includeInternal,
       operator,
       moneyAmount,
     } = query;
@@ -112,12 +112,19 @@ export class OperationsRepository {
       },
     };
 
-    if (startDate && endDate) {
-      andFilter['date'] = {
-        gte: new Date(startDate),
-        lte: new Date(endDate),
-      };
+    const dateFilter: { lte: Date | undefined; gte: Date | undefined } = {
+      lte: undefined,
+      gte: undefined,
+    };
+
+    if (startDate) {
+      dateFilter['gte'] = new Date(startDate);
     }
+    if (endDate) {
+      dateFilter['lte'] = new Date(endDate);
+    }
+
+    andFilter['date'] = dateFilter;
 
     if (categoryType) {
       if (andFilter['category']) {
@@ -125,9 +132,9 @@ export class OperationsRepository {
       }
     }
 
-    if (isInternal) {
+    if (!includeInternal) {
       if (andFilter['category']) {
-        andFilter['category']['isInternal'] = isInternal;
+        andFilter['category']['isInternal'] = false;
       }
     }
 

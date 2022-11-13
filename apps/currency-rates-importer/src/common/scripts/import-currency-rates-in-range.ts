@@ -4,17 +4,21 @@ import { ImportService } from '../../modules/import/domain/import.service';
 import * as moment from 'moment';
 import { SUPPORTED_CURRENCIES } from '@app/common';
 
-const importCurrencyRatesInRange = async () => {
-  const currencyName = process.argv[2];
+export const importCurrencyRatesInRange = async (
+  currency?: string | undefined,
+) => {
+  const currencyArg = process.argv[2];
   const startDate = process.argv[3];
   const endDate = process.argv[4];
+
+  const currencyToImport = currency || currencyArg;
 
   const supportedCurrencies = SUPPORTED_CURRENCIES.map((currency) => {
     return currency.name;
   });
 
-  if (!supportedCurrencies.includes(currencyName)) {
-    throw new Error(`'${currencyName}' not supported`);
+  if (!supportedCurrencies.includes(currencyToImport)) {
+    throw new Error(`'${currencyToImport}' not supported`);
   }
 
   let momentStartDate = moment(startDate);
@@ -32,10 +36,8 @@ const importCurrencyRatesInRange = async () => {
   const importService = app.get<ImportService>(ImportService);
 
   await importService.importCurrencyRatesForDateRange(
-    currencyName,
+    currencyToImport,
     momentStartDate,
     momentEndDate,
   );
 };
-
-importCurrencyRatesInRange();

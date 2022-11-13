@@ -15,7 +15,7 @@
     "start:prod": "node dist/main",
     "start:docker": "docker-compose up",
     "migrate:currencies": "ts-node libs/common/src/scripts/populate-currencies.script.ts",
-    "import:currency-rates": "ts-node apps/currency-rates-importer/src/common/scripts/import-currency-rates-in-range.ts",
+    "import:currency-rates": "ts-node apps/currency-rates-importer/src/common/scripts/import-currency-rates-in-range.script.ts",
     "prisma:generate": "npx prisma generate",
     "prisma:seed": "npx prisma db seed",
     "prisma:studio": "npx prisma studio",

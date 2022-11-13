@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import { hashString } from '@app/common/utils';
 import { User } from '@prisma/client';
-import { EmailService } from '../email/email.service';
+import { EmailService } from '@api/modules/email';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersRepository } from '@app/database';
-import { UsersCurrenciesService } from '../users-currencies/users-currencies.service';
+import { UsersCurrenciesService } from '@api/modules/users-currencies';
 import { UserRegisterDto } from './dto';
 import {
   PasswordsDoNotMatchException,
@@ -18,7 +18,7 @@ import {
   UserAlreadyExistsException,
   UserNotFoundException,
 } from '@api/exceptions';
-import { UserProfileResponse } from './interfaces';
+import { UserProfileResponse } from '@api/modules/users/responses';
 
 @Injectable()
 export class UsersService {

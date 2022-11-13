@@ -11,38 +11,53 @@ import {
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { UserId } from '@api/common/decorators';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { CategoryEntity } from '@app/database';
 
+@ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  @ApiCreatedResponse({
+    type: CategoryEntity,
+  })
   @Post()
   create(
     @Body() createCategoryDto: CreateCategoryDto,
     @UserId() userId: number,
-  ) {
+  ): Promise<CategoryEntity> {
     return this.categoriesService.create(createCategoryDto, userId);
   }
 
+  @ApiOkResponse({
+    type: [CategoryEntity],
+  })
   @Get()
-  findAll(@UserId() userId: number) {
+  findAll(@UserId() userId: number): Promise<CategoryEntity[]> {
     return this.categoriesService.findAll(userId);
   }
 
+  @ApiOkResponse({
+    type: CategoryEntity,
+  })
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) categoryId: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
     @UserId() userId: number,
-  ) {
+  ): Promise<CategoryEntity> {
     return this.categoriesService.update(updateCategoryDto, categoryId, userId);
   }
 
+  @ApiOkResponse({
+    type: CategoryEntity,
+  })
   @Delete(':id')
   remove(
     @Param('id', ParseIntPipe) categoryId: number,
     @UserId() userId: number,
-  ) {
+  ): Promise<CategoryEntity> {
     return this.categoriesService.remove(categoryId, userId);
   }
 }

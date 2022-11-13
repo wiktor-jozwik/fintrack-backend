@@ -19,7 +19,7 @@ import {
   SearchOperationDto,
   UpdateOperationDto,
 } from '../dto';
-import { DefaultCurrencyOperation } from '../interfaces';
+import { DefaultCurrencyOperationResponse } from '@api/modules/operations/operations/responses';
 
 @Injectable()
 export class OperationsService {
@@ -73,8 +73,8 @@ export class OperationsService {
   async findAllInDefaultCurrency(
     userId: number,
     query: SearchOperationDto,
-  ): Promise<DefaultCurrencyOperation[]> {
-    const defaultCurrencyOperations: DefaultCurrencyOperation[] = [];
+  ): Promise<DefaultCurrencyOperationResponse[]> {
+    const defaultCurrencyOperations: DefaultCurrencyOperationResponse[] = [];
     const operations = await this.findAll(userId, query);
 
     const defaultCurrency =

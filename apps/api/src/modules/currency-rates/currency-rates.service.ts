@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { SearchCurrencyRatesDto } from '@api/modules/currency-rates/dto/search-currency-rates.dto';
 import { CurrencyRatesRepository } from '@app/database';
 import { CurrencyRateDataShortageException } from '@api/exceptions';
-import { CurrencyRateValueOnDate } from '@api/modules/currency-rates/interfaces';
 import { convertDatetimeToDate } from '@app/common/utils';
+import { CurrencyRateValueOnDateResponse } from '@api/modules/currency-rates/responses';
 
 @Injectable()
 export class CurrencyRatesService {
@@ -13,7 +13,7 @@ export class CurrencyRatesService {
 
   async findAll(
     query: SearchCurrencyRatesDto,
-  ): Promise<CurrencyRateValueOnDate[]> {
+  ): Promise<CurrencyRateValueOnDateResponse[]> {
     const { baseCurrency, currency, startDate, endDate } = query;
 
     if (currency === 'PLN') {
@@ -55,7 +55,7 @@ export class CurrencyRatesService {
       throw new CurrencyRateDataShortageException();
     }
 
-    const baseCurrencyRateValues: CurrencyRateValueOnDate[] = [];
+    const baseCurrencyRateValues: CurrencyRateValueOnDateResponse[] = [];
 
     for (let i = 0; i < currencyRates.length; i++) {
       const value = currencyRates[i].avgValue / baseCurrencyRates[i].avgValue;

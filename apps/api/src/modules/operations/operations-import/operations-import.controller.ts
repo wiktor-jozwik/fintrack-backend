@@ -13,8 +13,10 @@ import { diskStorage } from 'multer';
 import { OperationsImportService } from './domain';
 import { ImportOperationsDto } from './dto';
 import { Public, SkipUserActiveCheck, UserId } from '@api/common/decorators';
-import { StringResponse } from '@api/common/interfaces';
+import { StringResponse } from '@api/common/types';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('operations')
 @Controller('operations_import')
 export class OperationsImportController {
   constructor(
@@ -28,6 +30,9 @@ export class OperationsImportController {
     return this.operationsImportService.getSupportedCsvWays();
   }
 
+  @ApiCreatedResponse({
+    type: StringResponse,
+  })
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {

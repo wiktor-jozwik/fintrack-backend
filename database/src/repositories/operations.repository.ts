@@ -1,8 +1,8 @@
 import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/database/prisma';
-import { prismaComparisonOperatorsMap } from '@app/common/enums/prisma-comparison-operators-map';
-import { SearchOperationDto } from '@app/api/src/modules/operations/operations/dto';
+import { SearchOperationDto } from '../../../apps/api/src/modules/operations/operations/dto';
+import { comparisonOperators, prismaComparisonOperatorsMap } from '@app/common';
 
 @Injectable()
 export class OperationsRepository {
@@ -139,11 +139,14 @@ export class OperationsRepository {
     }
 
     if (operator && moneyAmount) {
-      const prismaOperatorName = prismaComparisonOperatorsMap[operator];
+      const prismaOperatorName =
+        prismaComparisonOperatorsMap[
+          operator as typeof comparisonOperators[number]
+        ];
 
       const decimalFilter: Prisma.DecimalFilter = {
         [prismaOperatorName]: moneyAmount,
-      } as Prisma.DecimalFilter;
+      };
 
       andFilter['moneyAmount'] = {
         ...decimalFilter,

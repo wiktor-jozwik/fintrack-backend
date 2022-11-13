@@ -5,7 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthController } from './auth.controller';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '@api/modules/users';
 import { UsersRepository } from '@app/database';
 import {
   JwtAccessTokenStrategy,

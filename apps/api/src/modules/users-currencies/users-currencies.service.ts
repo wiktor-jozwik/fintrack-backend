@@ -19,10 +19,12 @@ export class UsersCurrenciesService {
   async create(
     createCurrencyDto: CreateCurrencyDto,
     userId: number,
-  ): Promise<UsersCurrencies> {
+  ): Promise<Currency> {
     const currency = await this.findSupportedCurrency(createCurrencyDto.name);
 
-    return await this.createUsersCurrency(currency, userId);
+    await this.createUsersCurrency(currency, userId);
+
+    return currency;
   }
 
   async remove(userCurrencyId: number, userId: number): Promise<Currency> {

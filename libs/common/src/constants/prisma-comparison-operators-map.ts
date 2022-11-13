@@ -1,4 +1,4 @@
-import { comparisonOperators } from '@app/common/enums/comparison-operators';
+import { comparisonOperators } from './comparison-operators';
 
 export const prismaComparisonOperatorsMap: Record<
   typeof comparisonOperators[number],

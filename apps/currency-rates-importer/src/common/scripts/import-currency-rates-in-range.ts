@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { CurrencyRatesImporterModule } from '../../currency-rates-importer.module';
-import { ImportService } from '../../modules/import/domain/import.service';
+import { ImportService } from '../../modules/import/domain';
 import * as moment from 'moment';
-import { SUPPORTED_CURRENCIES } from '@app/common';
+import { SUPPORTED_CURRENCIES } from '@app/common/constants';
 
 export const importCurrencyRatesInRange = async (
   currency?: string | undefined,

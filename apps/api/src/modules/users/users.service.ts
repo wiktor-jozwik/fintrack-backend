@@ -17,7 +17,7 @@ import {
   UserAlreadyActiveException,
   UserAlreadyExistsException,
   UserNotFoundException,
-} from '@api/exceptions';
+} from '@app/common/exceptions';
 import { UserProfileResponse } from '@api/modules/users/responses';
 
 @Injectable()

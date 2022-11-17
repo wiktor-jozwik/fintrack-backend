@@ -1,9 +1,9 @@
 import {
+  AbsMoneyAmountCategoryType,
   CsvOperationItem,
   OperationItem,
-} from '../interfaces/csv-operation-item';
+} from '../interfaces';
 import { parse } from 'csv-parse';
-import { AbsMoneyAmountCategoryType } from '../interfaces/abs-money-amount-category-type';
 import { CategoryType } from '@prisma/client';
 
 export abstract class CsvReader {

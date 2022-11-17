@@ -12,14 +12,14 @@ import {
   DefaultCurrencyNotFoundException,
   InvalidDateFormatException,
   OperationNotFoundException,
-} from '@api/exceptions';
+} from '@app/common/exceptions';
 import { isValidIsoDate } from '@app/common/utils';
 import {
   CreateOperationDto,
   SearchOperationDto,
   UpdateOperationDto,
 } from '../dto';
-import { DefaultCurrencyOperationResponse } from '@api/modules/operations/operations/responses';
+import { DefaultCurrencyOperationResponse } from '@api/modules/operations/responses';
 
 @Injectable()
 export class OperationsService {

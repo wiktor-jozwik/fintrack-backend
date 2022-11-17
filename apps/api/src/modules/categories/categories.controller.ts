@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { UserId } from '@api/common/decorators';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CategoryEntity } from '@app/database';
+import { UserId } from '@app/common/decorators';
 
 @ApiTags('categories')
 @Controller('categories')

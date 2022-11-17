@@ -9,16 +9,10 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '@api/modules/users';
 import { AuthService } from './auth.service';
-import {
-  Public,
-  RefreshToken,
-  SkipUserActiveCheck,
-  UserId,
-} from '@api/common/decorators';
+import { RefreshToken } from '@api/common/decorators';
 import { UserRegisterInterceptor } from './interceptors';
 import { UserLoginDto, UserRegisterDto } from '../users/dto';
 import { JwtRefreshTokenGuard, LocalAuthGuard } from '@api/common/guards';
-import { AuthRequest } from './interfaces';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -27,6 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { JwtTokensResponse, LogoutResponse } from '@api/modules/auth/responses';
 import { UserEntity } from '@app/database';
+import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
+import { AuthRequest } from '@app/common/interfaces';
 
 @ApiTags('users')
 @Controller('auth')
@@ -34,7 +30,9 @@ export class AuthController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
-  ) {}
+  ) {
+    console.log('auth controller');
+  }
 
   @ApiOkResponse({ type: UserEntity })
   @UseInterceptors(UserRegisterInterceptor)

@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { CategoryType } from '@prisma/client';
 import { Transform } from 'class-transformer';
-import { comparisonOperators } from '@app/common';
+import { comparisonOperators } from '@app/common/constants';
 
 export class SearchOperationDto {
   @IsOptional()

@@ -2,18 +2,17 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { PrismaModule } from '@app/database';
-import {
-  AuthModule,
-  CategoriesModule,
-  CurrenciesModule,
-  CurrencyRatesModule,
-  EmailModule,
-  OperationsImportModule,
-  OperationsModule,
-  UsersCurrenciesModule,
-  UsersModule,
-} from '@api/modules';
 import { LogsMiddleware } from '@api/common/middlewares';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
+import { UsersModule } from '@api/modules/users';
+import { AuthModule } from '@api/modules/auth';
+import { OperationsModule } from '@api/modules/operations';
+import { CategoriesModule } from '@api/modules/categories';
+import { CurrenciesModule } from '@api/modules/currencies';
+import { UsersCurrenciesModule } from '@api/modules/users-currencies';
+import { EmailModule } from '@api/modules/email';
+import { CurrencyRatesModule } from '@api/modules/currency-rates';
 
 @Module({
   imports: [
@@ -27,7 +26,7 @@ import { LogsMiddleware } from '@api/common/middlewares';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
-        PORT: Joi.number().required(),
+        API_PORT: Joi.number().required(),
         API_URL: Joi.string().required(),
         JWT_AT_SECRET: Joi.string().required(),
         JWT_AT_EXPIRATION_TIME: Joi.string().required(),
@@ -49,8 +48,17 @@ import { LogsMiddleware } from '@api/common/middlewares';
     CurrenciesModule,
     UsersCurrenciesModule,
     EmailModule,
-    OperationsImportModule,
     CurrencyRatesModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAccessTokenGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: UserIsActiveGuard,
+    },
   ],
 })
 export class ApiModule implements NestModule {

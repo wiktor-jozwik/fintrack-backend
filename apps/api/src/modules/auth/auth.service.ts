@@ -4,11 +4,13 @@ import { User } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { UsersRepository } from '@app/database';
 import { compareHash, hashString } from '@app/common/utils';
+
+import { JwtTokens } from './interfaces';
+import { UserEmailPayload, UserPayload } from '@app/common/interfaces';
 import {
   AccountNotActiveException,
   InvalidCredentialsException,
-} from '@api/exceptions';
-import { JwtTokens, UserEmailPayload, UserPayload } from './interfaces';
+} from '@app/common/exceptions';
 
 @Injectable()
 export class AuthService {

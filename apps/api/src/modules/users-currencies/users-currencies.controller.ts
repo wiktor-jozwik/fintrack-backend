@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersCurrenciesService } from './users-currencies.service';
-import { UserIsActiveGuard } from '@api/common/guards';
-import { UserId } from '@api/common/decorators';
+import { UserIsActiveGuard } from '@app/common/guards';
+import { UserId } from '@app/common/decorators';
 import { CreateCurrencyDto } from './dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CurrencyEntity } from '@app/database';

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import { SUPPORTED_CURRENCIES } from '@app/common';
+import { SUPPORTED_CURRENCIES } from '@app/common/constants';
 import { CurrencyFetchService } from './currency-fetch.service';
 
 @Injectable()

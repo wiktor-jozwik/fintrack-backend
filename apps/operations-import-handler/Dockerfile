@@ -12,7 +12,7 @@ COPY --chown=node:node . .
 
 RUN pnpm run prisma:generate
 
-RUN pnpm run build:currency-rates-importer
+RUN pnpm run build:operations-importer-handler
 
 USER node
 
@@ -37,6 +37,8 @@ COPY --chown=node:node --from=development /usr/src/app/database ./database
 
 RUN pnpm run prisma:generate
 
+RUN mkdir upload
+
 USER node
 
-CMD ["node", "dist/apps/currency-rates-importer/main.js"]
+CMD ["node", "dist/apps/operations-importer-handler/main.js"]

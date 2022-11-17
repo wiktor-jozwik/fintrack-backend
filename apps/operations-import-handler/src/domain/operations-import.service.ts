@@ -1,23 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ImportOperationsDto } from '../dto';
-import { CsvImportWay } from '../enums/';
-import { CsvReaderNotImplementedException } from '@api/exceptions';
-import { CsvPekaoReader, CsvPkoReader } from './csv-import/csv-readers';
+import { CsvReader } from './csv-import/csv-readers';
 import { CsvImporter } from './csv-import';
+import { CsvReaderNotImplementedException } from '@app/common/exceptions';
+import { CsvImportWay } from '@app/common/enums';
+import { CsvReaderCreator } from './csv-import/csv-readers/csv-reader-creator';
 
 @Injectable()
 export class OperationsImportService {
-  private readonly csvReaderMap: { [key in CsvImportWay]: any };
   constructor(
     private readonly csvImporter: CsvImporter,
-    private readonly csvPekaoReader: CsvPekaoReader,
-    private readonly csvPkoReader: CsvPkoReader,
-  ) {
-    this.csvReaderMap = {
-      PEKAO: csvPekaoReader,
-      PKO: csvPkoReader,
-    };
-  }
+    private readonly csvReaderCreator: CsvReaderCreator,
+  ) {}
   getSupportedCsvWays(): string[] {
     return Object.keys(CsvImportWay);
   }
@@ -28,7 +22,7 @@ export class OperationsImportService {
     importOperationsDto: ImportOperationsDto,
   ) {
     const { csvImportWay } = importOperationsDto;
-    const reader = this.csvReaderMap[csvImportWay];
+    const reader: CsvReader = this.csvReaderCreator.create(csvImportWay);
     if (!reader) {
       throw new CsvReaderNotImplementedException(csvImportWay);
     }

@@ -1,8 +1,11 @@
 import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/database/prisma';
-import { SearchOperationDto } from '../../../apps/api/src/modules/operations/operations/dto';
-import { comparisonOperators, prismaComparisonOperatorsMap } from '@app/common';
+import { SearchOperationDto } from '../../../apps/api/src/modules/operations/dto';
+import {
+  comparisonOperators,
+  prismaComparisonOperatorsMap,
+} from '@app/common/constants';
 
 @Injectable()
 export class OperationsRepository {

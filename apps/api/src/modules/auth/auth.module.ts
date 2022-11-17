@@ -3,16 +3,16 @@ import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
 import { AuthController } from './auth.controller';
-import { UsersModule } from '@api/modules/users';
 import { UsersRepository } from '@app/database';
 import {
   JwtAccessTokenStrategy,
   JwtRefreshTokenStrategy,
   LocalStrategy,
 } from './strategies';
-import { JwtAccessTokenGuard, UserIsActiveGuard } from '@api/common/guards';
+import { UsersModule } from '@api/modules/users';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
 
 @Module({
   imports: [UsersModule, PassportModule, ConfigModule, JwtModule.register({})],
@@ -22,14 +22,14 @@ import { JwtAccessTokenGuard, UserIsActiveGuard } from '@api/common/guards';
     LocalStrategy,
     JwtAccessTokenStrategy,
     JwtRefreshTokenStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAccessTokenGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: UserIsActiveGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: JwtAccessTokenGuard,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: UserIsActiveGuard,
+    // },
     UsersRepository,
   ],
   exports: [AuthService],

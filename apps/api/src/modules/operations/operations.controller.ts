@@ -17,13 +17,13 @@ import {
   SearchOperationDto,
   UpdateOperationDto,
 } from './dto';
-import { UserId } from '@api/common/decorators';
+import { UserId } from '@app/common/decorators';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { OperationEntity } from '@app/database';
 import {
   DefaultCurrencyOperationResponse,
   OperationWithCurrencyCategoryResponse,
-} from '@api/modules/operations/operations/responses';
+} from '@api/modules/operations/responses';
 
 @ApiTags('operations')
 @Controller('operations')

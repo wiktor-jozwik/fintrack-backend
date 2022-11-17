@@ -29,15 +29,13 @@ COPY --chown=node:node package*.json ./
 
 RUN pnpm i --prod
 
-#RUN pnpm run prisma:generate
-
 COPY --chown=node:node --from=development /usr/src/app/dist ./dist
 
 COPY --chown=node:node --from=development /usr/src/app/libs ./libs
 
 COPY --chown=node:node --from=development /usr/src/app/database ./database
 
-RUN mkdir upload
+RUN pnpm run prisma:generate
 
 USER node
 

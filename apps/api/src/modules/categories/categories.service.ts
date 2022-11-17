@@ -5,7 +5,7 @@ import {
   CategoryExistsException,
   CategoryNotFoundException,
   OperationAssignedException,
-} from '@api/exceptions';
+} from '@app/common/exceptions';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 
 @Injectable()

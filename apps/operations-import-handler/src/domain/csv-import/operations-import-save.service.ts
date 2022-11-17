@@ -12,7 +12,7 @@ import {
   CurrencyNotAddedException,
   OperationAlreadyImportedException,
   UserNotFoundException,
-} from '@api/exceptions';
+} from '@app/common/exceptions';
 import { SaveOperationItem } from './interfaces';
 
 @Injectable()

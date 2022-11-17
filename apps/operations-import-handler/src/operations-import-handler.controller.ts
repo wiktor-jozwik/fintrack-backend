@@ -12,13 +12,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { OperationsImportService } from './domain';
 import { ImportOperationsDto } from './dto';
-import { Public, SkipUserActiveCheck, UserId } from '@api/common/decorators';
-import { StringResponse } from '@api/common/types';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
+import { StringResponse } from '@app/common/interfaces';
 
-@ApiTags('operations')
 @Controller('operations_import')
-export class OperationsImportController {
+export class OperationsImportHandlerController {
   constructor(
     private readonly operationsImportService: OperationsImportService,
   ) {}
@@ -30,9 +28,6 @@ export class OperationsImportController {
     return this.operationsImportService.getSupportedCsvWays();
   }
 
-  @ApiCreatedResponse({
-    type: StringResponse,
-  })
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {

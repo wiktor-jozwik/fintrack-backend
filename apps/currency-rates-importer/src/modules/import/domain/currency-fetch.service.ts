@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import * as moment from 'moment';
 import { AxiosError } from 'axios';
 import { Moment } from 'moment';
-import { convertMomentToIsoDate } from '@app/common/utils/convert-moment-to-iso-date';
+import { convertMomentToIsoDate } from '@app/common/utils';
 import { CurrencyRatesRepository } from '@app/database';
 import { NbpHttpService } from './nbp-http.service';
 

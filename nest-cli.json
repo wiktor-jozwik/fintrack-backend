@@ -3,7 +3,9 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/api/src",
   "compilerOptions": {
-    "plugins": ["@nestjs/swagger"],
+    "plugins": [
+      "@nestjs/swagger"
+    ],
     "assets": [
       "**/*.hbs"
     ],
@@ -48,6 +50,15 @@
       "sourceRoot": "libs/database/src",
       "compilerOptions": {
         "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    },
+    "operations-import-handler": {
+      "type": "application",
+      "root": "apps/operations-import-handler",
+      "entryFile": "main",
+      "sourceRoot": "apps/operations-import-handler/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/operations-import-handler/tsconfig.app.json"
       }
     }
   }

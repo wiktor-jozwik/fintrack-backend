@@ -1,5 +1,5 @@
-import { CsvImportWay } from '../enums/csv-import-way.enum';
 import { IsEnum } from 'class-validator';
+import { CsvImportWay } from '@app/common/enums';
 
 export class ImportOperationsDto {
   @IsEnum(CsvImportWay)

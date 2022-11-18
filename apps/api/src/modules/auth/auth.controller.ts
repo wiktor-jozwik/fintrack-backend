@@ -7,22 +7,25 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from '@api/modules/users';
+import { UsersService } from '../../modules/users';
 import { AuthService } from './auth.service';
-import { RefreshToken } from '@api/common/decorators';
+import { RefreshToken } from '../../common/decorators';
 import { UserRegisterInterceptor } from './interceptors';
 import { UserLoginDto, UserRegisterDto } from '../users/dto';
-import { JwtRefreshTokenGuard, LocalAuthGuard } from '@api/common/guards';
+import { JwtRefreshTokenGuard, LocalAuthGuard } from '../../common/guards';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtTokensResponse, LogoutResponse } from '@api/modules/auth/responses';
-import { UserEntity } from '@app/database';
+import {
+  JwtTokensResponse,
+  LogoutResponse,
+} from '../../modules/auth/responses';
 import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
 import { AuthRequest } from '@app/common/interfaces';
+import { UserEntity } from '../../common/entities';
 
 @ApiTags('users')
 @Controller('auth')
@@ -34,7 +37,6 @@ export class AuthController {
     console.log('auth controller');
   }
 
-  @ApiOkResponse({ type: UserEntity })
   @UseInterceptors(UserRegisterInterceptor)
   @Public()
   @SkipUserActiveCheck()

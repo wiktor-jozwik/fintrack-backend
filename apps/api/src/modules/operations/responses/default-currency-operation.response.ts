@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CategoryEntity } from '@app/database';
+import { CategoryEntity } from '../../../common/entities';
 
 export class DefaultCurrencyOperationResponse {
   @ApiProperty()

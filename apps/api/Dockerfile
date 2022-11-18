@@ -1,42 +1,92 @@
-FROM node:alpine As development
-
-RUN npm install -g pnpm
+FROM node:alpine AS dev
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node package*.json ./
+COPY --chown=node:node package.json yarn.lock tsconfig.json ./
 
-RUN pnpm i
+COPY --chown=node:node ./libs/common/package.json ./libs/common/
+COPY --chown=node:node ./apps/api/package.json ./apps/api/
 
-COPY --chown=node:node . .
+RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache
 
-RUN pnpm run prisma:generate
+COPY --chown=node:node ./apps/api ./apps/api
 
-RUN pnpm run build:api
+COPY --chown=node:node ./libs/common ./libs/common
 
-USER node
+COPY --chown=node:node ./database ./database
+
+RUN yarn prisma:generate
+
+RUN yarn build:api
 
 
-FROM node:alpine AS production
+
+FROM node:alpine AS prod
+
+WORKDIR /usr/src/app
 
 ENV NODE_ENV production
 
-RUN npm install -g pnpm
+COPY --chown=node:node package.json yarn.lock tsconfig.json ./
 
-WORKDIR /usr/src/app
+COPY --chown=node:node ./libs/common/package.json ./libs/common/
+COPY --chown=node:node ./apps/api/package.json ./apps/api/
 
-COPY --chown=node:node package*.json ./
+RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache --prod
 
-RUN pnpm i --prod
+COPY --chown=node:node --from=dev /usr/src/app/dist ./dist
 
-COPY --chown=node:node --from=development /usr/src/app/dist ./dist
+COPY --chown=node:node --from=dev /usr/src/app/database ./database
 
-COPY --chown=node:node --from=development /usr/src/app/libs ./libs
-
-COPY --chown=node:node --from=development /usr/src/app/database ./database
-
-RUN pnpm run prisma:generate
+RUN yarn prisma:generate
 
 USER node
 
-CMD ["node", "dist/apps/api/main.js"]
+CMD ["node", "dist/apps/api/src/main.js"]
+
+
+
+
+#
+#FROM node:alpine As development
+#
+#RUN npm install -g pnpm
+#
+#WORKDIR /usr/src/app
+#
+#COPY --chown=node:node package*.json ./
+#
+#RUN pnpm i
+#
+#COPY --chown=node:node . .
+#
+#RUN pnpm run prisma:generate
+#
+#RUN pnpm run build:api
+#
+#USER node
+#
+#
+#FROM node:alpine AS production
+#
+#ENV NODE_ENV production
+#
+#RUN npm install -g pnpm
+#
+#WORKDIR /usr/src/app
+#
+#COPY --chown=node:node package*.json ./
+#
+#RUN pnpm i --prod
+#
+#COPY --chown=node:node --from=development /usr/src/app/dist ./dist
+#
+#COPY --chown=node:node --from=development /usr/src/app/libs ./libs
+#
+#COPY --chown=node:node --from=development /usr/src/app/database ./database
+#
+#RUN pnpm run prisma:generate
+#
+#USER node
+#
+#CMD ["node", "dist/apps/api/main.js"]

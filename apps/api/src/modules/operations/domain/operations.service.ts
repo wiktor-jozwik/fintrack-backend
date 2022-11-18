@@ -19,7 +19,7 @@ import {
   SearchOperationDto,
   UpdateOperationDto,
 } from '../dto';
-import { DefaultCurrencyOperationResponse } from '@api/modules/operations/responses';
+import { DefaultCurrencyOperationResponse } from '../../../modules/operations/responses';
 
 @Injectable()
 export class OperationsService {

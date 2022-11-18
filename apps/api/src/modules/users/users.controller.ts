@@ -12,7 +12,7 @@ import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
 import { ResendActivationLinkDto, TokenDto } from './dto';
 import { StringResponse } from '@app/common/interfaces';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { UserProfileResponse } from '@api/modules/users/responses';
+import { UserProfileResponse } from '../../modules/users/responses';
 
 @ApiTags('users')
 @Controller('users')

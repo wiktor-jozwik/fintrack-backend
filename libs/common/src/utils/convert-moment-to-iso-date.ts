@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import * as moment from 'moment'
 
-export const convertMomentToIsoDate = (momentDate: Moment): string =>
-  momentDate.format('YYYY-MM-DD');
+export const convertMomentToIsoDate = (momentDate: moment.Moment | Date): string =>
+  moment(momentDate).format('YYYY-MM-DD');

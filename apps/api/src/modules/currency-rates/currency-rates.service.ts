@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { SearchCurrencyRatesDto } from '@api/modules/currency-rates/dto/search-currency-rates.dto';
+import { SearchCurrencyRatesDto } from '../../modules/currency-rates/dto';
 import { CurrencyRatesRepository } from '@app/database';
 import { CurrencyRateDataShortageException } from '@app/common/exceptions';
 import { convertDatetimeToDate } from '@app/common/utils';
-import { CurrencyRateValueOnDateResponse } from '@api/modules/currency-rates/responses';
+import { CurrencyRateValueOnDateResponse } from '../../modules/currency-rates/responses';
 
 @Injectable()
 export class CurrencyRatesService {

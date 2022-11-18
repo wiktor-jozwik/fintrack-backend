@@ -2,7 +2,7 @@ services:
   api:
     build:
       dockerfile: ./apps/api/Dockerfile
-      target: development
+      target: dev
       context: .
     volumes:
       - .:/usr/src/app
@@ -19,7 +19,7 @@ services:
   currency-rates-importer:
     build:
       dockerfile: ./apps/currency-rates-importer/Dockerfile
-      target: development
+      target: dev
       context: .
     volumes:
       - .:/usr/src/app
@@ -34,7 +34,7 @@ services:
   operations-import-handler:
     build:
       dockerfile: ./apps/operations-import-handler/Dockerfile
-      target: development
+      target: dev
       context: .
     volumes:
       - .:/usr/src/app

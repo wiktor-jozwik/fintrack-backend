@@ -44,7 +44,7 @@ export class CsvPekaoReader extends CsvReader {
           callback(operationItem);
         }
       })
-      .on('error', (err) => {
+      .on('error', (err: unknown) => {
         console.error(err);
       });
   }

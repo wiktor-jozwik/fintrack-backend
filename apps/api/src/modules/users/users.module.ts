@@ -4,8 +4,8 @@ import { UsersController } from './users.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { UsersRepository } from '@app/database';
-import { UsersCurrenciesModule } from '@api/modules/users-currencies';
-import { EmailModule } from '@api/modules/email';
+import { UsersCurrenciesModule } from '../../modules/users-currencies';
+import { EmailModule } from '../../modules/email';
 
 @Module({
   imports: [JwtModule, ConfigModule, UsersCurrenciesModule, EmailModule],

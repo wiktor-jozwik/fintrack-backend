@@ -2,17 +2,18 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { PrismaModule } from '@app/database';
-import { LogsMiddleware } from '@api/common/middlewares';
+import { LogsMiddleware } from './common/middlewares';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
-import { UsersModule } from '@api/modules/users';
-import { AuthModule } from '@api/modules/auth';
-import { OperationsModule } from '@api/modules/operations';
-import { CategoriesModule } from '@api/modules/categories';
-import { CurrenciesModule } from '@api/modules/currencies';
-import { UsersCurrenciesModule } from '@api/modules/users-currencies';
-import { EmailModule } from '@api/modules/email';
-import { CurrencyRatesModule } from '@api/modules/currency-rates';
+import { UsersModule } from './modules/users';
+import { AuthModule } from './modules/auth';
+import { OperationsModule } from './modules/operations';
+import { CategoriesModule } from './modules/categories';
+import { CurrenciesModule } from './modules/currencies';
+import { UsersCurrenciesModule } from './modules/users-currencies';
+import { EmailModule } from './modules/email';
+import { CurrencyRatesModule } from './modules/currency-rates';
+import { JwtAccessTokenStrategy } from '@app/common/strategies';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { CurrencyRatesModule } from '@api/modules/currency-rates';
     CurrencyRatesModule,
   ],
   providers: [
+    JwtAccessTokenStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtAccessTokenGuard,

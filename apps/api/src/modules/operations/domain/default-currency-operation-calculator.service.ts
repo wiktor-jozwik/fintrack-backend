@@ -2,7 +2,6 @@ import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Currency, Operation } from '@prisma/client';
 import { CurrencyRatesRepository } from '@app/database';
 import { Cache } from 'cache-manager';
-import * as moment from 'moment';
 import { convertMomentToIsoDate } from '@app/common/utils';
 
 @Injectable()
@@ -94,6 +93,6 @@ export class DefaultCurrencyOperationCalculatorService {
   }
 
   private getCurrencyCacheKey(currencyName: string, date: Date) {
-    return `${currencyName}PLN-${convertMomentToIsoDate(moment(date))}`;
+    return `${currencyName}PLN-${convertMomentToIsoDate(date)}`;
   }
 }

@@ -1,7 +1,6 @@
 import { Category, Currency, Operation, Prisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@app/database/prisma';
-import { SearchOperationDto } from '../../../apps/api/src/modules/operations/dto';
 import {
   comparisonOperators,
   prismaComparisonOperatorsMap,
@@ -13,7 +12,7 @@ export class OperationsRepository {
 
   async findAll(
     userId: number,
-    query: SearchOperationDto,
+    query: any,
   ): Promise<(Operation & { currency: Currency; category: Category })[]> {
     return await this.prisma.operation.findMany({
       where: {
@@ -97,7 +96,7 @@ export class OperationsRepository {
 
   private applyFindAllFilters(
     userId: number,
-    query: SearchOperationDto,
+    query: any,
   ): Prisma.OperationWhereInput {
     const {
       startDate,

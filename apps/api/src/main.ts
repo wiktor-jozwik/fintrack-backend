@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ApiModule } from './api.module';
 import { ValidationPipe } from '@nestjs/common';
-import { getLogLevels } from '@api/common/utils';
+import { getLogLevels } from './common/utils';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {

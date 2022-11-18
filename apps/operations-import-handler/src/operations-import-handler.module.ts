@@ -15,8 +15,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { JwtAccessTokenStrategy } from '@app/api/src/modules/auth/strategies';
 import { CsvReaderCreator } from './domain/csv-import/csv-readers/csv-reader-creator';
+import { JwtAccessTokenStrategy } from '@app/common/strategies';
 
 @Module({
   imports: [

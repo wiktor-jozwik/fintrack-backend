@@ -23,7 +23,7 @@ export class ImportService {
   // at 00:00 on Sunday - on prod (check if all currencies are imported)
   @Cron('0 0 * * 0')
   // @Cron('0 */2 * * *')
-  async ensureWholeTimeCurrencyRates() {
+  async ensureAllCurrencyRatesImported() {
     await this.importSupportedCurrenciesForDateRange();
   }
 

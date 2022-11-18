@@ -13,7 +13,7 @@ import { UserIsActiveGuard } from '@app/common/guards';
 import { UserId } from '@app/common/decorators';
 import { CreateCurrencyDto } from './dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CurrencyEntity } from '@app/database';
+import { CurrencyEntity } from '../../common/entities';
 
 @ApiTags('users_currencies')
 @Controller('users_currencies')

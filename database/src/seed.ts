@@ -1,7 +1,7 @@
-import { hashString } from '../libs/common/src/utils';
-import { populateCurrencies } from '../libs/common/src/scripts/populate-currencies';
 import { PrismaService } from '@app/database/prisma';
 import { CategoryType } from '@prisma/client';
+import { hashString } from '@app/common/utils';
+import { populateCurrencies } from '@app/common/scripts';
 
 const seedUsers = async () => {
   const prisma = new PrismaService();

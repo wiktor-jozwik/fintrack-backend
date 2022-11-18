@@ -19,11 +19,11 @@ import {
 } from './dto';
 import { UserId } from '@app/common/decorators';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { OperationEntity } from '@app/database';
 import {
   DefaultCurrencyOperationResponse,
   OperationWithCurrencyCategoryResponse,
-} from '@api/modules/operations/responses';
+} from '../../modules/operations/responses';
+import { OperationEntity } from '../../common/entities';
 
 @ApiTags('operations')
 @Controller('operations')

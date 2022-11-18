@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { Public, SkipUserActiveCheck } from '@app/common/decorators';
-import { CurrencyRatesService } from '@api/modules/currency-rates/currency-rates.service';
-import { SearchCurrencyRatesDto } from '@api/modules/currency-rates/dto/search-currency-rates.dto';
+import { CurrencyRatesService } from '../../modules/currency-rates/currency-rates.service';
+import { SearchCurrencyRatesDto } from '../../modules/currency-rates/dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CurrencyRateValueOnDateResponse } from '@api/modules/currency-rates/responses';
+import { CurrencyRateValueOnDateResponse } from '../../modules/currency-rates/responses';
 
 @ApiTags('currencies')
 @Controller('currency_rates')

@@ -11,6 +11,7 @@
     "build:api": "nest build api",
     "build:currency-rates-importer": "nest build currency-rates-importer",
     "build:operations-import-handler": "nest build operations-import-handler",
+    "build:operations-import-consumer": "nest build operations-import-consumer",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -102,12 +103,14 @@
     ],
     "moduleNameMapper": {
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
-      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1"
+      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
+      "^@app/rmq(|/.*)$": "<rootDir>/libs/rmq/src/$1"
     }
   },
   "_moduleAliases": {
     "@database": "./libs/database",
-    "@common": "./libs/common"
+    "@common": "./libs/common",
+    "@rmq": "./libs/rmq"
   },
   "workspaces": [
     "apps/*",

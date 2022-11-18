@@ -12,6 +12,7 @@ export class OperationsImportService {
     private readonly csvImporter: CsvImporter,
     private readonly csvReaderCreator: CsvReaderCreator,
   ) {}
+
   getSupportedCsvWays(): string[] {
     return Object.keys(CsvImportWay);
   }

@@ -35,6 +35,12 @@
       ],
       "@app/api/*": [
         "apps/api/*"
+      ],
+      "@app/rmq": [
+        "libs/rmq/src"
+      ],
+      "@app/rmq/*": [
+        "libs/rmq/src/*"
       ]
     }
   },

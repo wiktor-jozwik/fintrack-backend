@@ -14,10 +14,12 @@ import { OperationsImportService } from './domain';
 import { ImportOperationsDto } from './dto';
 import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
 import { StringResponse } from '@app/common/interfaces';
+import { ProducerService } from './producer.service';
 
 @Controller('operations_import')
 export class OperationsImportHandlerController {
   constructor(
+    private readonly producerService: ProducerService,
     private readonly operationsImportService: OperationsImportService,
   ) {}
 
@@ -53,11 +55,18 @@ export class OperationsImportHandlerController {
     @UserId() userId: number,
     @Body() importOperationsDto: ImportOperationsDto,
   ): Promise<StringResponse> {
-    await this.operationsImportService.import(
-      file.path,
+    this.producerService.produce({
+      url: file.path,
       userId,
-      importOperationsDto,
-    );
+      csvImportWay: importOperationsDto.csvImportWay,
+    });
+    console.log('emiting');
+    //
+    // await this.operationsImportService.import(
+    //   file.path,
+    //   userId,
+    //   importOperationsDto,
+    // );
 
     return {
       response: `'${file.originalname}' queued`,

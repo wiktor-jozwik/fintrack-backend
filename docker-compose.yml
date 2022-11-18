@@ -42,11 +42,29 @@ services:
       - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+      RABBITMQ_URL: 'amqp://admin:admin@rabbitmq:5672'
+      RABBITMQ_OPERATIONS_IMPORT_QUEUE: 'operations_import'
     depends_on:
       - db
     command: npm run start:dev operations-import-handler
     ports:
       - ${OPERATION_IMPORT_HANDLER_PORT}:${OPERATION_IMPORT_HANDLER_PORT}
+
+  operations-import-consumer:
+    build:
+      dockerfile: ./apps/operations-import-consumer/Dockerfile
+      target: dev
+      context: .
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    environment:
+      RABBITMQ_URL: 'amqp://admin:admin@rabbitmq:5672'
+      RABBITMQ_OPERATIONS_IMPORT_QUEUE: 'operations_import'
+    depends_on:
+      - db
+    command: npm run start:dev operations-import-consumer
 
   db:
     image: postgres:14
@@ -56,3 +74,14 @@ services:
       - 5432:5432
     volumes:
       - ./tmp/mt_nestjs:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin

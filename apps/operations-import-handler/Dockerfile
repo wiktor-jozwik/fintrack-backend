@@ -11,7 +11,7 @@ RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache
 
 COPY --chown=node:node ./apps/operations-import-handler ./apps/operations-import-handler
 
-COPY --chown=node:node ./libs/common ./libs/common
+COPY --chown=node:node ./libs ./libs
 
 COPY --chown=node:node ./database ./database
 

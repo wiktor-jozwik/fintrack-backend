@@ -1,0 +1,9 @@
+{
+  "name": "operations-import-consumer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/microservices": "^9.2.0"
+  }
+}

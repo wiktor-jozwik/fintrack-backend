@@ -23,7 +23,7 @@ import {
   JwtTokensResponse,
   LogoutResponse,
 } from '../../modules/auth/responses';
-import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
+import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { AuthRequest } from '@app/common/interfaces';
 import { UserEntity } from '../../common/entities';
 

@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { Public, SkipUserActiveCheck } from '@app/common/decorators';
+import { Public, SkipUserActiveCheck } from '../../common/decorators';
 import { CurrencyRatesService } from '../../modules/currency-rates/currency-rates.service';
 import { SearchCurrencyRatesDto } from '../../modules/currency-rates/dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';

@@ -17,7 +17,7 @@ import {
   SearchOperationDto,
   UpdateOperationDto,
 } from './dto';
-import { UserId } from '@app/common/decorators';
+import { UserId } from '../../common/decorators';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   DefaultCurrencyOperationResponse,

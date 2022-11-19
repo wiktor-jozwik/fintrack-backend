@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { SKIP_USER_ACTIVE_CHECK } from '@app/common/decorators';
+import { SKIP_USER_ACTIVE_CHECK } from '../../common/decorators';
 import { AuthRequest } from '@app/common/interfaces';
 import { AccountNotActiveException } from '@app/common/exceptions';
 

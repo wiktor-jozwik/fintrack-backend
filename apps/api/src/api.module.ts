@@ -3,8 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { PrismaModule } from '@app/database';
 import { LogsMiddleware } from './common/middlewares';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
 import { UsersModule } from './modules/users';
 import { AuthModule } from './modules/auth';
 import { OperationsModule } from './modules/operations';
@@ -14,7 +12,6 @@ import { CurrenciesModule } from './modules/currencies';
 import { UsersCurrenciesModule } from './modules/users-currencies';
 import { EmailModule } from './modules/email';
 import { CurrencyRatesModule } from './modules/currency-rates';
-import { JwtAccessTokenStrategy } from '@app/common/strategies';
 
 @Module({
   imports: [
@@ -54,17 +51,6 @@ import { JwtAccessTokenStrategy } from '@app/common/strategies';
     UsersCurrenciesModule,
     EmailModule,
     CurrencyRatesModule,
-  ],
-  providers: [
-    JwtAccessTokenStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAccessTokenGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: UserIsActiveGuard,
-    },
   ],
 })
 export class ApiModule implements NestModule {

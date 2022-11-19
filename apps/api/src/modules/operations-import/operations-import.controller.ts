@@ -11,7 +11,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ImportOperationsDto } from './dto';
-import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
+import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { StringResponse } from '@app/common/interfaces';
 import { OperationsImportService } from './operations-import.service';
 

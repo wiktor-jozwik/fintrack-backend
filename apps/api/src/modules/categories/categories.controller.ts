@@ -11,7 +11,7 @@ import {
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { UserId } from '@app/common/decorators';
+import { UserId } from '../../common/decorators';
 import { CategoryEntity } from '../../common/entities';
 
 @ApiTags('categories')

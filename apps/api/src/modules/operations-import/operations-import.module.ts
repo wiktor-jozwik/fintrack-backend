@@ -1,11 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '@app/database';
 import { OperationsImportController } from './operations-import.controller';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
-import { JwtAccessTokenStrategy } from '@app/common/strategies';
 import { OPERATIONS_IMPORT_SERVICE } from './constants/operations-import-service';
 import { RmqModule } from '@app/rmq';
 import { OperationsImportService } from './operations-import.service';

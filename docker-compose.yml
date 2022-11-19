@@ -31,25 +31,6 @@ services:
       - db
     command: npm run start:dev currency-rates-importer
 
-  operations-import-handler:
-    build:
-      dockerfile: ./apps/operations-import-handler/Dockerfile
-      target: dev
-      context: .
-    volumes:
-      - .:/usr/src/app
-    env_file:
-      - .env
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
-      RABBITMQ_URL: 'amqp://admin:admin@rabbitmq:5672'
-      RABBITMQ_OPERATIONS_IMPORT_QUEUE: 'operations_import'
-    depends_on:
-      - db
-    command: npm run start:dev operations-import-handler
-    ports:
-      - ${OPERATION_IMPORT_HANDLER_PORT}:${OPERATION_IMPORT_HANDLER_PORT}
-
   operations-import-consumer:
     build:
       dockerfile: ./apps/operations-import-consumer/Dockerfile
@@ -60,8 +41,7 @@ services:
     env_file:
       - .env
     environment:
-      RABBITMQ_URL: 'amqp://admin:admin@rabbitmq:5672'
-      RABBITMQ_OPERATIONS_IMPORT_QUEUE: 'operations_import'
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
     depends_on:
       - db
     command: npm run start:dev operations-import-consumer

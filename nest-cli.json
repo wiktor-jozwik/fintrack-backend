@@ -52,15 +52,6 @@
         "tsConfigPath": "libs/database/tsconfig.lib.json"
       }
     },
-    "operations-import-handler": {
-      "type": "application",
-      "root": "apps/operations-import-handler",
-      "entryFile": "main",
-      "sourceRoot": "apps/operations-import-handler/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/operations-import-handler/tsconfig.app.json"
-      }
-    },
     "operations-import-consumer": {
       "type": "application",
       "root": "apps/operations-import-consumer",

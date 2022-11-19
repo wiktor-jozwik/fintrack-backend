@@ -5,39 +5,47 @@ WORKDIR /usr/src/app
 COPY --chown=node:node package.json yarn.lock tsconfig.json ./
 
 COPY --chown=node:node ./libs/common/package.json ./libs/common/
+COPY --chown=node:node ./libs/rmq/package.json ./libs/rmq/
 COPY --chown=node:node ./apps/operations-import-consumer/package.json ./apps/operations-import-consumer/
 
 RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache
 
+COPY --chown=node:node ./database ./database
+
+RUN yarn prisma:generate
+
+USER node
+
+
+FROM node:alpine AS prod-build
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package.json yarn.lock tsconfig.json ./
+COPY --chown=node:node ./libs/common/package.json ./libs/common/
+COPY --chown=node:node ./libs/rmq/package.json ./libs/rmq/
+
+COPY --chown=node:node --from=dev /usr/src/app/node_modules ./node_modules
+
 COPY --chown=node:node ./apps/operations-import-consumer ./apps/operations-import-consumer
 COPY --chown=node:node ./libs ./libs
-
 COPY --chown=node:node ./database ./database
 
 RUN yarn prisma:generate
 
 RUN yarn build:operations-import-consumer
 
-USER node
+RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache --prod
 
 
 FROM node:alpine AS prod
 
-WORKDIR /usr/src/app
-
 ENV NODE_ENV production
 
-COPY --chown=node:node package.json yarn.lock tsconfig.json ./
+WORKDIR /usr/src/app
 
-COPY ./apps/operations-import-consumer/package.json ./apps/operations-import-consumer/
-
-RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache --prod
-
-COPY --chown=node:node --from=dev /usr/src/app/dist ./dist
-
-COPY --chown=node:node --from=dev /usr/src/app/database ./database
-
-RUN yarn prisma:generate
+COPY --chown=node:node --from=prod-build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=prod-build /usr/src/app/dist ./dist
 
 USER node
 

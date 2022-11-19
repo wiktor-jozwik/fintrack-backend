@@ -8,6 +8,7 @@ import { JwtAccessTokenGuard, UserIsActiveGuard } from '@app/common/guards';
 import { UsersModule } from './modules/users';
 import { AuthModule } from './modules/auth';
 import { OperationsModule } from './modules/operations';
+import { OperationsImportModule } from './modules/operations-import';
 import { CategoriesModule } from './modules/categories';
 import { CurrenciesModule } from './modules/currencies';
 import { UsersCurrenciesModule } from './modules/users-currencies';
@@ -39,12 +40,15 @@ import { JwtAccessTokenStrategy } from '@app/common/strategies';
         EMAIL_USER: Joi.string().required(),
         EMAIL_PASSWORD: Joi.string().required(),
         EMAIL_FROM: Joi.string().required(),
+        RABBITMQ_URL: Joi.string().required(),
+        RABBITMQ_OPERATIONS_IMPORT_QUEUE: Joi.string().required(),
       }),
     }),
     PrismaModule,
     AuthModule,
     UsersModule,
     OperationsModule,
+    OperationsImportModule,
     CategoriesModule,
     CurrenciesModule,
     UsersCurrenciesModule,

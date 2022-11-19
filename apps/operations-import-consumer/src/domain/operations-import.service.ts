@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ImportOperationsDto } from '../dto';
 import { CsvReader } from './csv-import/csv-readers';
 import { CsvImporter } from './csv-import';
 import { CsvReaderNotImplementedException } from '@app/common/exceptions';
@@ -13,16 +12,7 @@ export class OperationsImportService {
     private readonly csvReaderCreator: CsvReaderCreator,
   ) {}
 
-  getSupportedCsvWays(): string[] {
-    return Object.keys(CsvImportWay);
-  }
-
-  async import(
-    filePath: string,
-    userId: number,
-    importOperationsDto: ImportOperationsDto,
-  ) {
-    const { csvImportWay } = importOperationsDto;
+  async import(filePath: string, userId: number, csvImportWay: CsvImportWay) {
     const reader: CsvReader = this.csvReaderCreator.create(csvImportWay);
     if (!reader) {
       throw new CsvReaderNotImplementedException(csvImportWay);

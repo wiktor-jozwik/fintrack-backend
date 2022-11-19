@@ -1,6 +1,6 @@
 import { CsvReader } from './csv-readers';
 import { Injectable, Logger } from '@nestjs/common';
-import { OperationItem, SaveOperationItem } from './interfaces/';
+import { OperationItem, SaveOperationItem } from './interfaces';
 import { OperationsImportSaveService } from './operations-import-save.service';
 
 @Injectable()

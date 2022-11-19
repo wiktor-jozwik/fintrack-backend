@@ -10,16 +10,14 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { OperationsImportService } from './domain';
 import { ImportOperationsDto } from './dto';
 import { Public, SkipUserActiveCheck, UserId } from '@app/common/decorators';
 import { StringResponse } from '@app/common/interfaces';
-import { ProducerService } from './producer.service';
+import { OperationsImportService } from './operations-import.service';
 
 @Controller('operations_import')
-export class OperationsImportHandlerController {
+export class OperationsImportController {
   constructor(
-    private readonly producerService: ProducerService,
     private readonly operationsImportService: OperationsImportService,
   ) {}
 
@@ -55,18 +53,11 @@ export class OperationsImportHandlerController {
     @UserId() userId: number,
     @Body() importOperationsDto: ImportOperationsDto,
   ): Promise<StringResponse> {
-    this.producerService.produce({
+    this.operationsImportService.queueOperationsImportFile({
       url: file.path,
       userId,
       csvImportWay: importOperationsDto.csvImportWay,
     });
-    console.log('emiting');
-    //
-    // await this.operationsImportService.import(
-    //   file.path,
-    //   userId,
-    //   importOperationsDto,
-    // );
 
     return {
       response: `'${file.originalname}' queued`,

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
-import { CsvOperationItem, OperationItem } from '../../interfaces/';
+import { CsvOperationItem, OperationItem } from '../../interfaces';
 import { CsvReader } from '../csv-reader';
 import { slugifyString } from '@app/common/utils';
 

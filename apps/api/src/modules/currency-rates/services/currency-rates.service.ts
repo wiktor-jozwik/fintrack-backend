@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { SearchCurrencyRatesDto } from '../../modules/currency-rates/dto';
+import { SearchCurrencyRatesDto } from '../dto';
 import { CurrencyRatesRepository } from '@app/database';
 import { CurrencyRateDataShortageException } from '@app/common/exceptions';
 import { convertDatetimeToDate } from '@app/common/utils';
-import { CurrencyRateValueOnDateResponse } from '../../modules/currency-rates/responses';
+import { CurrencyRateValueOnDateResponse } from '../responses';
+import { DEFAULT_APP_CURRENCY } from '@app/common/constants';
 
 @Injectable()
 export class CurrencyRatesService {
@@ -16,7 +17,7 @@ export class CurrencyRatesService {
   ): Promise<CurrencyRateValueOnDateResponse[]> {
     const { baseCurrency, currency, startDate, endDate } = query;
 
-    if (currency === 'PLN') {
+    if (currency === DEFAULT_APP_CURRENCY) {
       const baseCurrencyRates =
         await this.currencyRatesRepository.findCurrencyRatesForDates(
           baseCurrency,
@@ -37,7 +38,7 @@ export class CurrencyRatesService {
         endDate,
       );
 
-    if (baseCurrency === 'PLN') {
+    if (baseCurrency === DEFAULT_APP_CURRENCY) {
       return currencyRates.map((currencyRate) => ({
         date: convertDatetimeToDate(currencyRate.date),
         value: currencyRate.avgValue,

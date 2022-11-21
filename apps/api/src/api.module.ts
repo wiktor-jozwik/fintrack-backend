@@ -21,9 +21,6 @@ import { CurrencyRatesModule } from './modules/currency-rates';
           .required()
           .valid('test', 'development', 'staging', 'production')
           .default('development'),
-        POSTGRES_DB: Joi.string().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
         API_PORT: Joi.number().required(),
         API_URL: Joi.string().required(),

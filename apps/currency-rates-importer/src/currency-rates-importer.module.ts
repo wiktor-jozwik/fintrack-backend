@@ -12,9 +12,6 @@ import * as Joi from 'joi';
           .required()
           .valid('test', 'development', 'staging', 'production')
           .default('development'),
-        POSTGRES_DB: Joi.string().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
       }),
     }),

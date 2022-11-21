@@ -8,7 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
+import { CategoriesService } from './services';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserId } from '../../common/decorators';

@@ -9,7 +9,10 @@ import {
 import {
   DefaultCurrencyOperationCalculatorService,
   OperationsService,
-} from './domain';
+  OperationsValidatorService,
+} from './services';
+import { CategoriesValidatorService } from '../categories/services';
+import { UsersCurrenciesValidatorService } from '../users-currencies/services';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import {
   providers: [
     DefaultCurrencyOperationCalculatorService,
     OperationsService,
+    OperationsValidatorService,
+    CategoriesValidatorService,
+    UsersCurrenciesValidatorService,
     OperationsRepository,
     CategoriesRepository,
     CurrencyRatesRepository,

@@ -48,6 +48,10 @@ WORKDIR /usr/src/app
 COPY --chown=node:node --from=prod-build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=prod-build /usr/src/app/dist ./dist
 
+RUN mkdir upload
+
+RUN chown -R node:node upload
+
 USER node
 
 CMD ["node", "dist/apps/api/src/main.js"]

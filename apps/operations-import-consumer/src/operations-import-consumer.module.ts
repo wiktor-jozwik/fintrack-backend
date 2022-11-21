@@ -20,6 +20,7 @@ import { CsvReaderCreator } from './domain/csv-import/csv-readers/csv-reader-cre
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
+        DATABASE_URL: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
         RABBITMQ_OPERATIONS_IMPORT_QUEUE: Joi.string().required(),
       }),

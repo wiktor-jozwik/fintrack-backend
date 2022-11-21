@@ -6,44 +6,47 @@ import {
   OperationsRepository,
   UsersCurrenciesRepository,
 } from '@app/database';
-import {
-  CategoryNotFoundException,
-  CurrencyNotAddedException,
-  DefaultCurrencyNotFoundException,
-  InvalidDateFormatException,
-  OperationNotFoundException,
-} from '@app/common/exceptions';
-import { isValidIsoDate } from '@app/common/utils';
+import { DefaultCurrencyNotFoundException } from '@app/common/exceptions';
 import {
   CreateOperationDto,
   SearchOperationDto,
   UpdateOperationDto,
 } from '../dto';
 import { DefaultCurrencyOperationResponse } from '../../../modules/operations/responses';
+import { CategoriesValidatorService } from '@app/api/src/modules/categories/services';
+import { CurrenciesValidatorService } from '@app/api/src/modules/currencies/services';
+import { OperationsValidatorService } from '@app/api/src/modules/operations/services/operations-validator.service';
+import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services';
 
 @Injectable()
 export class OperationsService {
   constructor(
+    private readonly categoriesValidatorService: CategoriesValidatorService,
+    private readonly usersCurrenciesValidatorService: UsersCurrenciesValidatorService,
+    private readonly operationsValidatorService: OperationsValidatorService,
     private readonly defaultCurrencyOperationCalculatorService: DefaultCurrencyOperationCalculatorService,
     private readonly operationsRepository: OperationsRepository,
-    private readonly categoriesRepository: CategoriesRepository,
-    private readonly usersCurrenciesRepository: UsersCurrenciesRepository,
   ) {}
 
   async create(
     createOperationDto: CreateOperationDto,
     userId: number,
   ): Promise<Operation> {
-    const category = await this.findCategoryAndValidate(
-      createOperationDto.categoryName,
-      userId,
-    );
-    const currency = await this.findCurrencyAndValidate(
-      createOperationDto.currencyName,
-      userId,
-    );
+    const category =
+      await this.categoriesValidatorService.findAndValidateCategory(
+        createOperationDto.categoryName,
+        userId,
+      );
+    const usersCurrency =
+      await this.usersCurrenciesValidatorService.findAndValidateUsersCurrency(
+        createOperationDto.currencyName,
+        userId,
+      );
+    const currency = usersCurrency.currency;
 
-    const date = this.validateDate(createOperationDto.date);
+    const date = this.operationsValidatorService.validateDate(
+      createOperationDto.date,
+    );
     const { name, moneyAmount } = createOperationDto;
 
     return await this.operationsRepository.create({
@@ -78,10 +81,9 @@ export class OperationsService {
     const operations = await this.findAll(userId, query);
 
     const defaultCurrency =
-      await this.usersCurrenciesRepository.findUsersDefault(userId);
-    if (!defaultCurrency) {
-      throw new DefaultCurrencyNotFoundException();
-    }
+      await this.usersCurrenciesValidatorService.findAndValidateUsersDefaultCurrency(
+        userId,
+      );
 
     const defaultCurrencyName = defaultCurrency.currency.name;
 
@@ -111,7 +113,10 @@ export class OperationsService {
     operationId: number,
     userId: number,
   ): Promise<Operation> {
-    await this.validateOperationPresence(operationId, userId);
+    await this.operationsValidatorService.findAndValidateOperation(
+      operationId,
+      userId,
+    );
 
     const { categoryName, currencyName } = updateOperationDto;
     updateOperationDto.currencyName = undefined;
@@ -120,17 +125,27 @@ export class OperationsService {
     let categoryId;
     let currencyId;
     if (categoryName) {
-      const category = await this.findCategoryAndValidate(categoryName, userId);
+      const category =
+        await this.categoriesValidatorService.findAndValidateCategory(
+          categoryName,
+          userId,
+        );
       categoryId = category.id;
     }
 
     if (currencyName) {
-      const currency = await this.findCurrencyAndValidate(currencyName, userId);
-      currencyId = currency.id;
+      const usersCurrency =
+        await this.usersCurrenciesValidatorService.findAndValidateUsersCurrency(
+          currencyName,
+          userId,
+        );
+      currencyId = usersCurrency.currency.id;
     }
 
     if (updateOperationDto.date) {
-      updateOperationDto.date = this.validateDate(updateOperationDto.date);
+      updateOperationDto.date = this.operationsValidatorService.validateDate(
+        updateOperationDto.date,
+      );
     }
 
     return await this.operationsRepository.update(operationId, {
@@ -153,59 +168,11 @@ export class OperationsService {
   }
 
   async remove(operationId: number, userId: number): Promise<Operation> {
-    await this.validateOperationPresence(operationId, userId);
-
-    return await this.operationsRepository.delete(operationId);
-  }
-
-  private async validateOperationPresence(
-    operationId: number,
-    userId: number,
-  ): Promise<void> {
-    const operation = await this.operationsRepository.findById(
+    await this.operationsValidatorService.findAndValidateOperation(
       operationId,
       userId,
     );
 
-    if (!operation) {
-      throw new OperationNotFoundException(operationId);
-    }
-  }
-
-  private async findCurrencyAndValidate(
-    name: string,
-    userId: number,
-  ): Promise<Currency> {
-    const usersCurrencies = await this.usersCurrenciesRepository.findByName(
-      name,
-      userId,
-    );
-
-    if (!usersCurrencies) {
-      throw new CurrencyNotAddedException(name);
-    }
-    return usersCurrencies.currency;
-  }
-
-  private async findCategoryAndValidate(
-    name: string,
-    userId: number,
-  ): Promise<Category> {
-    const category = await this.categoriesRepository.findByName(name, userId);
-
-    if (!category) {
-      throw new CategoryNotFoundException(undefined, name);
-    }
-
-    return category;
-  }
-
-  private validateDate(date: Date): Date {
-    const validDate = isValidIsoDate(date);
-    if (!validDate) {
-      throw new InvalidDateFormatException();
-    }
-
-    return new Date(date);
+    return await this.operationsRepository.delete(operationId);
   }
 }

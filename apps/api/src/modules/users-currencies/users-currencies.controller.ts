@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { UsersCurrenciesService } from './users-currencies.service';
+import { UsersCurrenciesService } from './services';
 import { UserIsActiveGuard } from '../../common/guards';
 import { UserId } from '../../common/decorators';
 import { CreateCurrencyDto } from './dto';

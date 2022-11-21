@@ -13,7 +13,7 @@ import { diskStorage } from 'multer';
 import { ImportOperationsDto } from './dto';
 import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { StringResponse } from '@app/common/interfaces';
-import { OperationsImportService } from './operations-import.service';
+import { OperationsImportService } from './services';
 
 @Controller('operations_import')
 export class OperationsImportController {

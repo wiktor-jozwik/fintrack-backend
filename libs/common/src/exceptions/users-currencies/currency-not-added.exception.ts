@@ -1,7 +1,11 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 
 export class CurrencyNotAddedException extends UnprocessableEntityException {
-  constructor(name: string) {
-    super(`Currency '${name}' not added to account`);
+  constructor(idOrName: number | string) {
+    if (typeof idOrName === 'string') {
+      super(`Currency '${idOrName}' not added to account`);
+    } else {
+      super(`Currency with id: '${idOrName}' not added to account`);
+    }
   }
 }

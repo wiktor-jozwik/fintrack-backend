@@ -10,7 +10,7 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { OperationsService } from './domain';
+import { OperationsService } from './services';
 import { OperationInterceptor, OperationsInterceptor } from './interceptors';
 import {
   CreateOperationDto,
@@ -22,7 +22,7 @@ import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   DefaultCurrencyOperationResponse,
   OperationWithCurrencyCategoryResponse,
-} from '../../modules/operations/responses';
+} from '../operations/responses';
 import { OperationEntity } from '../../common/entities';
 
 @ApiTags('operations')

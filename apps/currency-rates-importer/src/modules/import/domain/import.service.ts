@@ -11,7 +11,7 @@ export class ImportService {
 
   constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
 
-  @Cron('0 */12 * * *')
+  @Cron('*/12 * * * *')
   async importCurrencyRates() {
     const startDate = moment().subtract(
       this.PREVIOUS_DAYS_TO_FETCH_AMOUNT,

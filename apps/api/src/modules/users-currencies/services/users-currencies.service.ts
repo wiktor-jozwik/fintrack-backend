@@ -8,11 +8,15 @@ import {
   DefaultCurrencyDeleteException,
   DefaultCurrencyNotFoundException,
 } from '@app/common/exceptions';
-import { CreateCurrencyDto } from './dto';
+import { CreateCurrencyDto } from '../dto';
+import { CurrenciesValidatorService } from '@app/api/src/modules/currencies/services';
+import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services/users-currencies-validator.service';
 
 @Injectable()
 export class UsersCurrenciesService {
   constructor(
+    private readonly currenciesValidatorService: CurrenciesValidatorService,
+    private readonly usersCurrenciesValidatorService: UsersCurrenciesValidatorService,
     private readonly usersCurrenciesRepository: UsersCurrenciesRepository,
     private readonly currenciesRepository: CurrenciesRepository,
   ) {}
@@ -20,7 +24,10 @@ export class UsersCurrenciesService {
     createCurrencyDto: CreateCurrencyDto,
     userId: number,
   ): Promise<Currency> {
-    const currency = await this.findSupportedCurrency(createCurrencyDto.name);
+    const currency =
+      await this.currenciesValidatorService.findAndValidateCurrency(
+        createCurrencyDto.name,
+      );
 
     await this.createUsersCurrency(currency, userId);
 
@@ -28,24 +35,21 @@ export class UsersCurrenciesService {
   }
 
   async remove(userCurrencyId: number, userId: number): Promise<Currency> {
-    const userCurrency = await this.usersCurrenciesRepository.findById(
-      userCurrencyId,
-      userId,
-    );
-
-    if (!userCurrency) {
-      throw new CurrencyNotFoundException(userCurrencyId);
-    }
+    const usersCurrency =
+      await this.usersCurrenciesValidatorService.findAndValidateUsersCurrency(
+        userCurrencyId,
+        userId,
+      );
 
     const defaultCurrency = await this.findDefault(userId);
-    const currencyName = userCurrency.currency?.name;
+    const currencyName = usersCurrency.currency?.name;
 
     if (currencyName === defaultCurrency.name) {
       throw new DefaultCurrencyDeleteException(currencyName);
     }
 
-    await this.usersCurrenciesRepository.delete(userCurrency);
-    return userCurrency.currency;
+    await this.usersCurrenciesRepository.delete(usersCurrency);
+    return usersCurrency.currency;
   }
 
   async findAll(userId: number): Promise<Currency[]> {
@@ -90,16 +94,6 @@ export class UsersCurrenciesService {
         },
       },
     });
-  }
-
-  async findSupportedCurrency(name: string): Promise<Currency> {
-    const currency = await this.currenciesRepository.findByName(name);
-
-    if (!currency) {
-      throw new CurrencyNotSupportedException(name);
-    }
-
-    return currency;
   }
 
   private async checkIfCurrencyCanBeAdded(currency: Currency, userId: number) {

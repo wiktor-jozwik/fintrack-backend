@@ -1,30 +1,11 @@
 import { Module } from '@nestjs/common';
 import { OperationsImportController } from './operations-import.controller';
-import { ConfigModule } from '@nestjs/config';
-import * as Joi from 'joi';
-import { OPERATIONS_IMPORT_SERVICE } from './constants/operations-import-service';
+import { OPERATIONS_IMPORT_SERVICE } from './constants';
 import { RmqModule } from '@app/rmq';
-import { OperationsImportService } from './operations-import.service';
+import { OperationsImportService } from './services';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        NODE_ENV: Joi.string()
-          .required()
-          .valid('test', 'development', 'staging', 'production')
-          .default('development'),
-        POSTGRES_DB: Joi.string().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        DATABASE_URL: Joi.string().required(),
-        OPERATION_IMPORT_HANDLER_PORT: Joi.number().required(),
-        RABBITMQ_URL: Joi.string().required(),
-        RABBITMQ_OPERATIONS_IMPORT_QUEUE: Joi.string().required(),
-      }),
-    }),
-    RmqModule.register({ name: OPERATIONS_IMPORT_SERVICE }),
-  ],
+  imports: [RmqModule.register({ name: OPERATIONS_IMPORT_SERVICE })],
   providers: [OperationsImportService],
   controllers: [OperationsImportController],
 })

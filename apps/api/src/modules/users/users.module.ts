@@ -1,16 +1,37 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users.service';
+import {
+  MailTokenService,
+  UsersMailerService,
+  UsersService,
+  UsersValidatorService,
+} from './services';
 import { UsersController } from './users.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
-import { UsersRepository } from '@app/database';
-import { UsersCurrenciesModule } from '../../modules/users-currencies';
-import { EmailModule } from '../../modules/email';
+import {
+  CurrenciesRepository,
+  UsersCurrenciesRepository,
+  UsersRepository,
+} from '@app/database';
+import { UsersCurrenciesModule } from '../users-currencies';
+import { EmailModule } from '../email';
+import { CurrenciesValidatorService } from '../currencies/services';
+import { UsersCurrenciesValidatorService } from '../users-currencies/services';
 
 @Module({
   imports: [JwtModule, ConfigModule, UsersCurrenciesModule, EmailModule],
-  exports: [UsersService],
-  providers: [UsersService, UsersRepository],
   controllers: [UsersController],
+  providers: [
+    UsersService,
+    UsersValidatorService,
+    MailTokenService,
+    UsersMailerService,
+    UsersRepository,
+    CurrenciesValidatorService,
+    UsersCurrenciesValidatorService,
+    CurrenciesRepository,
+    UsersCurrenciesRepository,
+  ],
+  exports: [UsersService, UsersValidatorService],
 })
 export class UsersModule {}

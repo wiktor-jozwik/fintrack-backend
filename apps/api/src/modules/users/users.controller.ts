@@ -6,7 +6,7 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './services';
 import { UserProfileInterceptor } from './interceptors';
 import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { ResendActivationLinkDto, TokenDto } from './dto';

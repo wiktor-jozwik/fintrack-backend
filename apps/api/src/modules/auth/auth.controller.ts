@@ -7,8 +7,8 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from '../../modules/users';
-import { AuthService } from './auth.service';
+import { UsersService } from '../../modules/users/services';
+import { AuthService } from './services/auth.service';
 import { RefreshToken } from '../../common/decorators';
 import { UserRegisterInterceptor } from './interceptors';
 import { UserLoginDto, UserRegisterDto } from '../users/dto';

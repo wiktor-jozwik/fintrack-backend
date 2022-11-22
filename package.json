@@ -1,8 +1,8 @@
 {
-  "name": "money-tracker-api-nestjs",
+  "name": "fintrack-backend",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "Wiktor Jóźwik",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

@@ -17,7 +17,7 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Money tracker')
+    .setTitle('FinTrack')
     .setDescription('Described all API endpoints with authentication ability')
     .setVersion('1.0')
     .addBearerAuth()

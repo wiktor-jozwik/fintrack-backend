@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { hashString } from '@app/common/utils';
 import { User } from '@prisma/client';
-import { EmailService } from '../../email';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { UsersRepository } from '@app/database';
 import { UserRegisterDto } from '../dto';
 import { UserProfileResponse } from '../responses';

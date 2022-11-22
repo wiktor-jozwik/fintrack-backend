@@ -3,8 +3,6 @@ import { Currency } from '@prisma/client';
 import { CurrenciesRepository, UsersCurrenciesRepository } from '@app/database';
 import {
   CurrencyAlreadyAddedException,
-  CurrencyNotFoundException,
-  CurrencyNotSupportedException,
   DefaultCurrencyDeleteException,
   DefaultCurrencyNotFoundException,
 } from '@app/common/exceptions';

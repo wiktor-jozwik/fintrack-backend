@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Category, Currency, Operation } from '@prisma/client';
 import { DefaultCurrencyOperationCalculatorService } from './default-currency-operation-calculator.service';
-import {
-  CategoriesRepository,
-  OperationsRepository,
-  UsersCurrenciesRepository,
-} from '@app/database';
-import { DefaultCurrencyNotFoundException } from '@app/common/exceptions';
+import { OperationsRepository } from '@app/database';
 import {
   CreateOperationDto,
   SearchOperationDto,
@@ -14,7 +9,6 @@ import {
 } from '../dto';
 import { DefaultCurrencyOperationResponse } from '../../../modules/operations/responses';
 import { CategoriesValidatorService } from '@app/api/src/modules/categories/services';
-import { CurrenciesValidatorService } from '@app/api/src/modules/currencies/services';
 import { OperationsValidatorService } from '@app/api/src/modules/operations/services/operations-validator.service';
 import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services';
 

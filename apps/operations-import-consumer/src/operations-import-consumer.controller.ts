@@ -6,6 +6,7 @@ import { OperationsImportPayload } from '@app/common/interfaces/operations-impor
 @Controller()
 export class OperationsImportConsumerController {
   private readonly logger = new Logger(OperationsImportConsumerController.name);
+
   constructor(
     private readonly operationsImportService: OperationsImportService,
   ) {}
@@ -15,14 +16,11 @@ export class OperationsImportConsumerController {
     @Payload() payload: OperationsImportPayload,
     @Ctx() context: RmqContext,
   ) {
-    const { url, userId, csvImportWay } = payload;
     const channel = context.getChannelRef();
     const message = context.getMessage();
     try {
-      this.logger.log(
-        `Consuming operation import for user: ${userId} with url: ${url}`,
-      );
-      await this.operationsImportService.import(url, userId, csvImportWay);
+      await this.operationsImportService.processImport(payload);
+
       channel.ack(message);
     } catch (e) {
       this.logger.error('ERR: ', e.message);

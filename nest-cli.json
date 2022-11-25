@@ -69,6 +69,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/rmq/tsconfig.lib.json"
       }
+    },
+    "azure-blob-storage": {
+      "type": "library",
+      "root": "libs/azure-blob-storage",
+      "entryFile": "index",
+      "sourceRoot": "libs/azure-blob-storage/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/azure-blob-storage/tsconfig.lib.json"
+      }
     }
   }
 }

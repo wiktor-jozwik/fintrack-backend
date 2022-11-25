@@ -79,7 +79,7 @@ export class OperationsImportSaveService {
           userId,
         );
         if (!category) {
-          throw new CategoryNotFoundException(undefined, categoryName);
+          throw new CategoryNotFoundException(categoryName);
         }
         categoryId = category.id;
       } else {

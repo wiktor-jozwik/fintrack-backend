@@ -15,6 +15,7 @@ import { OperationsImportService } from './domain';
 import { CsvImporter, OperationsImportSaveService } from './domain/csv-import';
 import { CsvPekaoReader, CsvPkoReader } from './domain/csv-import/csv-readers';
 import { CsvReaderCreator } from './domain/csv-import/csv-readers/csv-reader-creator';
+import { AzureBlobStorageModule } from '@app/azure-blob-storage';
 
 @Module({
   imports: [
@@ -23,8 +24,11 @@ import { CsvReaderCreator } from './domain/csv-import/csv-readers/csv-reader-cre
         DATABASE_URL: Joi.string().required(),
         RABBITMQ_URL: Joi.string().required(),
         RABBITMQ_OPERATIONS_IMPORT_QUEUE: Joi.string().required(),
+        AZURE_BLOB_STORAGE_CONNECTION_STRING: Joi.string().required(),
+        OPERATIONS_IMPORT_AZURE_CONTAINER_NAME: Joi.string().required(),
       }),
     }),
+    AzureBlobStorageModule,
     PrismaModule,
   ],
   controllers: [OperationsImportConsumerController],

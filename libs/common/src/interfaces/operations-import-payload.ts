@@ -1,7 +1,7 @@
 import { CsvImportWay } from '@app/common/enums';
 
 export interface OperationsImportPayload {
-  url: string;
+  fileName: string;
   userId: number;
   csvImportWay: CsvImportWay;
 }

@@ -41,6 +41,12 @@
       ],
       "@app/rmq/*": [
         "libs/rmq/src/*"
+      ],
+      "@app/azure-blob-storage": [
+        "libs/azure-blob-storage/src"
+      ],
+      "@app/azure-blob-storage/*": [
+        "libs/azure-blob-storage/src/*"
       ]
     }
   },

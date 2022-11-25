@@ -7,7 +7,24 @@ export class CurrenciesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<Currency[]> {
-    return await this.prisma.currency.findMany({});
+    return await this.prisma.currency.findMany({
+      where: {
+        OR: [
+          {
+            currencyRates: {
+              some: {
+                date: {
+                  equals: new Date('2002-01-02'),
+                },
+              },
+            },
+          },
+          {
+            name: 'PLN',
+          },
+        ],
+      },
+    });
   }
 
   async findByName(name: string): Promise<Currency | null> {

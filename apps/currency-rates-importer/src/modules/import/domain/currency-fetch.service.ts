@@ -5,6 +5,7 @@ import { Moment } from 'moment';
 import { convertMomentToIsoDate } from '@app/common/utils';
 import { CurrencyRatesRepository } from '@app/database';
 import { NbpHttpService } from './nbp-http.service';
+import { FIRST_CURRENCY_RATE_NBP_DATE } from '@app/common/constants';
 
 @Injectable()
 export class CurrencyFetchService {
@@ -54,6 +55,19 @@ export class CurrencyFetchService {
         this.logger.error(err.message);
       }
     }
+  }
+
+  async checkIfThereIsRateToFetch(name: string): Promise<boolean> {
+    const daysFromNbpFirstDate =
+      moment().diff(moment(FIRST_CURRENCY_RATE_NBP_DATE), 'days') + 1;
+    const savedCurrenciesCount =
+      await this.currencyRatesRepository.countCurrency(name);
+    if (savedCurrenciesCount === daysFromNbpFirstDate) {
+      this.logger.log(`Currency '${name}' has all rates saved`);
+      return false;
+    }
+
+    return true;
   }
 
   private checkIfShouldTakePreviousDayRate(axiosResponse: AxiosError) {

@@ -1,0 +1,1 @@
+export const FIRST_CURRENCY_RATE_NBP_DATE = '2002-01-02';

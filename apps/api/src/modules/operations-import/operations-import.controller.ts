@@ -9,15 +9,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { ImportOperationsDto } from './dto';
 import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { StringResponse } from '@app/common/interfaces';
 import { OperationsImportService } from './services';
+import { AzureBlobStorageService } from '@app/azure-blob-storage';
 
 @Controller('operations_import')
 export class OperationsImportController {
   constructor(
+    private readonly azureBlobStorageService: AzureBlobStorageService,
     private readonly operationsImportService: OperationsImportService,
   ) {}
 
@@ -29,20 +30,7 @@ export class OperationsImportController {
   }
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './upload/',
-        filename: (
-          req: Express.Request,
-          file: Express.Multer.File,
-          callback,
-        ) => {
-          callback(null, `${Date.now()}-${file.originalname}`);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('file'))
   async importOperations(
     @UploadedFile(
       new ParseFilePipe({
@@ -53,11 +41,19 @@ export class OperationsImportController {
     @UserId() userId: number,
     @Body() importOperationsDto: ImportOperationsDto,
   ): Promise<StringResponse> {
-    this.operationsImportService.queueOperationsImportFile({
-      url: file.path,
-      userId,
-      csvImportWay: importOperationsDto.csvImportWay,
-    });
+    try {
+      const fileName = await this.azureBlobStorageService.uploadFile(file);
+
+      this.operationsImportService.queueOperationsImportFile({
+        fileName,
+        userId,
+        csvImportWay: importOperationsDto.csvImportWay,
+      });
+    } catch (err) {
+      return {
+        response: `ERR: ${err.message}`,
+      };
+    }
 
     return {
       response: `'${file.originalname}' queued`,

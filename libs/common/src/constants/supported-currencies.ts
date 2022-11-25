@@ -4,4 +4,5 @@ export const SUPPORTED_CURRENCIES = [
   { name: 'EUR', symbol: '€' },
   { name: 'GBP', symbol: '£' },
   { name: 'CHF', symbol: '₣' },
+  { name: 'CZK', symbol: 'Kč' },
 ];

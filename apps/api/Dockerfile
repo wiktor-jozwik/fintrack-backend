@@ -38,6 +38,8 @@ RUN yarn prisma:generate
 
 RUN yarn build:api
 
+RUN cp -R apps/api/src/modules/email/templates/ dist/apps/api/src/modules/email
+
 RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache --prod
 
 

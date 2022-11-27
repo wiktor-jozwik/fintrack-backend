@@ -6,6 +6,7 @@ node_modules
 tmp/
 upload
 dbml
+00-env-secret.yaml
 
 # Logs
 logs

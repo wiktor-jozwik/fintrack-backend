@@ -11,3 +11,10 @@ metadata:
   name: rmq
   labels:
     name: rmq
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubeseal
+  labels:
+    name: kubeseal

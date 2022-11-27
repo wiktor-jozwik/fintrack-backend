@@ -6,7 +6,7 @@ metadata:
   labels:
     app: api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api
@@ -19,12 +19,12 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: api
-          image: fintrack-api:latest
-#          image: fintrackregistry.azurecr.io/fintrack-api:latest
+#          image: fintrack-api:latest
+          image: fintrackregistry.azurecr.io/fintrack-api:latest
           ports:
             - containerPort: 3000
-          imagePullPolicy: Never
-#          imagePullPolicy: Always
+#          imagePullPolicy: Never
+          imagePullPolicy: Always
           env:
             - name: DATABASE_URL
               valueFrom:
@@ -118,6 +118,8 @@ kind: Service
 metadata:
   name: api-service
   namespace: ft
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: fintrack-api
 spec:
   selector:
     app: api

@@ -19,10 +19,10 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: currency-rates-importer
-          image: fintrack-currency-rates-importer:latest
-#          image: fintrackregistry.azurecr.io/fintrack-currency-rates-importer:latest
-          imagePullPolicy: Never
-#          imagePullPolicy: Always
+#          image: fintrack-currency-rates-importer:latest
+          image: fintrackregistry.azurecr.io/fintrack-currency-rates-importer:latest
+#          imagePullPolicy: Never
+          imagePullPolicy: Always
           env:
             - name: DATABASE_URL
               valueFrom:

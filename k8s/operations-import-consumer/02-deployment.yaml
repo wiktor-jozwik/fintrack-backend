@@ -17,10 +17,10 @@ spec:
     spec:
       containers:
         - name: operations-import-consumer
-#          image: fintrackregistry.azurecr.io/fintrack-operations-import-consumer:latest
-          image: fintrack-operations-import-consumer:latest
-#          imagePullPolicy: Always
-          imagePullPolicy: Never
+          image: fintrackregistry.azurecr.io/fintrack-operations-import-consumer:latest
+#          image: fintrack-operations-import-consumer:latest
+          imagePullPolicy: Always
+#          imagePullPolicy: Never
           env:
             - name: DATABASE_URL
               valueFrom:

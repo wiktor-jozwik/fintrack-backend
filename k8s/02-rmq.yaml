@@ -1,0 +1,21 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rmq-cluster
+  namespace: rmq
+spec:
+  replicas: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  rabbitmq:
+    additionalConfig: |
+      log.console.level = info
+      channel_max = 700
+      default_user_tags.administrator = true
+  service:
+    type: LoadBalancer

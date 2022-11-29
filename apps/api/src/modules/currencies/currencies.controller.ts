@@ -16,6 +16,7 @@ export class CurrenciesController {
   @Public()
   @Get()
   findAll(): Promise<CurrencyEntity[]> {
+    console.log('REDEPLOYED KUBERNETES');
     return this.currenciesService.findAll();
   }
 }

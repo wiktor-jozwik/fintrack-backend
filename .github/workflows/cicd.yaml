@@ -80,11 +80,16 @@ jobs:
       - name: Install xmllint
         run: sudo apt-get install -y libxml2-utils
 
+      - name: List dirs
+        run: ls -la /root
+
+      - name: List dirs
+        run: ls -la /root/.kube
+
       - name: Cat config
         run: sudo cp /root/.kube/config ~/.kube/config
 
-      - name: List dirs
-        run: ls -la ~
+
 
 #      - name: Set AKS context
 #        id: set-context

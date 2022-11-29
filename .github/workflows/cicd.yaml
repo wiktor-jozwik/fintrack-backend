@@ -54,18 +54,21 @@ jobs:
     needs: build
 
     steps:
-      - name: Log into azure
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Install xmllint lib for sudo
         run: sudo apt-get install -y libxml2-utils
 
       - name: Change permission for .azure directory
         run: sudo chown -R $USER:$USER /home/runner/.azure
+
+      - name: Log into azure
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
 
       - name: Install kubectl
         id: install-kubectl

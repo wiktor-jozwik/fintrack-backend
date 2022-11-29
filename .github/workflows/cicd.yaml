@@ -81,7 +81,7 @@ jobs:
         run: sudo apt-get install -y libxml2-utils
 
       - name: Cat config
-        run: sudo cat /root/.kube/config > ~/.kube/config
+        run: sudo cp /root/.kube/config ~/.kube/config
 
       - name: List dirs
         run: ls -la ~

@@ -81,7 +81,7 @@ jobs:
         run: sudo apt-get install -y libxml2-utils
 
       - name: Cat config
-        run: sudo cp $GITHUB_WORKSPACE/.kubeconfig ~/.kube/config
+        run: sudo mkdir ~/.kube && sudo cp $GITHUB_WORKSPACE/.kubeconfig ~/.kube/config
 
 
 

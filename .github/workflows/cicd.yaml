@@ -95,8 +95,8 @@ jobs:
 
       - name: Restart AKS deployments
         run: |
+          export KUBECONFIG=/root/.kube/config
           sudo kubectl get nodes -o wide
-#          export KUBECONFIG=$GITHUB_WORKSPACE/.kubeconfig
 #          sudo kubectl rollout restart deployment api-deployment -n ft
 #          sudo kubectl rollout restart deployment currency-rates-importer-deployment -n ft
 #          sudo kubectl rollout restart deployment operations-import-consumer-deployment -n ft

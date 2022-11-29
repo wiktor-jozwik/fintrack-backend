@@ -28,24 +28,24 @@ jobs:
           tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:${{ github.sha }}
           file: ./apps/api/Dockerfile
           target: prod
-#
-#      - name: Build and push currency-rates-importer
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          push: true
-#          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
-#          file: ./apps/currency-rates-importer/Dockerfile
-#          target: prod
-#
-#      - name: Build and push operations-import-consumer
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          push: true
-#          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:${{ github.sha }}
-#          file: ./apps/operations-import-consumer/Dockerfile
-#          target: prod
+
+      - name: Build and push currency-rates-importer
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
+          file: ./apps/currency-rates-importer/Dockerfile
+          target: prod
+
+      - name: Build and push operations-import-consumer
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:${{ github.sha }}
+          file: ./apps/operations-import-consumer/Dockerfile
+          target: prod
 
   deploy:
     runs-on: ubuntu-latest
@@ -91,20 +91,20 @@ jobs:
             k8s/api/02-deployment.yaml
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:${{ github.sha }}
 
-#      - name: Deploy currency-rates-importer to AKS
-#        id: deploy-aks-currency-rates-importer
-#        uses: Azure/k8s-deploy@v4
-#        with:
-#          namespace: 'ft'
-#          manifests: |
-#            k8s/currency-rates-importer/02-deployment.yaml
-#          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
-#
-#      - name: Deploy operations-import-consumer to AKS
-#        id: deploy-aks-operations-import-consumer
-#        uses: Azure/k8s-deploy@v4
-#        with:
-#          namespace: 'ft'
-#          manifests: |
-#            k8s/operations-import-consumer/02-deployment.yaml
-#          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:${{ github.sha }}
+      - name: Deploy currency-rates-importer to AKS
+        id: deploy-aks-currency-rates-importer
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'ft'
+          manifests: |
+            k8s/currency-rates-importer/02-deployment.yaml
+          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
+
+      - name: Deploy operations-import-consumer to AKS
+        id: deploy-aks-operations-import-consumer
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'ft'
+          manifests: |
+            k8s/operations-import-consumer/02-deployment.yaml
+          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:${{ github.sha }}

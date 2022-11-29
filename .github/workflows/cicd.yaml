@@ -36,7 +36,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:$GITHUB_SHA
+          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
           file: ./apps/currency-rates-importer/Dockerfile
           target: prod
 #
@@ -115,7 +115,7 @@ jobs:
           namespace: 'ft'
           manifests: |
             k8s/currency-rates-importer/02-deployment.yaml
-          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:$GITHUB_SHA
+          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
 
 
 #      - name: Restart AKS deployments

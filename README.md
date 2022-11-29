@@ -99,7 +99,7 @@ docker login fintrackregistry.azurecr.io
 
 ### Build docker images and push them to Azure Repository
 ```bash
-./deploy-scripts/build-and-push-docker-images.sh
+./config-scripts/build-and-push-docker-images.sh
 ```
 
 ### Verify connection to Azure AKS
@@ -114,7 +114,7 @@ kubectl apply -f k8s/01-namespaces.yaml
 
 ### Deploy kubeseal controller
 ```bash
-./deploy-scripts/k8s/deploy-kubeseal.sh
+./config-scripts/k8s/deploy-kubeseal.sh
 ```
 
 ### Fetch kubeseal public key:
@@ -136,16 +136,16 @@ kubectl get secret rmq-cluster-default-user -n rmq -o jsonpath='{.data.password}
 
 ### Generate sealed secrets using kubeseal and apply it
 ```bash
-./deploy-scripts/k8s/generate-and-apply-sealed-secrets.sh
+./config-scripts/k8s/generate-and-apply-sealed-secrets.sh
 ```
 
 ### Deploy RabbitMQ
 
 ```bash
-./deploy-scripts/k8s/deploy-rmq.sh
+./config-scripts/k8s/deploy-rmq.sh
 ```
 
 ### Deploy microservices
 ```bash
-./deploy-scripts/k8s/deploy-microservices.sh
+./config-scripts/k8s/deploy-microservices.sh
 ```

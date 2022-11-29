@@ -95,7 +95,7 @@ jobs:
 
       - name: Restart AKS deployments
         run: |
-          kubectl config view
+          sudo kubectl config view
           sudo kubectl get nodes -o wide
 #          sudo kubectl rollout restart deployment api-deployment -n ft
 #          sudo kubectl rollout restart deployment currency-rates-importer-deployment -n ft

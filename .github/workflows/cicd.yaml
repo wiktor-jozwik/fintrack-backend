@@ -99,11 +99,21 @@ jobs:
           cluster-name: fintrack-aks
           admin: true
 
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'ft'
+          manifests: |
+            k8s/api/02-deployment.yaml
+          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:latest
+          pull: true
 
-      - name: Restart AKS deployments
-        run: |
-          sudo kubectl config view
-          sudo kubectl get nodes -o wide
-#          sudo kubectl rollout restart deployment api-deployment -n ft
-#          sudo kubectl rollout restart deployment currency-rates-importer-deployment -n ft
-#          sudo kubectl rollout restart deployment operations-import-consumer-deployment -n ft
+
+#      - name: Restart AKS deployments
+#        run: |
+#          sudo kubectl config view
+#          sudo kubectl get nodes -o wide
+##          sudo kubectl rollout restart deployment api-deployment -n ft
+##          sudo kubectl rollout restart deployment currency-rates-importer-deployment -n ft
+##          sudo kubectl rollout restart deployment operations-import-consumer-deployment -n ft

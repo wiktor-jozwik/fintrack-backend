@@ -1,12 +1,12 @@
 on:
   push:
     branches: [ deployment ]
-    push:
-      paths:
-        - 'apps/operations-import-consumer/**/*'
-        - 'database/**/*'
-        - 'k8s/operations-import-consumer/**/*'
-        - 'libs/**/*'
+    paths:
+      - 'apps/operations-import-consumer/**/*'
+      - 'database/**/*'
+      - 'k8s/operations-import-consumer/**/*'
+      - 'libs/**/*'
+
   pull_request:
     branches: [ deployment ]
     paths:

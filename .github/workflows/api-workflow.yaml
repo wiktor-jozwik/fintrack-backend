@@ -1,12 +1,12 @@
 on:
   push:
     branches: [ deployment ]
-    push:
-      paths:
-        - 'apps/api/**/*'
-        - 'database/**/*'
-        - 'k8s/api/**/*'
-        - 'libs/**/*'
+    paths:
+      - 'apps/api/**/*'
+      - 'database/**/*'
+      - 'k8s/api/**/*'
+      - 'libs/**/*'
+
   pull_request:
     branches: [ deployment ]
     paths:

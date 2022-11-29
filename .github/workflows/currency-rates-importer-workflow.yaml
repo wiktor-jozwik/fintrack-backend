@@ -1,12 +1,12 @@
 on:
   push:
     branches: [ deployment ]
-    push:
-      paths:
-        - 'apps/currency-rates-importer/**/*'
-        - 'database/**/*'
-        - 'k8s/currency-rates-importer/**/*'
-        - 'libs/**/*'
+    paths:
+      - 'apps/currency-rates-importer/**/*'
+      - 'database/**/*'
+      - 'k8s/currency-rates-importer/**/*'
+      - 'libs/**/*'
+
   pull_request:
     branches: [ deployment ]
     paths:

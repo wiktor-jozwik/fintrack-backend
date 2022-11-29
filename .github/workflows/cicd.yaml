@@ -20,7 +20,7 @@ jobs:
         with:
           registry: ${{ secrets.ACR_ENDPOINT }}
           username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}woud7min!feet0MAS
+          password: ${{ secrets.ACR_PASSWORD }}
 
 #      - name: Build and push api
 #        uses: docker/build-push-action@v3

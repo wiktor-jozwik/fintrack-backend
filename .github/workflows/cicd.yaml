@@ -66,9 +66,7 @@ jobs:
 #            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }}
 
       - name: Show .azure dir
-        run: |
-          ls /home/runner
-          ls /home/runner/.azure
+        run: ls -la /home/runner && ls -la /home/runner/.azure
 
       - name: Set AKS context
         id: set-context

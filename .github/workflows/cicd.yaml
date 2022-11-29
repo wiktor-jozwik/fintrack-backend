@@ -70,7 +70,7 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            sudo az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }}
+            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }}
 
 #      - name: Show .azure dir
 #        run: ls -la /home/runner && ls -la /home/runner/.azure

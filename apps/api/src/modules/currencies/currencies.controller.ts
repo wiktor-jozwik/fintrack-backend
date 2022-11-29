@@ -16,7 +16,7 @@ export class CurrenciesController {
   @Public()
   @Get()
   findAll(): Promise<CurrencyEntity[]> {
-    console.log('test api deployment');
+    console.log('Api deployment pipeline github actions');
     return this.currenciesService.findAll();
   }
 }

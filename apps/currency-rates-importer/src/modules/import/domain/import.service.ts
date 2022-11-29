@@ -18,6 +18,7 @@ export class ImportService {
   // At minute 0 past every 3rd hour.
   @Cron('0 */3 * * *')
   async importCurrencyRates() {
+    console.log('Currency rates deployment pipeline github actions');
     const startDate = moment().subtract(
       this.PREVIOUS_DAYS_TO_FETCH_AMOUNT,
       'day',

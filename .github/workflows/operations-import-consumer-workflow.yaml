@@ -3,10 +3,10 @@ on:
     branches: [ deployment ]
     push:
       paths:
-        - 'apps/operations-import-consumer/**'
-        - 'database/**'
-        - 'k8s/operations-import-consumer/**'
-        - 'libs/**'
+        - 'apps/operations-import-consumer/**/*'
+        - 'database/**/*'
+        - 'k8s/operations-import-consumer/**/*'
+        - 'libs/**/*'
   pull_request:
     branches: [ deployment ]
     paths:

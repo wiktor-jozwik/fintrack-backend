@@ -70,13 +70,13 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file /home/runner/.kubeconfig
+            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file ${{ GITHUB_WORKSPACE }}/.kubeconfig
 
       - name: List dirs
-        run: ls -la /home/runner
+        run: ls -la ${{ GITHUB_WORKSPACE }}
 
       - name: Cat config
-        run: cat /home/runner/.kubeconfig
+        run: cat ${{ GITHUB_WORKSPACE }}/.kubeconfig
 #
 #      - name: Set AKS context
 #        id: set-context
@@ -91,7 +91,7 @@ jobs:
 
       - name: Restart AKS deployments
         run: |
-          export KUBECONFIG=/home/runner/.kubeconfig
+          export KUBECONFIG=${{ GITHUB_WORKSPACE }}/.kubeconfig
           kubectl rollout restart deployment api-deployment -n ft
           kubectl rollout restart deployment currency-rates-importer-deployment -n ft
           kubectl rollout restart deployment operations-import-consumer-deployment -n ft

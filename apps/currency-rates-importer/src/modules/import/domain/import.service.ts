@@ -16,10 +16,8 @@ export class ImportService {
   constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
 
   // At minute 0 past every 3rd hour.
-  // @Cron('0 */3 * * *')
-  @Cron('*/1 * * * * *')
+  @Cron('0 */3 * * *')
   async importCurrencyRates() {
-    console.log('importing');
     const startDate = moment().subtract(
       this.PREVIOUS_DAYS_TO_FETCH_AMOUNT,
       'day',

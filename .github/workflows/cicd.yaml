@@ -77,17 +77,17 @@ jobs:
 #            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
       #            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
 
-#      - name: Install xmllint
-#        run: sudo apt-get install -y libxml2-utils
-#
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+
 #      - name: Cat config
 #        run: sudo mkdir ~/.kube && sudo cp $GITHUB_WORKSPACE/.kubeconfig ~/.kube/config
 
 #      - name: Bash
 #        run: whoami && sudo ls -la /home/runner && sudo ls -la /home/runner/.azure
 #
-#      - name: Permissions
-#        run: sudo chown -R $USER:$USER /home/runner/.azure
+      - name: Permissions
+        run: sudo chown -R $USER:$USER /home/runner/.azure
 #
 
 
@@ -107,7 +107,6 @@ jobs:
           manifests: |
             k8s/api/02-deployment.yaml
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:latest
-          pull: true
 
 
 #      - name: Restart AKS deployments

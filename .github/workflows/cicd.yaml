@@ -15,12 +15,12 @@ jobs:
 
       # Build and push docker images
 
-      - name: Log into registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.ACR_ENDPOINT }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+#      - name: Log into registry
+#        uses: docker/login-action@v1
+#        with:
+#          registry: ${{ secrets.ACR_ENDPOINT }}
+#          username: ${{ secrets.ACR_USERNAME }}
+#          password: ${{ secrets.ACR_PASSWORD }}
 
 #      - name: Build and push api
 #        uses: docker/build-push-action@v3
@@ -70,7 +70,13 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file ./config
+            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file /home/runner/config
+
+      - name: List dirs
+        run: ls -la /home/runner
+
+      - name: Cat config
+        run: cat /home/runner/config
 #
 #      - name: Set AKS context
 #        id: set-context
@@ -85,7 +91,7 @@ jobs:
 
       - name: Restart AKS deployments
         run: |
-          export KUBECONFIG=./config
+          export KUBECONFIG=/home/runner/config
           kubectl rollout restart deployment api-deployment -n ft
           kubectl rollout restart deployment currency-rates-importer-deployment -n ft
           kubectl rollout restart deployment operations-import-consumer-deployment -n ft

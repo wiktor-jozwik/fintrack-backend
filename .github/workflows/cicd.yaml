@@ -69,28 +69,31 @@ jobs:
           inlineScript: |
             az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
 
-      - name: Azure CLI script
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
+#      - name: Azure CLI script
+#        uses: azure/CLI@v1
+#        with:
+#          azcliversion: 2.30.0
+#          inlineScript: |
+#            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
       #            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
 
-      - name: Install xmllint
-        run: sudo apt-get install -y libxml2-utils
+#      - name: Install xmllint
+#        run: sudo apt-get install -y libxml2-utils
+#
+#      - name: Cat config
+#        run: sudo mkdir ~/.kube && sudo cp $GITHUB_WORKSPACE/.kubeconfig ~/.kube/config
 
-      - name: Cat config
-        run: sudo mkdir ~/.kube && sudo cp $GITHUB_WORKSPACE/.kubeconfig ~/.kube/config
+      - name: Bash
+        run: whoami && sudo ls -la /home/runner && sudo ls -la /home/runner/.azure
 
 
 
-#      - name: Set AKS context
-#        id: set-context
-#        uses: azure/aks-set-context@v3
-#        with:
-#          resource-group: FinTrack-rg
-#          cluster-name: fintrack-aks
+      - name: Set AKS context
+        id: set-context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: FinTrack-rg
+          cluster-name: fintrack-aks
 
 
       - name: Restart AKS deployments

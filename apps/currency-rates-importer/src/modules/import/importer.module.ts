@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { HttpModule } from '@nestjs/axios';
-import { CurrencyRatesRepository } from '@app/database';
+import { CurrenciesRepository, CurrencyRatesRepository } from '@app/database';
 import { CurrencyFetchService, ImportService, NbpHttpService } from './domain';
 
 @Module({
@@ -11,6 +11,7 @@ import { CurrencyFetchService, ImportService, NbpHttpService } from './domain';
     CurrencyFetchService,
     NbpHttpService,
     CurrencyRatesRepository,
+    CurrenciesRepository,
   ],
 })
 export class ImporterModule {}

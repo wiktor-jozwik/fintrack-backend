@@ -3,9 +3,12 @@ import * as moment from 'moment';
 import { AxiosError } from 'axios';
 import { Moment } from 'moment';
 import { convertMomentToIsoDate } from '@app/common/utils';
-import { CurrencyRatesRepository } from '@app/database';
+import { CurrenciesRepository, CurrencyRatesRepository } from '@app/database';
 import { NbpHttpService } from './nbp-http.service';
-import { FIRST_CURRENCY_RATE_NBP_DATE } from '@app/common/constants';
+import {
+  FIRST_CURRENCY_RATE_NBP_DATE,
+  SUPPORTED_CURRENCIES,
+} from '@app/common/constants';
 
 @Injectable()
 export class CurrencyFetchService {
@@ -14,6 +17,7 @@ export class CurrencyFetchService {
   constructor(
     private readonly nbpHttpService: NbpHttpService,
     private readonly currencyRatesRepository: CurrencyRatesRepository,
+    private readonly currenciesRepository: CurrenciesRepository,
   ) {}
 
   async saveCurrencyForDate(name: string, date: Moment) {
@@ -53,6 +57,16 @@ export class CurrencyFetchService {
         await this.savePreviousDayRate(name, isoDateString);
       } else {
         this.logger.error(err.message);
+      }
+    }
+  }
+
+  async checkIfAllCurrenciesAreMigrated(): Promise<void> {
+    const savedCurrenciesCount = await this.currenciesRepository.count();
+
+    if (savedCurrenciesCount !== SUPPORTED_CURRENCIES.length) {
+      for (const currency of SUPPORTED_CURRENCIES) {
+        await this.currenciesRepository.upsert(currency);
       }
     }
   }

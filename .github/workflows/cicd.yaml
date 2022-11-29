@@ -31,14 +31,14 @@ jobs:
 #          file: ./apps/api/Dockerfile
 #          target: prod
 #
-#      - name: Build and push currency-rates-importer
-#        uses: docker/build-push-action@v3
-#        with:
-#          context: .
-#          push: true
-#          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:latest
-#          file: ./apps/currency-rates-importer/Dockerfile
-#          target: prod
+      - name: Build and push currency-rates-importer
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:latest
+          file: ./apps/currency-rates-importer/Dockerfile
+          target: prod
 #
 #      - name: Build and push operations-import-consumer
 #        uses: docker/build-push-action@v3
@@ -99,14 +99,23 @@ jobs:
           cluster-name: fintrack-aks
           admin: true
 
-      - name: Deploy to AKS
+#      - name: Deploy API to AKS
+#        id: deploy-aks
+#        uses: Azure/k8s-deploy@v4
+#        with:
+#          namespace: 'ft'
+#          manifests: |
+#            k8s/api/02-deployment.yaml
+#          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:latest
+
+      - name: Deploy currency-rates-importer to AKS
         id: deploy-aks
         uses: Azure/k8s-deploy@v4
         with:
           namespace: 'ft'
           manifests: |
-            k8s/api/02-deployment.yaml
-          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:latest
+            k8s/currency-rates-importer/02-deployment.yaml
+          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:latest
 
 
 #      - name: Restart AKS deployments

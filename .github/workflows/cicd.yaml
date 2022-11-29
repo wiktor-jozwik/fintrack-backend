@@ -86,6 +86,9 @@ jobs:
       - name: Bash
         run: whoami && sudo ls -la /home/runner && sudo ls -la /home/runner/.azure
 
+      - name: Permissions
+        run: sudo chown -R $USER:$USER /home/runner/.azure
+
 
 
       - name: Set AKS context

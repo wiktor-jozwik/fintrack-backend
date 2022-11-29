@@ -74,20 +74,14 @@ jobs:
         with:
           azcliversion: 2.30.0
           inlineScript: |
-            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }}
+            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
       #            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }} --file $GITHUB_WORKSPACE/.kubeconfig
 
       - name: Install xmllint
         run: sudo apt-get install -y libxml2-utils
 
-      - name: List dirs
-        run: sudo ls -la /root
-
-      - name: List dirs
-        run: sudo ls -la /root/.kube
-
       - name: Cat config
-        run: sudo cp /root/.kube/config ~/.kube/config
+        run: sudo cp $GITHUB_WORKSPACE/.kubeconfig ~/.kube/config
 
 
 

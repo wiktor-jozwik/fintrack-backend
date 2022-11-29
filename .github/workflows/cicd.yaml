@@ -20,34 +20,34 @@ jobs:
         with:
           registry: ${{ secrets.ACR_ENDPOINT }}
           username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          password: ${{ secrets.ACR_PASSWORD }}woud7min!feet0MAS
 
-      - name: Build and push api
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:latest
-          file: ./apps/api/Dockerfile
-          target: prod
-
-      - name: Build and push currency-rates-importer
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:latest
-          file: ./apps/currency-rates-importer/Dockerfile
-          target: prod
-
-      - name: Build and push operations-import-consumer
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:latest
-          file: ./apps/operations-import-consumer/Dockerfile
-          target: prod
+#      - name: Build and push api
+#        uses: docker/build-push-action@v3
+#        with:
+#          context: .
+#          push: true
+#          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:latest
+#          file: ./apps/api/Dockerfile
+#          target: prod
+#
+#      - name: Build and push currency-rates-importer
+#        uses: docker/build-push-action@v3
+#        with:
+#          context: .
+#          push: true
+#          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:latest
+#          file: ./apps/currency-rates-importer/Dockerfile
+#          target: prod
+#
+#      - name: Build and push operations-import-consumer
+#        uses: docker/build-push-action@v3
+#        with:
+#          context: .
+#          push: true
+#          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:latest
+#          file: ./apps/operations-import-consumer/Dockerfile
+#          target: prod
 
       # Deploy to Kubernetes
 
@@ -63,13 +63,14 @@ jobs:
         with:
           inlineScript: |
             az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
+            az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_KUBERNETES_SERVICE }}   
 
-      - name: Set AKS context
-        id: set-context
-        uses: azure/aks-set-context@v3
-        with:
-          resource-group: '${{ secrets.AZURE_RESOURCE_GROUP }}'
-          cluster-name: '${{ secrets.AZURE_KUBERNETES_SERVICE }}'
+#      - name: Set AKS context
+#        id: set-context
+#        uses: azure/aks-set-context@v3
+#        with:
+#          resource-group: '${{ secrets.AZURE_RESOURCE_GROUP }}'
+#          cluster-name: '${{ secrets.AZURE_KUBERNETES_SERVICE }}'
 
       - name: Setup kubectl
         id: install-kubectl

@@ -80,7 +80,7 @@ jobs:
           admin: true
 
       - name: Deploy api to AKS
-        id: deploy-aks
+        id: deploy-aks-api
         uses: Azure/k8s-deploy@v4
         with:
           namespace: 'ft'
@@ -89,7 +89,7 @@ jobs:
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:${{ github.sha }}
 
       - name: Deploy currency-rates-importer to AKS
-        id: deploy-aks
+        id: deploy-aks-currency-rates-importer
         uses: Azure/k8s-deploy@v4
         with:
           namespace: 'ft'
@@ -98,7 +98,7 @@ jobs:
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
 
       - name: Deploy operations-import-consumer to AKS
-        id: deploy-aks
+        id: deploy-aks-operations-import-consumer
         uses: Azure/k8s-deploy@v4
         with:
           namespace: 'ft'

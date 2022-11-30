@@ -11,9 +11,9 @@ import { CurrencyFetchService } from './currency-fetch.service';
 
 @Injectable()
 export class ImportService {
-  private readonly PREVIOUS_DAYS_TO_FETCH_AMOUNT = 2;
+  readonly PREVIOUS_DAYS_TO_FETCH_AMOUNT = 3;
 
-  constructor(private readonly currencyFetcherService: CurrencyFetchService) {}
+  constructor(private readonly currencyFetchService: CurrencyFetchService) {}
 
   // At minute 0 past every 3rd hour.
   @Cron('0 */3 * * *')
@@ -35,16 +35,14 @@ export class ImportService {
     startDate?: Moment | undefined,
     endDate?: Moment | undefined,
   ) {
-    await this.currencyFetcherService.checkIfAllCurrenciesAreMigrated();
+    await this.currencyFetchService.checkIfAllCurrenciesAreMigrated();
 
     for (const currency of SUPPORTED_CURRENCIES) {
       const currencyName = currency.name;
       if (currencyName === DEFAULT_APP_CURRENCY) continue;
 
       const shouldFetch =
-        await this.currencyFetcherService.checkIfThereIsRateToFetch(
-          currencyName,
-        );
+        await this.currencyFetchService.checkIfThereIsRateToFetch(currencyName);
 
       if (!shouldFetch) {
         continue;
@@ -65,7 +63,7 @@ export class ImportService {
   ) {
     const startDateCopy = moment(startDate);
     while (startDateCopy <= endDate) {
-      await this.currencyFetcherService.saveCurrencyForDate(
+      await this.currencyFetchService.saveCurrencyForDate(
         currencyName,
         startDateCopy,
       );

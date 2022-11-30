@@ -20,16 +20,16 @@ export class AzureBlobStorageService {
     return fileName;
   }
 
-  async downloadFile(directory: string, fileName: string) {
+  async downloadFile(directory: string, fileName: string): Promise<void> {
     const blobClient = await this.getBlobClient(fileName);
 
-    return await blobClient.downloadToFile(`${directory}/${fileName}`);
+    await blobClient.downloadToFile(`${directory}/${fileName}`);
   }
 
-  async deleteFile(fileName: string) {
+  async deleteFile(fileName: string): Promise<void> {
     const blobClient = await this.getBlobClient(fileName);
 
-    return await blobClient.deleteIfExists();
+    await blobClient.deleteIfExists();
   }
 
   private async getBlobClient(fileName: string) {

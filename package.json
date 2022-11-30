@@ -11,11 +11,7 @@
     "build:api": "nest build api",
     "build:currency-rates-importer": "nest build currency-rates-importer",
     "build:operations-import-consumer": "nest build operations-import-consumer",
-    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
-    "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
     "start:docker": "docker-compose up",
     "migrate:currencies": "ts-node libs/common/src/scripts/populate-currencies.script.ts",
     "import:currency-rates": "ts-node apps/currency-rates-importer/src/common/scripts/import-currency-rates-in-range.script.ts",
@@ -28,7 +24,10 @@
     "prisma:migrate:dev": "npx prisma migrate dev",
     "prisma:deploy": "npx prisma migrate deploy",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "test:api": "jest api",
+    "test:currency-rates-importer": "jest currency-rates-importer",
+    "test:operations-import-consumer": "jest operations-import-consumer",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -91,7 +90,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "spec",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -103,19 +102,21 @@
     "testEnvironment": "node",
     "roots": [
       "<rootDir>/apps/",
+      "<rootDir>/database/",
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
       "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
-      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
+      "^@app/database(|/.*)$": "<rootDir>/database/src/$1",
       "^@app/rmq(|/.*)$": "<rootDir>/libs/rmq/src/$1",
       "^@app/azure-blob-storage(|/.*)$": "<rootDir>/libs/azure-blob-storage/src/$1"
     }
   },
   "_moduleAliases": {
-    "@database": "./libs/database",
+    "@database": "./database",
     "@common": "./libs/common",
-    "@rmq": "./libs/rmq"
+    "@rmq": "./libs/rmq",
+    "@azure-blob-storage": "./libs/azure-blob-storage"
   },
   "workspaces": [
     "apps/*",

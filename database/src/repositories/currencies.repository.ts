@@ -37,7 +37,7 @@ export class CurrenciesRepository {
     return await this.prisma.currency.count();
   }
 
-  async upsert(currency: Prisma.CurrencyCreateInput) {
+  async upsert(currency: Prisma.CurrencyCreateInput): Promise<Currency> {
     return await this.prisma.currency.upsert({
       where: { name: currency.name },
       update: {},

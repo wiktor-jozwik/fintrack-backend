@@ -106,3 +106,4 @@ jobs:
           manifests: |
             k8s/operations-import-consumer/02-deployment.yaml
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-operations-import-consumer:${{ github.sha }}
+          pull: false

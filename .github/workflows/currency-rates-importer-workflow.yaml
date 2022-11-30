@@ -106,3 +106,4 @@ jobs:
           manifests: |
             k8s/currency-rates-importer/02-deployment.yaml
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
+          pull: false

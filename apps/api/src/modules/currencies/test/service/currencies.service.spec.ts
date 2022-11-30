@@ -38,7 +38,7 @@ describe('CurrenciesService', () => {
       });
 
       it('should return an array', () => {
-        expect(currencies).toBeInstanceOf(Number);
+        expect(currencies).toBeInstanceOf(Array);
       });
 
       it('should return currencies', () => {

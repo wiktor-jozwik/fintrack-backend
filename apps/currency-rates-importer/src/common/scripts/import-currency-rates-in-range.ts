@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { CurrencyRatesImporterModule } from '../../currency-rates-importer.module';
-import { ImportService } from '../../modules/import/domain';
+import { ImportService } from '../../modules/import/services';
 import * as moment from 'moment';
 import { SUPPORTED_CURRENCIES } from '@app/common/constants';
 

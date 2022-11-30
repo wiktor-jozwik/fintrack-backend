@@ -92,7 +92,7 @@ jobs:
 
       - name: Set AKS context
         id: set-context
-        uses: azure/aks-set-context@v2
+        uses: azure/aks-set-context@v3
         with:
           resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
           cluster-name: ${{ secrets.AZURE_KUBERNETES_SERVICE }}
@@ -106,4 +106,4 @@ jobs:
           manifests: |
             k8s/currency-rates-importer/02-deployment.yaml
           images: ${{ secrets.ACR_ENDPOINT }}/fintrack-currency-rates-importer:${{ github.sha }}
-          pull: false
+          pull-images: false

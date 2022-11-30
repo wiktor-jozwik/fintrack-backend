@@ -6,6 +6,7 @@ on:
       - 'database/**/*'
       - 'k8s/operations-import-consumer/**/*'
       - 'libs/**/*'
+      - '.github/workflows/operations-import-consumer.yaml'
 
   pull_request:
     branches: [ deployment ]
@@ -14,7 +15,8 @@ on:
       - 'database/**'
       - 'k8s/operations-import-consumer/**'
       - 'libs/**'
-  
+      - '.github/workflows/operations-import-consumer.yaml'
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -31,7 +33,7 @@ jobs:
           node-version: 18.x
       - run: |
           yarn install --frozen-lockfile
-          yarn test:api
+          yarn test:operations-import-consumer
 
   build:
     runs-on: ubuntu-latest

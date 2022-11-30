@@ -6,6 +6,7 @@ on:
       - 'database/**/*'
       - 'k8s/currency-rates-importer/**/*'
       - 'libs/**/*'
+      - '.github/workflows/currency-rates-importer.yaml'
 
   pull_request:
     branches: [ deployment ]
@@ -14,6 +15,7 @@ on:
       - 'database/**'
       - 'k8s/currency-rates-importer/**'
       - 'libs/**'
+      - '.github/workflows/currency-rates-importer.yaml'
 
 jobs:
   test:
@@ -31,7 +33,7 @@ jobs:
           node-version: 18.x
       - run: |
           yarn install --frozen-lockfile
-          yarn test:api
+          yarn test:currency-rates-importer
 
   build:
     runs-on: ubuntu-latest

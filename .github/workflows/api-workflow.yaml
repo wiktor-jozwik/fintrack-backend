@@ -6,7 +6,7 @@ on:
       - 'database/**/*'
       - 'k8s/api/**/*'
       - 'libs/**/*'
-      - '.github/workflows/api.yaml'
+      - '.github/workflows/api-workflow.yaml'
 
   pull_request:
     branches: [ deployment ]
@@ -15,7 +15,7 @@ on:
       - 'database/**'
       - 'k8s/api/**'
       - 'libs/**'
-      - '.github/workflows/api.yaml'
+      - '.github/workflows/api-workflow.yaml'
 
 jobs:
   test:

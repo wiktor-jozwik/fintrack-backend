@@ -6,7 +6,7 @@ on:
       - 'database/**/*'
       - 'k8s/operations-import-consumer/**/*'
       - 'libs/**/*'
-      - '.github/workflows/operations-import-consumer.yaml'
+      - '.github/workflows/operations-import-consumer-workflow.yaml'
 
   pull_request:
     branches: [ deployment ]
@@ -15,7 +15,7 @@ on:
       - 'database/**'
       - 'k8s/operations-import-consumer/**'
       - 'libs/**'
-      - '.github/workflows/operations-import-consumer.yaml'
+      - '.github/workflows/operations-import-consumer-workflow.yaml'
 
 jobs:
   test:

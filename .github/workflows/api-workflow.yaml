@@ -17,22 +17,27 @@ on:
 
 jobs:
   test:
-    name: Run tests
     runs-on: ubuntu-latest
 
+    name: Run tests
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Run api tests
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: yarn install --frozen-lockfile
-      - run: yarn build:api
-      - run: yarn test:api
+      - run: |
+          yarn install --frozen-lockfile
+          yarn test:api
 
   build:
-    name: Build and push docker image
     runs-on: ubuntu-latest
+
+    name: Build and push docker image
+    needs: test
 
     steps:
       - name: Checkout code

@@ -8,6 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(ApiModule, {
     logger: getLogLevels(process.env.NODE_ENV === 'production'),
   });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

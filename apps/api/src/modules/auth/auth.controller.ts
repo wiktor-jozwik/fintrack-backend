@@ -33,9 +33,7 @@ export class AuthController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
-  ) {
-    console.log('auth controller');
-  }
+  ) {}
 
   @UseInterceptors(UserRegisterInterceptor)
   @Public()

@@ -10,7 +10,7 @@ import {
 import { DefaultCurrencyOperationResponse } from '../../../modules/operations/responses';
 import { CategoriesValidatorService } from '@app/api/src/modules/categories/services';
 import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services';
-import { OperationsValidatorService } from '@app/api/src/modules/operations/services/';
+import { OperationsValidatorService } from './operations-validator.service';
 
 @Injectable()
 export class OperationsService {

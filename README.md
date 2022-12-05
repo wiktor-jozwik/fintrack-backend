@@ -125,6 +125,12 @@ kubectl port-forward service/sealed-secrets-controller -n kube-system 8081:8080
 curl localhost:8081/v1/cert.pem > k8s/kubeseal-publickey.pem
 ```
 
+### Deploy RabbitMQ
+
+```bash
+./config-scripts/k8s/deploy-rmq.sh
+```
+
 ### Fetch rmq credentials
 
 ```bash
@@ -137,12 +143,6 @@ kubectl get secret rmq-cluster-default-user -n rmq -o jsonpath='{.data.password}
 ### Generate sealed secrets using kubeseal and apply it
 ```bash
 ./config-scripts/k8s/generate-and-apply-sealed-secrets.sh
-```
-
-### Deploy RabbitMQ
-
-```bash
-./config-scripts/k8s/deploy-rmq.sh
 ```
 
 ### Deploy microservices

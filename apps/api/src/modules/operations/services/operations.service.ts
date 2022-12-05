@@ -9,8 +9,8 @@ import {
 } from '../dto';
 import { DefaultCurrencyOperationResponse } from '../../../modules/operations/responses';
 import { CategoriesValidatorService } from '@app/api/src/modules/categories/services';
-import { OperationsValidatorService } from '@app/api/src/modules/operations/services/operations-validator.service';
 import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services';
+import { OperationsValidatorService } from '@app/api/src/modules/operations/services/';
 
 @Injectable()
 export class OperationsService {

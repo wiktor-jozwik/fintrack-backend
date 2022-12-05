@@ -1,15 +1,6 @@
 on:
-  push:
-    branches: [ deployment ]
-    paths:
-      - 'apps/api/**/*'
-      - 'database/**/*'
-      - 'k8s/api/**/*'
-      - 'libs/**/*'
-      - '.github/workflows/api-workflow.yaml'
-
   pull_request:
-    branches: [ deployment ]
+    branches: [ main ]
     paths:
       - 'apps/api/**'
       - 'database/**'

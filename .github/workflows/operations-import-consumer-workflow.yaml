@@ -1,15 +1,6 @@
 on:
-  push:
-    branches: [ deployment ]
-    paths:
-      - 'apps/operations-import-consumer/**/*'
-      - 'database/**/*'
-      - 'k8s/operations-import-consumer/**/*'
-      - 'libs/**/*'
-      - '.github/workflows/operations-import-consumer-workflow.yaml'
-
   pull_request:
-    branches: [ deployment ]
+    branches: [ main ]
     paths:
       - 'apps/operations-import-consumer/**'
       - 'database/**'

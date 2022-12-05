@@ -1,15 +1,6 @@
 on:
-  push:
-    branches: [ deployment ]
-    paths:
-      - 'apps/currency-rates-importer/**/*'
-      - 'database/**/*'
-      - 'k8s/currency-rates-importer/**/*'
-      - 'libs/**/*'
-      - '.github/workflows/currency-rates-importer-workflow.yaml'
-
   pull_request:
-    branches: [ deployment ]
+    branches: [ main ]
     paths:
       - 'apps/currency-rates-importer/**'
       - 'database/**'

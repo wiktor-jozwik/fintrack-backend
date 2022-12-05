@@ -16,6 +16,43 @@
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ],
+      "@app/database": [
+        "database/src"
+      ],
+      "@app/database/*": [
+        "database/src/*"
+      ],
+      "@app/api": [
+        "apps/api"
+      ],
+      "@app/api/*": [
+        "apps/api/*"
+      ],
+      "@app/rmq": [
+        "libs/rmq/src"
+      ],
+      "@app/rmq/*": [
+        "libs/rmq/src/*"
+      ],
+      "@app/azure-blob-storage": [
+        "libs/azure-blob-storage/src"
+      ],
+      "@app/azure-blob-storage/*": [
+        "libs/azure-blob-storage/src/*"
+      ]
+    }
+  },
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
   }
 }

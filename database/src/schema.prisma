@@ -1,0 +1,98 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+//generator dbml {
+//  provider = "prisma-dbml-generator"
+//  output   = "../../../dbml"
+//}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int               @id @default(autoincrement())
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  firstName        String?           @map("first_name")
+  lastName         String?           @map("last_name")
+  phoneNumber      String?           @map("phone_number")
+  email            String            @unique
+  isActive         Boolean           @default(false) @map("is_active")
+  passwordHash     String            @map("password_hash")
+  refreshTokenHash String?           @map("refresh_token_hash")
+  categories       Category[]
+  usersCurrencies  UsersCurrencies[]
+
+  @@map("users")
+}
+
+model Category {
+  id         Int          @id @default(autoincrement())
+  name       String
+  type       CategoryType
+  user       User         @relation(fields: [userId], references: [id])
+  userId     Int          @map("user_id")
+  isInternal Boolean      @default(false) @map("is_internal")
+  operations Operation[]
+
+  @@unique(fields: [name, type, userId], name: "user_category")
+  @@map("categories")
+}
+
+model Operation {
+  id                Int      @id @default(autoincrement())
+  name              String
+  moneyAmount       Decimal  @map("money_amount") @db.Money
+  date              DateTime @db.Date
+  referentialNumber String?  @map("referential_number")
+  origin            String?  @default("MANUAL")
+  category          Category @relation(fields: [categoryId], references: [id])
+  categoryId        Int      @map("category_id")
+  currency          Currency @relation(fields: [currencyId], references: [id])
+  currencyId        Int      @map("currency_id")
+
+  @@unique(fields: [referentialNumber, origin, id], name: "operation_referential_number")
+  @@map("operations")
+}
+
+model Currency {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  symbol          String            @unique
+  operations      Operation[]
+  usersCurrencies UsersCurrencies[]
+  currencyRates   CurrencyRate[]
+
+  @@map("currencies")
+}
+
+model UsersCurrencies {
+  createdAt  DateTime @default(now()) @map("created_at")
+  currency   Currency @relation(fields: [currencyId], references: [id])
+  currencyId Int      @map("currency_id")
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int      @map("user_id")
+
+  @@id([currencyId, userId])
+  @@map("users_currencies")
+}
+
+model CurrencyRate {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @db.Date
+  avgValue   Float    @map("avg_value")
+  currency   Currency @relation(fields: [currencyId], references: [id])
+  currencyId Int      @map("currency_id")
+
+  @@unique(fields: [date, currencyId], name: "currency_rate_on_date")
+  @@map("currency_rates")
+}
+
+enum CategoryType {
+  INCOME
+  OUTCOME
+}

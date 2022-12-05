@@ -1,0 +1,11 @@
+{
+  "name": "rmq",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/microservices": "^9.2.0",
+    "amqp-connection-manager": "^4.1.9",
+    "amqplib": "^0.10.3"
+  }
+}

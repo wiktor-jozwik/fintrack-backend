@@ -1,0 +1,100 @@
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'apps/api/**'
+      - 'database/**'
+      - 'k8s/api/**'
+      - 'libs/**'
+      - '.github/workflows/api-workflow.yaml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    name: Run tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Install deps and run tests
+        run: |
+          yarn install --frozen-lockfile
+          yarn test:api
+
+  build:
+    runs-on: ubuntu-latest
+
+    name: Build and push docker image
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log into ACR
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.ACR_ENDPOINT }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push api
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:${{ github.sha }}
+          file: ./apps/api/Dockerfile
+          target: prod
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    name: Deploy to kubernetes
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install xmllint lib for sudo
+        run: sudo apt-get install -y libxml2-utils
+
+      - name: Log into azure
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.30.0
+          inlineScript: |
+            az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }}
+
+      - name: Install kubectl
+        id: install-kubectl
+        uses: azure/setup-kubectl@v3
+
+      - name: Change permission for .azure directory
+        run: sudo chown -R $USER:$USER /home/runner/.azure
+
+      - name: Set AKS context
+        id: set-context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.AZURE_RESOURCE_GROUP }}
+          cluster-name: ${{ secrets.AZURE_KUBERNETES_SERVICE }}
+          admin: true
+
+      - name: Deploy api to AKS
+        id: deploy-aks-api
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'ft'
+          manifests: |
+            k8s/api/02-deployment.yaml
+          images: ${{ secrets.ACR_ENDPOINT }}/fintrack-api:${{ github.sha }}
+          pull-images: false

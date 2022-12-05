@@ -7,26 +7,25 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from '@api/modules/users';
-import { AuthService } from './auth.service';
-import {
-  Public,
-  RefreshToken,
-  SkipUserActiveCheck,
-  UserId,
-} from '@api/common/decorators';
+import { UsersService } from '../../modules/users/services';
+import { AuthService } from './services/auth.service';
+import { RefreshToken } from '../../common/decorators';
 import { UserRegisterInterceptor } from './interceptors';
 import { UserLoginDto, UserRegisterDto } from '../users/dto';
-import { JwtRefreshTokenGuard, LocalAuthGuard } from '@api/common/guards';
-import { AuthRequest } from './interfaces';
+import { JwtRefreshTokenGuard, LocalAuthGuard } from '../../common/guards';
 import {
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtTokensResponse, LogoutResponse } from '@api/modules/auth/responses';
-import { UserEntity } from '@app/database';
+import {
+  JwtTokensResponse,
+  LogoutResponse,
+} from '../../modules/auth/responses';
+import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
+import { AuthRequest } from '@app/common/interfaces';
+import { UserEntity } from '../../common/entities';
 
 @ApiTags('users')
 @Controller('auth')
@@ -36,7 +35,6 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
-  @ApiOkResponse({ type: UserEntity })
   @UseInterceptors(UserRegisterInterceptor)
   @Public()
   @SkipUserActiveCheck()

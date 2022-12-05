@@ -1,0 +1,11 @@
+{
+  "name": "currency-rates-importer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/axios": "^1.0.0",
+    "@nestjs/schedule": "^2.1.0",
+    "axios": "^1.1.3"
+  }
+}

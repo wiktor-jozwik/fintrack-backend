@@ -3,7 +3,9 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/api/src",
   "compilerOptions": {
-    "plugins": ["@nestjs/swagger"],
+    "plugins": [
+      "@nestjs/swagger"
+    ],
     "assets": [
       "**/*.hbs"
     ],
@@ -14,7 +16,7 @@
   "monorepo": true,
   "root": "apps/api",
   "projects": {
-    "money-tracker-api-nestjs": {
+    "api": {
       "type": "application",
       "root": "apps/api",
       "entryFile": "main",
@@ -30,6 +32,15 @@
       "sourceRoot": "apps/currency-rates-importer/src",
       "compilerOptions": {
         "tsConfigPath": "apps/currency-rates-importer/tsconfig.app.json"
+      }
+    },
+    "operations-import-consumer": {
+      "type": "application",
+      "root": "apps/operations-import-consumer",
+      "entryFile": "main",
+      "sourceRoot": "apps/operations-import-consumer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/operations-import-consumer/tsconfig.app.json"
       }
     },
     "common": {
@@ -48,6 +59,24 @@
       "sourceRoot": "libs/database/src",
       "compilerOptions": {
         "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    },
+    "rmq": {
+      "type": "library",
+      "root": "libs/rmq",
+      "entryFile": "index",
+      "sourceRoot": "libs/rmq/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/rmq/tsconfig.lib.json"
+      }
+    },
+    "azure-blob-storage": {
+      "type": "library",
+      "root": "libs/azure-blob-storage",
+      "entryFile": "index",
+      "sourceRoot": "libs/azure-blob-storage/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/azure-blob-storage/tsconfig.lib.json"
       }
     }
   }

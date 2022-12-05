@@ -1,8 +1,8 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { AccountNotActiveException } from '../../exceptions/auth/account-not-active.exception';
-import { AuthRequest } from '../../modules/auth/interfaces/auth-request';
 import { Reflector } from '@nestjs/core';
-import { SKIP_USER_ACTIVE_CHECK } from '../decorators/skip-user-active-check';
+import { SKIP_USER_ACTIVE_CHECK } from '../../common/decorators';
+import { AuthRequest } from '@app/common/interfaces';
+import { AccountNotActiveException } from '@app/common/exceptions';
 
 @Injectable()
 export class UserIsActiveGuard implements CanActivate {

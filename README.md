@@ -84,3 +84,68 @@ npm run migrate:currencies
 ```bash
 npm run import:currency-rates {currency_name} {start_date} {end_date}
 ```
+
+## Kubernetes
+
+### Login to docker and azure
+
+```bash
+az login
+
+az aks get-credentials --resource-group FinTrack-rg --name fintrack-aks
+
+docker login fintrackregistry.azurecr.io
+```
+
+### Build docker images and push them to Azure Repository
+```bash
+./config-scripts/build-and-push-docker-images.sh
+```
+
+### Verify connection to Azure AKS
+```bash
+kubectl get nodes -o wide
+```
+
+### Init kubernetes namespaces
+```bash
+kubectl apply -f k8s/01-namespaces.yaml
+```
+
+### Deploy kubeseal controller
+```bash
+./config-scripts/k8s/deploy-kubeseal.sh
+```
+
+### Fetch kubeseal public key:
+
+```bash
+kubectl port-forward service/sealed-secrets-controller -n kube-system 8081:8080
+
+curl localhost:8081/v1/cert.pem > k8s/kubeseal-publickey.pem
+```
+
+### Deploy RabbitMQ
+
+```bash
+./config-scripts/k8s/deploy-rmq.sh
+```
+
+### Fetch rmq credentials
+
+```bash
+kubectl get secret rmq-cluster-default-user -n rmq -o jsonpath='{.data.username}' | base64 --decode
+kubectl get secret rmq-cluster-default-user -n rmq -o jsonpath='{.data.password}' | base64 --decode
+```
+
+### Set all needed credentials for each microservice in file 00-env-secret.yaml
+
+### Generate sealed secrets using kubeseal and apply it
+```bash
+./config-scripts/k8s/generate-and-apply-sealed-secrets.sh
+```
+
+### Deploy microservices
+```bash
+./config-scripts/k8s/deploy-microservices.sh
+```

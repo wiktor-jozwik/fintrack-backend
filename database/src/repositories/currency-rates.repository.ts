@@ -27,6 +27,16 @@ export class CurrencyRatesRepository {
     });
   }
 
+  async countCurrency(currencyName: string): Promise<number> {
+    return await this.prisma.currencyRate.count({
+      where: {
+        currency: {
+          name: currencyName,
+        },
+      },
+    });
+  }
+
   async findCurrencyRateForDate(
     currencyName: string,
     date: Date,

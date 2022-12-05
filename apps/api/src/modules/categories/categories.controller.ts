@@ -8,11 +8,11 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CategoriesService } from './categories.service';
+import { CategoriesService } from './services';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
-import { UserId } from '@api/common/decorators';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CategoryEntity } from '@app/database';
+import { UserId } from '../../common/decorators';
+import { CategoryEntity } from '../../common/entities';
 
 @ApiTags('categories')
 @Controller('categories')

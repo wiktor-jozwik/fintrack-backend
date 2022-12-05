@@ -1,6 +1,5 @@
 import { PrismaService } from '@app/database';
-import { SUPPORTED_CURRENCIES } from '@app/common';
-import { importCurrencyRatesInRange } from '../../../../apps/currency-rates-importer/src/common/scripts/import-currency-rates-in-range';
+import { SUPPORTED_CURRENCIES } from '@app/common/constants';
 
 export const populateCurrencies = async (prisma?: PrismaService | null) => {
   if (!prisma) {
@@ -23,6 +22,6 @@ export const populateCurrencies = async (prisma?: PrismaService | null) => {
       },
     });
     console.log(`Saved ${currency.name}`);
-    await importCurrencyRatesInRange(currency.name);
+    // await importCurrencyRatesInRange(currency.name);
   }
 };

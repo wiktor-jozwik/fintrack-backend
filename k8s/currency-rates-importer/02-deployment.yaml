@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-rates-importer-deployment
+  labels:
+    app: currency-rates-importer
+  namespace: ft
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currency-rates-importer
+  template:
+    metadata:
+      labels:
+        app: currency-rates-importer
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: currency-rates-importer
+#          image: fintrack-currency-rates-importer:latest
+          image: fintrackregistry.azurecr.io/fintrack-currency-rates-importer:latest
+#          imagePullPolicy: Never
+          imagePullPolicy: Always
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: currency-rates-importer-env
+                  key: DATABASE_URL

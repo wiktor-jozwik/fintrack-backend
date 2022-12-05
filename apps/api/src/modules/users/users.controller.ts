@@ -6,13 +6,13 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './services';
 import { UserProfileInterceptor } from './interceptors';
-import { Public, SkipUserActiveCheck, UserId } from '@api/common/decorators';
+import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { ResendActivationLinkDto, TokenDto } from './dto';
-import { StringResponse } from '@api/common/types';
+import { StringResponse } from '@app/common/interfaces';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { UserProfileResponse } from '@api/modules/users/responses';
+import { UserProfileResponse } from '../../modules/users/responses';
 
 @ApiTags('users')
 @Controller('users')

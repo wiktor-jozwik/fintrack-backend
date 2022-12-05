@@ -1,11 +1,13 @@
 # compiled output
 /dist
-/node_modules
+node_modules
 
 .env
 tmp/
 upload
 dbml
+00-env-secret.yaml
+kubeseal-publickey.pem
 
 # Logs
 logs

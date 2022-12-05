@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CurrencyRatesService } from './currency-rates.service';
+import { CurrencyRatesService } from './services';
 import { CurrencyRatesController } from './currency-rates.controller';
 import { CurrencyRatesRepository } from '@app/database';
 

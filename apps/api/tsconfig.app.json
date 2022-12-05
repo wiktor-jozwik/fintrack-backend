@@ -3,38 +3,6 @@
   "compilerOptions": {
     "declaration": false,
     "outDir": "../../dist/apps/api",
-    "paths": {
-      "@api/exceptions": [
-        "apps/api/src/exceptions"
-      ],
-      "@api/exceptions/*": [
-        "apps/api/src/exceptions/*"
-      ],
-      "@api/common": [
-        "apps/api/src/common"
-      ],
-      "@api/common/*": [
-        "apps/api/src/common/*"
-      ],
-      "@api/modules": [
-        "apps/api/src/modules"
-      ],
-      "@api/modules/*": [
-        "apps/api/src/modules/*"
-      ],
-      "@app/common": [
-        "libs/common/src"
-      ],
-      "@app/common/*": [
-        "libs/common/src/*"
-      ],
-      "@app/database": [
-        "database/src"
-      ],
-      "@app/database/*": [
-        "database/src/*"
-      ]
-    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]

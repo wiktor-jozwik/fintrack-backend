@@ -35,10 +35,24 @@
       ],
       "@app/api/*": [
         "apps/api/*"
+      ],
+      "@app/rmq": [
+        "libs/rmq/src"
+      ],
+      "@app/rmq/*": [
+        "libs/rmq/src/*"
+      ],
+      "@app/azure-blob-storage": [
+        "libs/azure-blob-storage/src"
+      ],
+      "@app/azure-blob-storage/*": [
+        "libs/azure-blob-storage/src/*"
       ]
     }
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": [
+      "tsconfig-paths/register"
+    ]
   }
 }

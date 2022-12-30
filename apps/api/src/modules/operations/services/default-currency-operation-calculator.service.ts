@@ -3,6 +3,7 @@ import { Currency, Operation } from '@prisma/client';
 import { CurrencyRatesRepository } from '@app/database';
 import { Cache } from 'cache-manager';
 import { convertMomentToIsoDate } from '@app/common/utils';
+import { DEFAULT_APP_CURRENCY } from '@app/common/constants';
 
 @Injectable()
 export class DefaultCurrencyOperationCalculatorService {
@@ -19,7 +20,7 @@ export class DefaultCurrencyOperationCalculatorService {
       return 1;
     }
 
-    if (operation.currency.name === 'PLN') {
+    if (operation.currency.name == DEFAULT_APP_CURRENCY) {
       const defaultCurrencyToPlnValue =
         await this.getCurrencyValueFromCacheOrDatabase(
           defaultCurrencyName,

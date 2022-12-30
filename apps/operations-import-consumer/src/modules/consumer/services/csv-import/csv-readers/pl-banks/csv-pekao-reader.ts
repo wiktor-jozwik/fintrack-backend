@@ -29,7 +29,6 @@ export class CsvPekaoReader extends CsvReader {
     filePath: string,
     callback: (csvOperationItem: OperationItem) => void,
   ) {
-    console.log('READING CSV PEKAO');
     const parseStream = this.makeParseStream();
 
     fs.createReadStream(filePath)

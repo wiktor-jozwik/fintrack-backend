@@ -6,6 +6,10 @@ import { PrismaService } from '@app/database';
 export class CategoriesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async create(data: Prisma.CategoryCreateInput): Promise<Category> {
+    return await this.prisma.category.create({ data });
+  }
+
   async findById(categoryId: number, userId: number): Promise<Category | null> {
     return await this.prisma.category.findFirst({
       where: {
@@ -48,10 +52,6 @@ export class CategoriesRepository {
         name: 'asc',
       },
     });
-  }
-
-  async create(data: Prisma.CategoryCreateInput): Promise<Category> {
-    return await this.prisma.category.create({ data });
   }
 
   async update(

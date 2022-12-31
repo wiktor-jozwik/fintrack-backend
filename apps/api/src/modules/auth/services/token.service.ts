@@ -17,24 +17,21 @@ export class TokenService {
         secret: this.configService.get('JWT_AT_SECRET'),
         expiresIn: this.configService.get('JWT_AT_EXPIRATION_TIME'),
       }),
-      this.generateRefreshToken({
-        id: payload.id,
-        email: payload.email,
-      }),
+      this.jwtService.signAsync(
+        {
+          id: payload.id,
+          email: payload.email,
+        },
+        {
+          secret: this.configService.get('JWT_RT_SECRET'),
+          expiresIn: this.configService.get('JWT_RT_EXPIRATION_TIME'),
+        },
+      ),
     ]);
 
     return {
       jwtAccessToken,
       jwtRefreshToken,
     };
-  }
-
-  private async generateRefreshToken(
-    userEmailPayload: UserEmailPayload,
-  ): Promise<string> {
-    return await this.jwtService.signAsync(userEmailPayload, {
-      secret: this.configService.get('JWT_RT_SECRET'),
-      expiresIn: this.configService.get('JWT_RT_EXPIRATION_TIME'),
-    });
   }
 }

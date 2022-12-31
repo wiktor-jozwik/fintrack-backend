@@ -7,7 +7,7 @@ import { CategoriesValidatorService } from '@app/api/src/modules/categories/serv
 @Injectable()
 export class CategoriesService {
   constructor(
-    private readonly categoriesRequestValidatorService: CategoriesValidatorService,
+    private readonly categoriesValidatorService: CategoriesValidatorService,
     private readonly categoriesRepository: CategoriesRepository,
   ) {}
 
@@ -17,7 +17,7 @@ export class CategoriesService {
   ): Promise<Category> {
     const { name, type } = createCategoryDto;
 
-    await this.categoriesRequestValidatorService.validateNameUniqueness(
+    await this.categoriesValidatorService.validateNameUniqueness(
       name,
       type,
       userId,
@@ -43,12 +43,12 @@ export class CategoriesService {
     userId: number,
   ): Promise<Category> {
     const category =
-      await this.categoriesRequestValidatorService.findAndValidateCategory(
+      await this.categoriesValidatorService.findAndValidateCategory(
         categoryId,
         userId,
       );
 
-    await this.categoriesRequestValidatorService.validateIfFieldsChanged(
+    await this.categoriesValidatorService.validateIfFieldsChanged(
       category,
       updateCategoryDto.name,
       updateCategoryDto.type,
@@ -63,11 +63,11 @@ export class CategoriesService {
 
   async remove(categoryId: number, userId: number): Promise<Category> {
     await Promise.all([
-      this.categoriesRequestValidatorService.findAndValidateCategory(
+      this.categoriesValidatorService.findAndValidateCategory(
         categoryId,
         userId,
       ),
-      this.categoriesRequestValidatorService.validateZeroOperations(categoryId),
+      this.categoriesValidatorService.validateZeroOperations(categoryId),
     ]);
 
     return await this.categoriesRepository.delete(categoryId);

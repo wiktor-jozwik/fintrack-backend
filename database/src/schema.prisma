@@ -5,7 +5,7 @@ generator client {
 
 //generator dbml {
 //  provider = "prisma-dbml-generator"
-//  output   = "../../../dbml"
+//  output   = "./dbml"
 //}
 
 datasource db {

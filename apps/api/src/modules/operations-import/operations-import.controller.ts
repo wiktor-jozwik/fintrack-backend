@@ -14,7 +14,9 @@ import { Public, SkipUserActiveCheck, UserId } from '../../common/decorators';
 import { StringResponse } from '@app/common/interfaces';
 import { OperationsImportService } from './services';
 import { AzureBlobStorageService } from '@app/azure-blob-storage';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('operations_import')
 @Controller('operations_import')
 export class OperationsImportController {
   constructor(

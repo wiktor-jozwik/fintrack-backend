@@ -27,8 +27,6 @@ export class CsvPkoReader extends CsvReader {
     filePath: string,
     callback: (csvOperationItem: OperationItem) => void,
   ) {
-    console.log('READING CSV PKO');
-
     const parseStream = this.makeParseStream();
 
     fs.createReadStream(filePath)

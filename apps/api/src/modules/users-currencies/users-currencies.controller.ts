@@ -31,22 +31,6 @@ export class UsersCurrenciesController {
     return this.usersCurrenciesService.findAll(userId);
   }
 
-  @ApiOkResponse({
-    type: [CurrencyEntity],
-  })
-  @Get('without_default')
-  findAllWithoutDefault(@UserId() userId: number): Promise<CurrencyEntity[]> {
-    return this.usersCurrenciesService.findAllWithoutDefault(userId);
-  }
-
-  @ApiOkResponse({
-    type: CurrencyEntity,
-  })
-  @Get('default')
-  findDefault(@UserId() userId: number): Promise<CurrencyEntity> {
-    return this.usersCurrenciesService.findDefault(userId);
-  }
-
   @ApiCreatedResponse({
     type: CurrencyEntity,
   })

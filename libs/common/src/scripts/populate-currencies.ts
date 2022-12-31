@@ -5,6 +5,7 @@ export const populateCurrencies = async (prisma?: PrismaService | null) => {
   if (!prisma) {
     prisma = new PrismaService();
   }
+
   for (const currency of SUPPORTED_CURRENCIES) {
     const currencyFound = await prisma.currency.findUnique({
       where: {

@@ -34,7 +34,7 @@ COPY --chown=node:node ./libs ./libs
 
 COPY --chown=node:node ./database ./database
 
-#RUN yarn prisma:generate
+RUN yarn prisma:generate
 
 RUN yarn build:api
 

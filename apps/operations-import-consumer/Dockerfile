@@ -18,7 +18,7 @@ RUN yarn prisma:generate
 USER node
 
 
-FROM node:18-alpine AS prod-build
+FROM node:18-alpine3.16 AS prod-build
 
 WORKDIR /usr/src/app
 
@@ -40,7 +40,7 @@ RUN yarn build:operations-import-consumer
 RUN yarn install --pure-lockfile --non-interactive --cache-folder ./ycache --prod
 
 
-FROM node:18-alpine AS prod
+FROM node:18-alpine3.16 AS prod
 
 ENV NODE_ENV production
 

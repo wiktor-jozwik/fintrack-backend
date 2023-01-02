@@ -30,7 +30,7 @@ export class OperationsImportService {
 
     await this.azureBlobStorageService.downloadFile(directory, fileName);
     await this.importOperations(filePath, userId, csvImportWay);
-    await this.azureBlobStorageService.deleteFile(fileName);
+    // await this.azureBlobStorageService.deleteFile(fileName);
     this.filesystemService.deleteFile(filePath);
   }
 

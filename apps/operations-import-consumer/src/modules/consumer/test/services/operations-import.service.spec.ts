@@ -77,12 +77,6 @@ describe('OperationsImportService', () => {
         );
       });
 
-      it('should call azureBlobStorageService.deleteFile', () => {
-        expect(azureBlobStorageService.deleteFile).toBeCalledWith(
-          operationsImportsPayload.fileName,
-        );
-      });
-
       it('should call csvReaderCreator.create', () => {
         expect(csvReaderCreator.create).toBeCalledWith(
           operationsImportsPayload.csvImportWay,

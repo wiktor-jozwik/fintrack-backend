@@ -8,10 +8,10 @@ import {
   UsersCurrenciesService,
   UsersCurrenciesValidatorService,
 } from '../../users-currencies/services';
-import { UsersValidatorService } from '@app/api/src/modules/users/services/users-validator.service';
-import { CurrenciesValidatorService } from '@app/api/src/modules/currencies/services';
-import { UsersMailerService } from '@app/api/src/modules/users/services/users-mailer.service';
-import { MailTokenService } from '@app/api/src/modules/users/services/mail-token.service';
+import { UsersValidatorService } from './users-validator.service';
+import { CurrenciesValidatorService } from '../../currencies/services';
+import { UsersMailerService } from './users-mailer.service';
+import { MailTokenService } from './mail-token.service';
 
 @Injectable()
 export class UsersService {

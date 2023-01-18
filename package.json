@@ -25,6 +25,7 @@
     "prisma:deploy": "npx prisma migrate deploy",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "test": "jest",
     "test:api": "jest api",
     "test:currency-rates-importer": "jest currency-rates-importer",
     "test:operations-import-consumer": "jest operations-import-consumer",

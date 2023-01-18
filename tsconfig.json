@@ -30,12 +30,6 @@
       "@app/database/*": [
         "database/src/*"
       ],
-      "@app/api": [
-        "apps/api"
-      ],
-      "@app/api/*": [
-        "apps/api/*"
-      ],
       "@app/rmq": [
         "libs/rmq/src"
       ],

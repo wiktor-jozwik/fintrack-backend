@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { UserEmailPayload, UserPayload } from '@app/common/interfaces';
-import { JwtTokens } from '@app/api/src/modules/auth/interfaces';
+import { UserPayload } from '@app/common/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { JwtTokens } from '../interfaces';
 
 @Injectable()
 export class TokenService {

@@ -20,7 +20,6 @@ import {
 } from './services/csv-import/csv-readers';
 import { AzureBlobStorageModule } from '@app/azure-blob-storage';
 import { ConfigService } from '@nestjs/config';
-import { FilesystemService } from './services';
 
 @Module({
   imports: [AzureBlobStorageModule],
@@ -39,7 +38,6 @@ import { FilesystemService } from './services';
     CsvPkoReader,
     CsvReaderCreator,
     RmqService,
-    FilesystemService,
   ],
 })
 export class ConsumerModule {}

@@ -5,12 +5,15 @@ import {
 } from '@app/common/exceptions';
 import { compareHash } from '@app/common/utils';
 import { User } from '@prisma/client';
-import { UsersValidatorService } from '@app/api/src/modules/users/services';
+import { UsersValidatorService } from '../../users/services';
 
 @Injectable()
 export class AuthValidatorService {
   constructor(private readonly usersValidatorService: UsersValidatorService) {}
-  async validateUserCredentials(email: string, plainTextPassword: string) {
+  async validateUserCredentials(
+    email: string,
+    plainTextPassword: string,
+  ): Promise<User> {
     const user = await this.usersValidatorService.findAndValidateUser(email);
 
     if (!user.isActive) {

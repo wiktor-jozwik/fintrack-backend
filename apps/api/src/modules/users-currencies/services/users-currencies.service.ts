@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Currency } from '@prisma/client';
+import { Currency, UsersCurrencies } from '@prisma/client';
 import { CurrenciesRepository, UsersCurrenciesRepository } from '@app/database';
 import {
   CurrencyAlreadyAddedException,
@@ -7,8 +7,8 @@ import {
   DefaultCurrencyNotFoundException,
 } from '@app/common/exceptions';
 import { CreateCurrencyDto } from '../dto';
-import { CurrenciesValidatorService } from '@app/api/src/modules/currencies/services';
-import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services/users-currencies-validator.service';
+import { CurrenciesValidatorService } from '../../currencies/services';
+import { UsersCurrenciesValidatorService } from './users-currencies-validator.service';
 
 @Injectable()
 export class UsersCurrenciesService {
@@ -58,14 +58,6 @@ export class UsersCurrenciesService {
     return usersCurrencies.map((usersCurrency) => usersCurrency.currency);
   }
 
-  async findAllWithoutDefault(userId: number): Promise<Currency[]> {
-    const currencies = await this.currenciesRepository.findAll();
-
-    const userDefault = await this.findDefault(userId);
-
-    return currencies.filter((currency) => currency.name !== userDefault.name);
-  }
-
   async findDefault(userId: number): Promise<Currency> {
     const userToCurrencies =
       await this.usersCurrenciesRepository.findUsersDefault(userId);
@@ -77,7 +69,10 @@ export class UsersCurrenciesService {
     return userToCurrencies.currency;
   }
 
-  async createUsersCurrency(currency: Currency, userId: number) {
+  async createUsersCurrency(
+    currency: Currency,
+    userId: number,
+  ): Promise<UsersCurrencies> {
     await this.checkIfCurrencyCanBeAdded(currency, userId);
 
     return await this.usersCurrenciesRepository.create({

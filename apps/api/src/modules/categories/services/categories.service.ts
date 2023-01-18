@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Category } from '@prisma/client';
 import { CategoriesRepository } from '@app/database';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dto';
-import { CategoriesValidatorService } from '@app/api/src/modules/categories/services/categories-validator.service';
+import { CategoriesValidatorService } from './categories-validator.service';
 
 @Injectable()
 export class CategoriesService {

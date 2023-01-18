@@ -4,9 +4,9 @@ import { UsersRepository } from '@app/database';
 import { hashString } from '@app/common/utils';
 import { JwtTokens } from '../interfaces';
 import { UserEmailPayload } from '@app/common/interfaces';
-import { AuthValidatorService } from '@app/api/src/modules/auth/services/auth-validator.service';
-import { TokenService } from '@app/api/src/modules/auth/services/token.service';
-import { UsersValidatorService } from '@app/api/src/modules/users/services';
+import { AuthValidatorService } from './auth-validator.service';
+import { UsersValidatorService } from '../../users/services';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly usersRepository: UsersRepository,
   ) {}
 
-  async validateUser(email: string, plainTextPassword: string): Promise<any> {
+  async validateUser(email: string, plainTextPassword: string): Promise<User> {
     return await this.authValidatorService.validateUserCredentials(
       email,
       plainTextPassword,

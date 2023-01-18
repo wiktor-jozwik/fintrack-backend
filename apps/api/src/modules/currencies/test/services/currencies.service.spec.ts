@@ -1,4 +1,4 @@
-import { CurrenciesService } from '../../../../modules/currencies/services';
+import { CurrenciesService } from '../../services';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CurrenciesRepository } from '@app/database';
 import { CurrenciesRepositoryMock } from '@app/database/repositories/test/mocks';

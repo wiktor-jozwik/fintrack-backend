@@ -7,7 +7,7 @@ import {
   UserAlreadyExistsException,
 } from '@app/common/exceptions';
 import { UsersRepository } from '@app/database';
-import { UserRegisterDto } from '@app/api/src/modules/users/dto';
+import { UserRegisterDto } from '../dto';
 
 @Injectable()
 export class UsersValidatorService {

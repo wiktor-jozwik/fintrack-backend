@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FilesystemService, OperationsImportService } from '../../services';
+import { OperationsImportService } from '../../services';
 import { AzureBlobStorageService } from '@app/azure-blob-storage';
 import { CsvImporter } from '../../services/csv-import';
 import { CsvReaderCreator } from '../../services/csv-import/csv-readers';
@@ -8,7 +8,6 @@ import { CsvImporterMock } from '../mocks/csv-importer.mock';
 import { CsvReaderCreatorMock } from '../mocks/csv-reader-creator.mock';
 import { OperationsImportPayload } from '@app/common/interfaces';
 import { CsvImportWay } from '@app/common/enums';
-import { FilesystemServiceMock } from '../mocks/filesystem.service.mock';
 import { csvReaderStub } from '../stubs/csv-reader.stub';
 
 describe('OperationsImportService', () => {
@@ -16,12 +15,10 @@ describe('OperationsImportService', () => {
   let azureBlobStorageService: AzureBlobStorageService;
   let csvImporter: CsvImporter;
   let csvReaderCreator: CsvReaderCreator;
-  let filesystemService: FilesystemService;
 
   const azureBlobStorageServiceMock = AzureBlobStorageServiceMock;
   const csvImporterMock = CsvImporterMock;
   const csvReaderCreatorMock = CsvReaderCreatorMock;
-  const filesystemServiceMock = FilesystemServiceMock;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -30,7 +27,6 @@ describe('OperationsImportService', () => {
         AzureBlobStorageService,
         CsvImporter,
         CsvReaderCreator,
-        FilesystemService,
       ],
     })
       .overrideProvider(AzureBlobStorageService)
@@ -39,8 +35,6 @@ describe('OperationsImportService', () => {
       .useValue(csvImporterMock)
       .overrideProvider(CsvReaderCreator)
       .useValue(csvReaderCreatorMock)
-      .overrideProvider(FilesystemService)
-      .useValue(filesystemServiceMock)
       .compile();
 
     operationsImportService = module.get<OperationsImportService>(
@@ -51,7 +45,6 @@ describe('OperationsImportService', () => {
     );
     csvImporter = module.get<CsvImporter>(CsvImporter);
     csvReaderCreator = module.get<CsvReaderCreator>(CsvReaderCreator);
-    filesystemService = module.get<FilesystemService>(FilesystemService);
 
     jest.clearAllMocks();
   });
@@ -93,10 +86,6 @@ describe('OperationsImportService', () => {
           operationsImportsPayload.userId,
         );
       });
-
-      // it('should call fileOperatorService.deleteFile', () => {
-      //   expect(filesystemService.deleteFile).toBeCalledWith(filePath);
-      // });
     });
   });
 });

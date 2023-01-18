@@ -14,7 +14,7 @@ export class MailTokenService {
     private readonly configService: ConfigService,
   ) {}
 
-  generateEmailConfirmationToken(email: string) {
+  generateEmailConfirmationToken(email: string): string {
     return this.jwtService.sign(
       { email },
       {

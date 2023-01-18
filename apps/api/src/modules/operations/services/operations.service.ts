@@ -7,10 +7,10 @@ import {
   SearchOperationDto,
   UpdateOperationDto,
 } from '../dto';
-import { DefaultCurrencyOperationResponse } from '../../../modules/operations/responses';
-import { CategoriesValidatorService } from '@app/api/src/modules/categories/services';
-import { UsersCurrenciesValidatorService } from '@app/api/src/modules/users-currencies/services';
+import { DefaultCurrencyOperationResponse } from '../responses';
 import { OperationsValidatorService } from './operations-validator.service';
+import { CategoriesValidatorService } from '../../categories/services';
+import { UsersCurrenciesValidatorService } from '../../users-currencies/services';
 
 @Injectable()
 export class OperationsService {

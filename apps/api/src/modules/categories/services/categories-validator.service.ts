@@ -59,7 +59,7 @@ export class CategoriesValidatorService {
     name: string | undefined,
     type: CategoryType | undefined,
     userId: number,
-  ) {
+  ): Promise<void> {
     if (name && name !== category.name && type === category.type) {
       await this.validateNameUniqueness(
         name,

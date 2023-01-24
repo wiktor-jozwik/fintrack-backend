@@ -29,7 +29,7 @@ describe('CurrencyRatesService', () => {
   });
 
   describe('findAll', () => {
-    describe('when findAll is called when currency == DEFAULT_APP_CURRENCY', () => {
+    describe('when findAll is called & currency == DEFAULT_APP_CURRENCY', () => {
       const defaultFindCurrencyRatesForDates =
         currencyRatesRepositoryMock.findCurrencyRatesForDates;
 
